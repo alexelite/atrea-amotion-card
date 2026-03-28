@@ -1,0 +1,41 @@
+type: custom:atrea-amotion-card
+title: Atrea Amotion
+show_title: true
+theme_variant: auto
+climate_entity: climate.atrea_amotion
+bypass_select: select.atrea_bypass_mode
+filter_reset_button: button.atrea_confirm_filter_replacement
+
+entities:
+  temperatures:
+    oda: sensor.atrea_oda_temperature
+    eta: sensor.atrea_eta_temperature
+    sup: sensor.atrea_sup_temperature
+    eha: sensor.atrea_eha_temperature
+
+  fans:
+    supply_speed: sensor.atrea_supply_fan_speed
+    extract_speed: sensor.atrea_extract_fan_speed
+  dampers:
+    bypass: sensor.atrea_bypass_position
+
+layout:
+  compact: false
+  show_airflow: false
+  show_power: false
+  show_filter_details: true
+  fan_animation_max_rpm: 1800
+
+tap_actions:
+  oda_temperature: more-info
+  eta_temperature: more-info
+  sup_temperature: more-info
+  eha_temperature: more-info
+  supply_fan: more-info
+  extract_fan: more-info
+  bypass: more-info
+  oda_damper: more-info
+  eta_damper: more-info
+  oda_filter: more-info
+  eta_filter: more-info
+  mode: more-info

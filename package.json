@@ -1,0 +1,36 @@
+{
+  "name": "atrea-amotion-card",
+  "version": "0.1.0",
+  "description": "Custom Lovelace card for Atrea Amotion ventilation units",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "hacs",
+    "svg",
+    "lit",
+    "atrea"
+  ],
+  "author": "alexelite",
+  "license": "MIT",
+  "devDependencies": {
+    "@open-wc/testing": "^4.0.0",
+    "@types/node": "^24.0.0",
+    "@vitest/browser": "^3.2.4",
+    "jsdom": "^26.1.0",
+    "lit": "^3.2.1",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "@mdi/js": "^7.4.47"
+  }
+}
