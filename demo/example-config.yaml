@@ -1,5 +1,5 @@
 type: custom:atrea-amotion-card
-title: Atrea Amotion
+title: Atrea aMotion
 show_title: true
 theme_variant: auto
 climate_entity: climate.atrea_amotion

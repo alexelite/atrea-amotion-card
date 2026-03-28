@@ -187,6 +187,34 @@ describe("AtreaAmotionCard", () => {
     });
   });
 
+  it("closes the fan popup on outside click and after timeout", async () => {
+    vi.useFakeTimers();
+    try {
+      const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
+      element.setConfig(config);
+      element.hass = hass;
+      await element.updateComplete;
+
+      element.shadowRoot?.querySelector<HTMLElement>("#action-fan")?.click();
+      await element.updateComplete;
+      expect(element.shadowRoot?.querySelector(".fan-popup")).toBeTruthy();
+
+      element.shadowRoot?.querySelector<HTMLElement>(".fan-popup-shell")?.click();
+      await element.updateComplete;
+      expect(element.shadowRoot?.querySelector(".fan-popup")).toBeFalsy();
+
+      element.shadowRoot?.querySelector<HTMLElement>("#action-fan")?.click();
+      await element.updateComplete;
+      expect(element.shadowRoot?.querySelector(".fan-popup")).toBeTruthy();
+
+      vi.advanceTimersByTime(8000);
+      await element.updateComplete;
+      expect(element.shadowRoot?.querySelector(".fan-popup")).toBeFalsy();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("degrades gracefully when optional entities are missing", async () => {
     const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
     element.setConfig({

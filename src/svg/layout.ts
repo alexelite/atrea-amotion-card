@@ -1,5 +1,5 @@
 import { html, nothing, svg, type TemplateResult } from "lit";
-import { mdiAutorenew, mdiDotsVertical, mdiFan, mdiFire, mdiPower, mdiSnowflake, mdiWeatherNight } from "@mdi/js";
+import { mdiDotsVertical, mdiFan, mdiFanAuto, mdiPower, mdiWeatherNight } from "@mdi/js";
 import type { AtreaAmotionCardConfig, AtreaCardViewModel, DamperState, FanState, FilterState, HomeAssistant, TemperaturePoint } from "../types";
 import { handleEntityTap, selectMode } from "../actions";
 import { fanAnimationDuration, flowAnimationDuration } from "./animations";
@@ -131,30 +131,58 @@ function renderFilter(filter: FilterState, bodyPath: string, slats: string[], on
 interface VisualSelectOption {
   action?: () => Promise<void> | void;
   disabled?: boolean;
-  iconPath: string;
+  icon: TemplateResult;
   id: string;
   label: string;
   selected?: boolean;
 }
 
 interface CardRenderHandlers {
+  onCloseFanPopup: () => void;
   fanPopupOpen: boolean;
   fanPopupValue: number;
   onFanDecrease: () => Promise<void> | void;
   onFanIncrease: () => Promise<void> | void;
+  onFanPopupInteract: () => void;
   onFanPreviewChange: (value: number) => void;
   onFanValueCommit: (value: number) => Promise<void> | void;
   onOpenMoreInfo: () => void;
   onToggleFanPopup: () => void;
 }
 
+function renderMdiIcon(path: string): TemplateResult {
+  return html`<ha-svg-icon .path=${path}></ha-svg-icon>`;
+}
+
+function renderFanAdjustIcon(): TemplateResult {
+  return svg`
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d=${mdiFan}></path>
+      <path d="M 21.703253 4.7618552 L 19.958952 2.8872845 L 18.214651 4.7618552" fill="none" stroke="currentColor" stroke-width="1.8114" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 18.195176 19.581143 L 19.939477 21.455714 L 21.683778 19.581143" fill="none" stroke="currentColor" stroke-width="1.8114" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  `;
+}
+
+function renderFanDisbalanceIcon(): TemplateResult {
+  return svg`
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d=${mdiFan}></path>
+      <path d="M 3.2824585 1.8140332 L 1.6824585 3.6140332 L 3.2824585 5.4140332" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 6.0640189 1.8140332 L 4.4640189 3.6140332 L 6.0640189 5.4140332" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 17.378952 17.6 L 19.378952 20 L 17.378952 22.4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M 20.32722 17.564032 L 22.32722 19.964032 L 20.32722 22.364032" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+  `;
+}
+
 const PRESET_ACTIONS = [
-  { id: "standby", label: "Standby", path: mdiPower, matches: ["standby", "stand-by", "off"] },
-  { id: "interval", label: "Interval", path: mdiAutorenew, matches: ["interval", "intervals", "auto"] },
-  { id: "ventilation", label: "Ventilation only", path: mdiSnowflake, matches: ["ventilation", "ventilation only"] },
-  { id: "night-cooling", label: "Night cooling", path: mdiWeatherNight, matches: ["night cooling", "night_cooling", "cooling"] },
-  { id: "disbalance", label: "Disbalance", path: mdiFire, matches: ["disbalance", "imbalance"] },
-  { id: "fan", label: "Fan", path: mdiFan, matches: [] },
+  { id: "standby", label: "Standby", icon: renderMdiIcon(mdiPower), matches: ["standby", "stand-by", "off"] },
+  { id: "interval", label: "Interval", icon: renderMdiIcon(mdiFanAuto), matches: ["interval", "intervals", "auto"] },
+  { id: "ventilation", label: "Ventilation only", icon: renderMdiIcon(mdiFan), matches: ["ventilation", "ventilation only"] },
+  { id: "night-cooling", label: "Night cooling", icon: renderMdiIcon(mdiWeatherNight), matches: ["night cooling", "night_cooling", "cooling"] },
+  { id: "disbalance", label: "Disbalance", icon: renderFanDisbalanceIcon(), matches: ["disbalance", "imbalance"] },
+  { id: "fan", label: "Fan", icon: renderFanAdjustIcon(), matches: [] },
 ] as const;
 
 function pickPresetOption(options: string[], needles: string[]): string | null {
@@ -197,9 +225,7 @@ function renderActionFeatures(options: VisualSelectOption[]): TemplateResult {
                 title=${option.label}
                 @click=${option.action}
               >
-                <div class="official-option-content">
-                  <ha-svg-icon .path=${option.iconPath}></ha-svg-icon>
-                </div>
+                <div class="official-option-content">${option.icon}</div>
               </div>
             `,
           )}
@@ -223,7 +249,7 @@ function renderCardFeatures(
         return {
           action: handlers.onToggleFanPopup,
           disabled: !model.mode.fan.controllable,
-          iconPath: presetAction.path,
+          icon: presetAction.icon,
           id: `action-${presetAction.id}`,
           label: presetAction.label,
           selected: handlers.fanPopupOpen,
@@ -237,7 +263,7 @@ function renderCardFeatures(
             ? () => selectMode(hass, model.mode.climateEntity!, "preset", matchedPreset)
             : undefined,
         disabled: !matchedPreset || !model.mode.climateEntity,
-        iconPath: presetAction.path,
+        icon: presetAction.icon,
         id: `action-${presetAction.id}`,
         label: presetAction.label,
         selected: !!matchedPreset && currentPreset === matchedPreset.toLowerCase(),
@@ -254,8 +280,15 @@ function renderFanPopup(model: AtreaCardViewModel, handlers: CardRenderHandlers)
   const displayValue = Math.round(Math.max(0, Math.min(100, handlers.fanPopupValue)));
 
   return html`
-    <div class="fan-popup-shell">
-      <div class="fan-popup official-card-feature">
+    <div class="fan-popup-shell" @click=${handlers.onCloseFanPopup}>
+      <div class="fan-popup-backdrop"></div>
+      <div
+        class="fan-popup official-card-feature"
+        @click=${(event: Event) => {
+          event.stopPropagation();
+          handlers.onFanPopupInteract();
+        }}
+      >
         <div class="fan-popup-header">
           <span class="fan-popup-title">Fan speed</span>
           <span class="fan-popup-value">${displayValue}%</span>
@@ -324,9 +357,9 @@ export function renderCardSvg(
 
       <div class="main-stage">
         <div class="canvas-wrap">
-          <svg class="unit-svg" viewBox=${SVG_VIEW_BOX} role="img" aria-label="Atrea Amotion ventilation scheme">
+          <svg class="unit-svg" viewBox=${SVG_VIEW_BOX} role="img" aria-label="Atrea aMotion ventilation scheme">
                 <g class="background-layer">
-                  <rect class="unit-frame" x="40" y="70" width="920" height="480" rx="18"></rect>
+                  <rect class="unit-frame" x="40" y="60" width="920" height="480" rx="18"></rect>
                   <g class="side-decor outside" transform="translate(50 240) scale(0.4)">
                     <path d="M200 176c3 28-28 26-47 24-16-1.9-28-14-40-24-13 19-41 23-61 13-34-30-11-42-15-55-15-12-31-24-33-41 1.7-17 20-25 34-27-3.7-10-4.1-22 2.6-31 15-21 50-11 67-3.4 2.5.27 6.9 5.5 7.8 3.2 2.4-13 15-20 27-24 25-6.9 71-1.5 68 28-1.2 12-9.4 23-20 28 17-.98 54 10 49 29-3.8 18-21 15-33 19 17 17 34 33 19 55-6.6 7.5-18 6.4-27 7z"></path>
                     <path d="M122 64v.1c-17 .93-31 5.1-43 17l.005.005c-5 6.6-9.2 13-9.2 22l-.1.1c.92 9.2 6.7 14 13 21l5.2-4.6c-4.2-4.9-9.9-8.7-11-15-.58-7.4 3.2-14 7.3-19l-.001-.002c11-13 23-14 38-15zm44 43-4.3 5.5-.1.5c9.2 6.3 14 14 15 25 1.2 13-3.8 21-14 25l2 6.7c5.3-1.5 10-5 13-8.4 5.3-6.9 6-16 5.5-23-.19-2-.6-4-1-5.9h-.001c-2.4-10-8.6-19-16-24zm-60 70v14c6.1 5.5 9.3 12 10 20 1.5 11 6 16 12 26 2.4-7.3 4.4-15 6.5-22h.001v-.001c1.7-7.2 5.7-12 9.3-17l-11-8.6-.1.1c-2.1 2.8-4.5 4.9-6.4 7.2-2.6-5.6-5.9-12-9.6-15-3.5-3-6.2-4.7-11-4.7z"></path>

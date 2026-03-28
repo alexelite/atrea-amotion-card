@@ -25,7 +25,7 @@ const minimalConfig: AtreaAmotionCardConfig = {
 describe("normalizeConfig", () => {
   it("fills defaults for optional fields", () => {
     const normalized = normalizeConfig(minimalConfig);
-    expect(normalized.title).toBe("Atrea Amotion");
+    expect(normalized.title).toBe("Atrea aMotion");
     expect(normalized.layout?.fan_animation_max_rpm).toBe(1800);
     expect(normalized.tap_actions?.bypass).toBe("more-info");
   });

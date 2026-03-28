@@ -1,7 +1,7 @@
 {
   "name": "atrea-amotion-card",
   "version": "0.1.0",
-  "description": "Custom Lovelace card for Atrea Amotion ventilation units",
+  "description": "Custom Lovelace card for Atrea aMotion ventilation units",
   "type": "module",
   "scripts": {
     "build": "vite build",

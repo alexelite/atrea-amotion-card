@@ -62,7 +62,7 @@ export function normalizeConfig(rawConfig: AtreaAmotionCardConfig): AtreaAmotion
 
   return {
     ...rawConfig,
-    title: rawConfig.title ?? "Atrea Amotion",
+    title: rawConfig.title ?? "Atrea aMotion",
     show_title: rawConfig.show_title ?? true,
     theme_variant: normalizeThemeVariant(rawConfig.theme_variant),
     entities: rawConfig.entities,

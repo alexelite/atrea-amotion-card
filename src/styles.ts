@@ -108,14 +108,20 @@ export const cardStyles = css`
   .fan-popup-shell {
     position: absolute;
     z-index: 4;
-    left: 12px;
-    right: 12px;
-    bottom: 44px;
-    pointer-events: none;
+    inset: 0;
+  }
+
+  .fan-popup-backdrop {
+    position: absolute;
+    inset: 0;
+    background: transparent;
   }
 
   .fan-popup {
-    pointer-events: auto;
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 44px;
     padding: 12px;
     border-radius: var(--atrea-feature-border-radius);
     background: color-mix(in srgb, var(--ha-card-background, var(--card-background-color, #fff)) 88%, var(--atrea-panel) 12%);

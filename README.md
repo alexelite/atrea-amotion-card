@@ -1,6 +1,6 @@
-# Atrea Amotion Card
+# Atrea aMotion Card
 
-`custom:atrea-amotion-card` is a Home Assistant Lovelace custom card for Atrea Amotion heat recovery ventilation units. It renders the unit as an SVG schematic with animated fans, bypass routing, damper positions, temperatures, filters, and operating mode controls.
+`custom:atrea-amotion-card` is a Home Assistant Lovelace custom card for Atrea aMotion heat recovery ventilation units. It renders the unit as an SVG schematic with animated fans, bypass routing, damper positions, temperatures, filters, and operating mode controls.
 
 The card works best together with the dedicated custom Home Assistant integration for Atrea aMotion HRV units: [alexelite/atrea_amotion](https://github.com/alexelite/atrea_amotion).
 
@@ -44,7 +44,7 @@ The upstream integration README describes it as an Atrea aMotion integration for
 ### HACS
 
 1. Add this repository as a custom frontend repository in HACS.
-2. Install `Atrea Amotion Card`.
+2. Install `Atrea aMotion Card`.
 3. HACS serves the built file from `dist/atrea-amotion-card.js`. Add the resource below if your Home Assistant version does not do it automatically:
 
 ```yaml
@@ -68,7 +68,7 @@ type: module
 
 ```yaml
 type: custom:atrea-amotion-card
-title: Atrea Amotion
+title: Atrea aMotion
 show_title: true
 theme_variant: auto
 climate_entity: climate.atrea_amotion

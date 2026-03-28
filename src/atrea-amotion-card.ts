@@ -9,6 +9,8 @@ import { renderCardSvg } from "./svg/layout";
 import { cardStyles } from "./styles";
 import type { AtreaAmotionCardConfig, AtreaCardViewModel, HomeAssistant, LovelaceCard } from "./types";
 
+const FAN_POPUP_TIMEOUT_MS = 8000;
+
 declare global {
   interface HTMLElementTagNameMap {
     "atrea-amotion-card": AtreaAmotionCard;
@@ -31,6 +33,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
   @state() private isMoreInfoOpen = false;
   @state() private isFanPopupOpen = false;
   @state() private fanPopupValue: number | null = null;
+  private fanPopupTimeoutId?: number;
 
   public setConfig(config: AtreaAmotionCardConfig): void {
     this.errorMessage = undefined;
@@ -74,10 +77,13 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
         ${renderCardSvg(this.hass, this.config, model, {
           fanPopupOpen: this.isFanPopupOpen,
           fanPopupValue: this.fanPopupValue ?? resolvedFanValue ?? 0,
+          onCloseFanPopup: () => this.closeFanPopup(),
           onFanDecrease: async () => this.stepFanValue(model, -1),
           onFanIncrease: async () => this.stepFanValue(model, 1),
+          onFanPopupInteract: () => this.resetFanPopupTimeout(),
           onFanPreviewChange: (value: number) => {
             this.fanPopupValue = value;
+            this.resetFanPopupTimeout();
           },
           onFanValueCommit: async (value: number) => this.commitFanValue(model, value),
           onOpenMoreInfo: () => {
@@ -88,8 +94,11 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
             if (!model.mode.fan.controllable) {
               return;
             }
-            this.fanPopupValue = resolvedFanValue ?? 0;
-            this.isFanPopupOpen = !this.isFanPopupOpen;
+            if (this.isFanPopupOpen) {
+              this.closeFanPopup();
+              return;
+            }
+            this.openFanPopup(resolvedFanValue ?? 0);
           },
         })}
         ${this.isMoreInfoOpen
@@ -104,6 +113,41 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
           : html``}
       </ha-card>
     `;
+  }
+
+  public disconnectedCallback(): void {
+    this.clearFanPopupTimeout();
+    super.disconnectedCallback();
+  }
+
+  private openFanPopup(value: number): void {
+    this.fanPopupValue = value;
+    this.isFanPopupOpen = true;
+    this.resetFanPopupTimeout();
+  }
+
+  private closeFanPopup(): void {
+    this.isFanPopupOpen = false;
+    this.clearFanPopupTimeout();
+  }
+
+  private clearFanPopupTimeout(): void {
+    if (this.fanPopupTimeoutId !== undefined) {
+      window.clearTimeout(this.fanPopupTimeoutId);
+      this.fanPopupTimeoutId = undefined;
+    }
+  }
+
+  private resetFanPopupTimeout(): void {
+    if (!this.isFanPopupOpen) {
+      return;
+    }
+
+    this.clearFanPopupTimeout();
+    this.fanPopupTimeoutId = window.setTimeout(() => {
+      this.closeFanPopup();
+      this.requestUpdate();
+    }, FAN_POPUP_TIMEOUT_MS);
   }
 
   private getFanStepOptions(model: AtreaCardViewModel): number[] {
@@ -137,6 +181,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
       return;
     }
 
+    this.resetFanPopupTimeout();
     const boundedValue = Math.round(Math.max(0, Math.min(100, value)));
     const snappedValue = this.getNearestFanOption(model, boundedValue) ?? boundedValue;
     this.fanPopupValue = snappedValue;
@@ -149,6 +194,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
       return;
     }
 
+    this.resetFanPopupTimeout();
     const currentValue = this.fanPopupValue ?? options[0]!;
     let target = direction < 0 ? options[0]! : options[options.length - 1]!;
 
@@ -178,7 +224,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
   public static getStubConfig(): AtreaAmotionCardConfig {
     return {
       type: "custom:atrea-amotion-card",
-      title: "Atrea Amotion",
+      title: "Atrea aMotion",
       show_title: true,
       theme_variant: "auto",
       entities: {
@@ -200,7 +246,7 @@ if (!window.customCards) {
 
 window.customCards.push({
   type: "atrea-amotion-card",
-  name: "Atrea Amotion Card",
+  name: "Atrea aMotion Card",
   description: "SVG Lovelace card for Atrea heat recovery ventilation units",
   preview: true,
 });
