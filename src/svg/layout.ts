@@ -1,5 +1,5 @@
 import { html, nothing, svg, type TemplateResult } from "lit";
-import { mdiDotsVertical, mdiFan, mdiFanAuto, mdiPower, mdiWeatherNight } from "@mdi/js";
+import { mdiAlertCircleOutline, mdiDotsVertical, mdiFan, mdiFanAuto, mdiPower, mdiWeatherNight } from "@mdi/js";
 import type { AtreaAmotionCardConfig, AtreaCardViewModel, DamperState, FanState, FilterState, HomeAssistant, TemperaturePoint } from "../types";
 import { handleEntityTap, selectMode } from "../actions";
 import { fanAnimationDuration, flowAnimationDuration } from "./animations";
@@ -138,6 +138,10 @@ interface VisualSelectOption {
 }
 
 interface CardRenderHandlers {
+  alertPopupOpen: boolean;
+  onAlertPopupInteract: () => void;
+  onCloseAlertPopup: () => void;
+  onOpenAlertPopup: () => void;
   onCloseFanPopup: () => void;
   fanPopupOpen: boolean;
   fanPopupValue: number;
@@ -321,13 +325,48 @@ function renderFanPopup(model: AtreaCardViewModel, handlers: CardRenderHandlers)
   `;
 }
 
-function renderAlertStrip(model: AtreaCardViewModel): TemplateResult {
+function renderAlertButton(model: AtreaCardViewModel, handlers: CardRenderHandlers): TemplateResult {
   if (!model.alerts.warning && !model.alerts.fault) {
     return html``;
   }
+
+  const label = model.alerts.fault ? "Fault details" : "Warning details";
   return html`
-    <div class="alert-strip ${model.alerts.fault ? "is-fault" : "is-warning"}">
-      ${model.alerts.labels.join(" / ")}
+    <ha-icon-button
+      class="alert-info ${model.alerts.fault ? "is-fault" : "is-warning"}"
+      .label=${label}
+      .title=${label}
+      @click=${handlers.onOpenAlertPopup}
+    >
+      <ha-svg-icon .path=${mdiAlertCircleOutline}></ha-svg-icon>
+    </ha-icon-button>
+  `;
+}
+
+function renderAlertPopup(model: AtreaCardViewModel, handlers: CardRenderHandlers): TemplateResult {
+  if (!handlers.alertPopupOpen || (!model.alerts.warning && !model.alerts.fault)) {
+    return html``;
+  }
+
+  const title = model.alerts.fault ? "Fault active" : "Warning active";
+
+  return html`
+    <div class="alert-popup-shell" @click=${handlers.onCloseAlertPopup}>
+      <div class="alert-popup-backdrop"></div>
+      <div
+        class="alert-popup official-card-feature ${model.alerts.fault ? "is-fault" : "is-warning"}"
+        @click=${(event: Event) => {
+          event.stopPropagation();
+          handlers.onAlertPopupInteract();
+        }}
+      >
+        <div class="alert-popup-header">
+          <span class="alert-popup-title">${title}</span>
+        </div>
+        <div class="alert-popup-body">
+          ${model.alerts.details.map((detail) => html`<p class="alert-popup-text">${detail}</p>`)}
+        </div>
+      </div>
     </div>
   `;
 }
@@ -349,7 +388,8 @@ export function renderCardSvg(
     "Show more information";
 
   return html`
-    ${renderAlertStrip(model)}
+    ${renderAlertButton(model, handlers)}
+    ${renderAlertPopup(model, handlers)}
     ${config.show_title ? html`<p class="title">${config.title}</p>` : nothing}
 
     <div class="container">

@@ -131,6 +131,66 @@ export const cardStyles = css`
     backdrop-filter: blur(8px);
   }
 
+  .alert-popup-shell {
+    position: absolute;
+    z-index: 4;
+    inset: 0;
+  }
+
+  .alert-popup-backdrop {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+  }
+
+  .alert-popup {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    top: 44px;
+    padding: 12px 14px;
+    border-radius: var(--atrea-feature-border-radius);
+    background: color-mix(in srgb, var(--ha-card-background, var(--card-background-color, #fff)) 92%, var(--atrea-panel) 8%);
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--state-icon-color, var(--atrea-blue)) 12%, transparent),
+      0 8px 18px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(8px);
+  }
+
+  .alert-popup.is-warning {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--atrea-warning) 28%, transparent),
+      0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .alert-popup.is-fault {
+    box-shadow:
+      inset 0 0 0 1px color-mix(in srgb, var(--atrea-danger) 28%, transparent),
+      0 8px 18px rgba(0, 0, 0, 0.08);
+  }
+
+  .alert-popup-header {
+    margin-bottom: 8px;
+  }
+
+  .alert-popup-title {
+    color: var(--primary-text-color);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .alert-popup-body {
+    display: grid;
+    gap: 8px;
+  }
+
+  .alert-popup-text {
+    margin: 0;
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+    line-height: 1.35;
+  }
+
   .fan-popup-header {
     display: flex;
     align-items: center;
@@ -336,6 +396,28 @@ export const cardStyles = css`
     color: var(--secondary-text-color);
     direction: var(--direction);
     transition: color 140ms ease;
+  }
+
+  .alert-info {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    inset-inline-start: 0;
+    inset-inline-end: initial;
+    border-radius: var(--ha-border-radius-pill, 999px);
+    color: var(--atrea-warning);
+    direction: var(--direction);
+    transition: color 140ms ease;
+  }
+
+  .alert-info.is-fault {
+    color: var(--atrea-danger);
+  }
+
+  .alert-info:hover,
+  .alert-info:focus-visible {
+    color: var(--primary-text-color);
   }
 
   .more-info:hover,
@@ -588,27 +670,6 @@ export const cardStyles = css`
 
   .is-muted {
     opacity: 0.45;
-  }
-
-  .alert-strip {
-    position: relative;
-    z-index: 1;
-    margin-bottom: 12px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  .alert-strip.is-warning {
-    background: rgba(224, 164, 58, 0.14);
-    color: #8b5a12;
-  }
-
-  .alert-strip.is-fault {
-    background: rgba(219, 68, 55, 0.12);
-    color: var(--atrea-danger);
   }
 
   .availability-note {

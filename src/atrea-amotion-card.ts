@@ -10,6 +10,7 @@ import { cardStyles } from "./styles";
 import type { AtreaAmotionCardConfig, AtreaCardViewModel, HomeAssistant, LovelaceCard } from "./types";
 
 const FAN_POPUP_TIMEOUT_MS = 8000;
+const ALERT_POPUP_TIMEOUT_MS = 8000;
 
 declare global {
   interface HTMLElementTagNameMap {
@@ -32,8 +33,10 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
   @state() private errorMessage?: string;
   @state() private isMoreInfoOpen = false;
   @state() private isFanPopupOpen = false;
+  @state() private isAlertPopupOpen = false;
   @state() private fanPopupValue: number | null = null;
   private fanPopupTimeoutId?: number;
+  private alertPopupTimeoutId?: number;
 
   public setConfig(config: AtreaAmotionCardConfig): void {
     this.errorMessage = undefined;
@@ -75,8 +78,12 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
     return html`
       <ha-card class=${cardClasses}>
         ${renderCardSvg(this.hass, this.config, model, {
+          alertPopupOpen: this.isAlertPopupOpen,
           fanPopupOpen: this.isFanPopupOpen,
           fanPopupValue: this.fanPopupValue ?? resolvedFanValue ?? 0,
+          onCloseAlertPopup: () => this.closeAlertPopup(),
+          onOpenAlertPopup: () => this.toggleAlertPopup(),
+          onAlertPopupInteract: () => this.resetAlertPopupTimeout(),
           onCloseFanPopup: () => this.closeFanPopup(),
           onFanDecrease: async () => this.stepFanValue(model, -1),
           onFanIncrease: async () => this.stepFanValue(model, 1),
@@ -117,7 +124,41 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
 
   public disconnectedCallback(): void {
     this.clearFanPopupTimeout();
+    this.clearAlertPopupTimeout();
     super.disconnectedCallback();
+  }
+
+  private toggleAlertPopup(): void {
+    if (this.isAlertPopupOpen) {
+      this.closeAlertPopup();
+      return;
+    }
+    this.isAlertPopupOpen = true;
+    this.resetAlertPopupTimeout();
+  }
+
+  private closeAlertPopup(): void {
+    this.isAlertPopupOpen = false;
+    this.clearAlertPopupTimeout();
+  }
+
+  private clearAlertPopupTimeout(): void {
+    if (this.alertPopupTimeoutId !== undefined) {
+      window.clearTimeout(this.alertPopupTimeoutId);
+      this.alertPopupTimeoutId = undefined;
+    }
+  }
+
+  private resetAlertPopupTimeout(): void {
+    if (!this.isAlertPopupOpen) {
+      return;
+    }
+
+    this.clearAlertPopupTimeout();
+    this.alertPopupTimeoutId = window.setTimeout(() => {
+      this.closeAlertPopup();
+      this.requestUpdate();
+    }, ALERT_POPUP_TIMEOUT_MS);
   }
 
   private openFanPopup(value: number): void {

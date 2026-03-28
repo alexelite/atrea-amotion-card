@@ -337,17 +337,51 @@ function isBinaryOn(stateObj?: HomeAssistantState): boolean {
   return OPEN_STATES.has(String(stateObj?.state ?? "").toLowerCase());
 }
 
+function buildAlertDetail(label: string, stateObj?: HomeAssistantState): string {
+  const detailKeys = ["message", "description", "details", "detail", "reason"] as const;
+  const fallbackMessage =
+    label === "Fault"
+      ? "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause."
+      : "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause.";
+
+  if (!stateObj) {
+    return fallbackMessage;
+  }
+
+  for (const key of detailKeys) {
+    const value = stateObj.attributes?.[key];
+    if (typeof value === "string" && value.trim().length > 0) {
+      return value.trim();
+    }
+  }
+
+  const name =
+    typeof stateObj.attributes?.friendly_name === "string" && stateObj.attributes.friendly_name.trim().length > 0
+      ? stateObj.attributes.friendly_name.trim()
+      : stateObj.entity_id;
+  const stateValue = String(stateObj.state ?? "").trim().toLowerCase();
+
+  if (stateValue && !["on", "off", "true", "false", "unknown", "unavailable"].includes(stateValue)) {
+    return `${name}: ${stateObj.state}`;
+  }
+
+  return `${name} is active.`;
+}
+
 function parseAlerts(warningState?: HomeAssistantState, faultState?: HomeAssistantState): AlertState {
   const warning = isBinaryOn(warningState);
   const fault = isBinaryOn(faultState);
   const labels: string[] = [];
+  const details: string[] = [];
   if (warning) {
     labels.push("Warning");
+    details.push(buildAlertDetail("Warning", warningState));
   }
   if (fault) {
     labels.push("Fault");
+    details.push(buildAlertDetail("Fault", faultState));
   }
-  return { warning, fault, labels };
+  return { warning, fault, labels, details };
 }
 
 function resolveAvailability(model: Omit<AtreaCardViewModel, "availability">): AtreaCardViewModel["availability"] {
@@ -472,6 +506,14 @@ export function createViewModel(hass: HomeAssistant, config: AtreaAmotionCardCon
             warning: parseBooleanValue(climateAttributes.warning),
             fault: parseBooleanValue(climateAttributes.fault),
             labels: [parseBooleanValue(climateAttributes.warning) ? "Warning" : null, parseBooleanValue(climateAttributes.fault) ? "Fault" : null].filter((value): value is string => !!value),
+            details: [
+              parseBooleanValue(climateAttributes.warning)
+                ? "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause."
+                : null,
+              parseBooleanValue(climateAttributes.fault)
+                ? "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause."
+                : null,
+            ].filter((value): value is string => !!value),
           }
         : parseAlerts(warningState, faultState),
   };

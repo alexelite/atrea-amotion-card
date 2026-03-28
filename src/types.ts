@@ -212,6 +212,7 @@ export interface AlertState {
   warning: boolean;
   fault: boolean;
   labels: string[];
+  details: string[];
 }
 
 export interface AtreaCardViewModel {

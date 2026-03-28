@@ -151,6 +151,54 @@ describe("AtreaAmotionCard", () => {
     expect(element.shadowRoot?.textContent).not.toContain("Coming soon");
   });
 
+  it("shows an alert icon and opens an in-card alert popup", async () => {
+    vi.useFakeTimers();
+    try {
+      const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
+      element.setConfig({
+        ...config,
+        entities: {
+          ...config.entities,
+          alerts: {
+            warning: "binary_sensor.unit_warning",
+          },
+        },
+      });
+      element.hass = {
+        ...hass,
+        states: {
+          ...hass.states,
+          "binary_sensor.unit_warning": {
+            entity_id: "binary_sensor.unit_warning",
+            state: "on",
+            attributes: { friendly_name: "Supply filter warning", message: "Supply filter requires inspection." },
+          },
+        },
+      };
+      await element.updateComplete;
+
+      const alertButton = element.shadowRoot?.querySelector<HTMLElement>(".alert-info");
+      expect(alertButton).toBeTruthy();
+      alertButton?.click();
+      await element.updateComplete;
+
+      expect(element.shadowRoot?.querySelector(".alert-popup")).toBeTruthy();
+      expect(element.shadowRoot?.textContent).toContain("Supply filter requires inspection.");
+
+      element.shadowRoot?.querySelector<HTMLElement>(".alert-popup-shell")?.click();
+      await element.updateComplete;
+      expect(element.shadowRoot?.querySelector(".alert-popup")).toBeFalsy();
+
+      alertButton?.click();
+      await element.updateComplete;
+      vi.advanceTimersByTime(8000);
+      await element.updateComplete;
+      expect(element.shadowRoot?.querySelector(".alert-popup")).toBeFalsy();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("opens the fan popup and maps fan percentage controls to climate.set_fan_mode", async () => {
     const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
     element.setConfig(config);
