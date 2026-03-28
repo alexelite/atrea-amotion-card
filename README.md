@@ -2,6 +2,8 @@
 
 `custom:atrea-amotion-card` is a Home Assistant Lovelace custom card for Atrea Amotion heat recovery ventilation units. It renders the unit as an SVG schematic with animated fans, bypass routing, damper positions, temperatures, filters, and operating mode controls.
 
+The card works best together with the dedicated custom Home Assistant integration for Atrea aMotion HRV units: [alexelite/atrea_amotion](https://github.com/alexelite/atrea_amotion).
+
 ## Features
 
 - HACS-compatible frontend plugin
@@ -13,16 +15,40 @@
 - more-info tap actions on key visual elements
 - graceful degradation when optional entities are missing
 
+## Screenshots
+
+Main card view:
+
+![Main card view](demo/main.png)
+
+Fan popup:
+
+![Fan popup](demo/fan_popup.png)
+
+More-info dialog:
+
+![More info dialog](demo/more_info.png)
+
+## Recommended Integration
+
+For the best experience, pair this card with the custom Atrea aMotion integration for Home Assistant:
+
+- Repository: [alexelite/atrea_amotion](https://github.com/alexelite/atrea_amotion)
+- Purpose: dedicated Home Assistant integration for Atrea aMotion HRV and ERV units
+- Why it fits this card well: it exposes Atrea-specific entities and control surfaces that map naturally to the schematic card
+
+The upstream integration README describes it as an Atrea aMotion integration for Home Assistant and notes that it extends control beyond a climate-only approach with additional platforms such as fan. This matches the way this card consumes both climate attributes and optional fallback entities. Source: [alexelite/atrea_amotion](https://github.com/alexelite/atrea_amotion).
+
 ## Installation
 
 ### HACS
 
 1. Add this repository as a custom frontend repository in HACS.
 2. Install `Atrea Amotion Card`.
-3. Add the generated resource if your Home Assistant version does not do it automatically:
+3. HACS serves the built file from `dist/atrea-amotion-card.js`. Add the resource below if your Home Assistant version does not do it automatically:
 
 ```yaml
-url: /hacsfiles/atrea_amotion_card/atrea-amotion-card.js
+url: /hacsfiles/atrea-amotion-card/atrea-amotion-card.js
 type: module
 ```
 
@@ -30,7 +56,7 @@ type: module
 
 1. Run `npm ci`
 2. Run `npm run build`
-3. Copy `atrea-amotion-card.js` to `/config/www/atrea-amotion-card.js`
+3. Copy `dist/atrea-amotion-card.js` to `/config/www/atrea-amotion-card.js`
 4. Add the Lovelace resource:
 
 ```yaml
@@ -73,6 +99,8 @@ layout:
 ## Climate Contract
 
 `climate_entity` is the primary source of data and control for the card.
+
+In the recommended setup, this is the custom `climate` entity exposed by the custom Home Assistant integration [alexelite/atrea_amotion](https://github.com/alexelite/atrea_amotion).
 
 Recommended climate attributes:
 

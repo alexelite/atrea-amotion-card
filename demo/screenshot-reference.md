@@ -2,6 +2,12 @@
 
 The card is designed to resemble a technical ventilation schematic rather than a generic dashboard tile.
 
+Current demo assets:
+
+- `main.png`: primary card view
+- `fan_popup.png`: fan popup with horizontal slider and `-` / `+` controls
+- `more_info.png`: more-info dialog
+
 Visual anchors for the first release:
 
 - dark technical chassis with clear ODA / ETA / SUP / EHA labeling
@@ -14,8 +20,9 @@ Visual anchors for the first release:
 
 Recommended screenshots for the README after manual verification in Home Assistant:
 
-- desktop width with full telemetry
+- `main.png` for the primary card view
+- `fan_popup.png` for the in-card fan control popup
+- `more_info.png` for the more-info dialog
 - mobile width with compact layout
-- bypass closed
 - bypass open
 - warning or filter-dirty state
