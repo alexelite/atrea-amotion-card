@@ -12,7 +12,6 @@ entities:
     eta: sensor.atrea_eta_temperature
     sup: sensor.atrea_sup_temperature
     eha: sensor.atrea_eha_temperature
-
   fans:
     supply_speed: sensor.atrea_supply_fan_speed
     extract_speed: sensor.atrea_extract_fan_speed

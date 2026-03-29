@@ -8,7 +8,11 @@
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "preflight": "npm run typecheck && npm run test && npm run build",
+    "release:patch": "npm run preflight && npm version patch",
+    "release:minor": "npm run preflight && npm version minor",
+    "release:major": "npm run preflight && npm version major"    
   },
   "keywords": [
     "home-assistant",

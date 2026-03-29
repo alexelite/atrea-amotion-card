@@ -19,15 +19,21 @@ The card works best together with the dedicated custom Home Assistant integratio
 
 Main card view:
 
-![Main card view](demo/main.png)
+<p align="center">
+  <img src="demo/main.png" width="400">
+</p>
 
 Fan popup:
 
-![Fan popup](demo/fan_popup.png)
+<p align="center">
+  <img src="demo/fan_popup.png" width="400">
+</p>
 
 More-info dialog:
 
-![More info dialog](demo/more_info.png)
+<p align="center">
+  <img src="demo/more_info.png" width="400">
+</p>
 
 ## Recommended Integration
 
@@ -45,7 +51,7 @@ The upstream integration README describes it as an Atrea aMotion integration for
 
 1. Add this repository as a custom frontend repository in HACS.
 2. Install `Atrea aMotion Card`.
-3. HACS serves the built file from `dist/atrea-amotion-card.js`. Add the resource below if your Home Assistant version does not do it automatically:
+3. HACS serves the built file `atrea-amotion-card.js`. Add the resource below if your Home Assistant version does not do it automatically:
 
 ```yaml
 url: /hacsfiles/atrea-amotion-card/atrea-amotion-card.js
