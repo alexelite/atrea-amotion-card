@@ -143,6 +143,13 @@ export interface ClimateAttributes {
   filter_days_remaining?: number | string;
   warning?: boolean | string;
   fault?: boolean | string;
+  notifications?: unknown[];
+  warning_count?: number | string;
+  fault_count?: number | string;
+  highest_severity?: number | string;
+  primary_message?: string;
+  has_warning?: boolean | string;
+  has_fault?: boolean | string;
   supply_airflow?: number | string;
   extract_airflow?: number | string;
   supply_power?: number | string;
@@ -211,8 +218,27 @@ export interface ModeState {
 export interface AlertState {
   warning: boolean;
   fault: boolean;
+  warningCount: number;
+  faultCount: number;
+  highestSeverity: number | null;
+  primaryMessage: string | null;
   labels: string[];
   details: string[];
+  notifications: AlertNotification[];
+}
+
+export interface AlertNotification {
+  id: number | string | null;
+  code: string | null;
+  purpose: string | null;
+  severity: number | null;
+  kind: "warning" | "fault";
+  prefix: string;
+  translationKey: string | null;
+  message: string;
+  messageCode: string;
+  fullMessage: string;
+  active: boolean;
 }
 
 export interface AtreaCardViewModel {

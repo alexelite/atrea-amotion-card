@@ -65,6 +65,26 @@ const hass: HomeAssistant = {
         preset_mode: "Interval",
         fan_mode: "67",
         filter_days_remaining: 12,
+        warning: true,
+        warning_count: 1,
+        fault_count: 0,
+        highest_severity: 3,
+        primary_message: "S 105 - Filter replacement interval",
+        notifications: [
+          {
+            id: 105,
+            code: "FILTER_INTERVAL",
+            purpose: "notify",
+            severity: 3,
+            kind: "warning",
+            prefix: "S",
+            translation_key: "state_messages.FILTER_INTERVAL",
+            message: "Filter replacement interval",
+            message_code: "S 105",
+            full_message: "S 105 - Filter replacement interval",
+            active: true,
+          },
+        ],
         hvac_modes: ["off", "auto"],
         preset_modes: ["Standby", "Interval", "Ventilation only", "Night cooling", "Disbalance"],
         fan_modes: ["0", "30", "50", "67", "100"],
@@ -178,16 +198,16 @@ describe("AtreaAmotionCard", () => {
       await element.updateComplete;
 
       const alertButton = element.shadowRoot?.querySelector<HTMLElement>(".alert-info");
-      expect(alertButton).toBeTruthy();
-      alertButton?.click();
-      await element.updateComplete;
+    expect(alertButton).toBeTruthy();
+    alertButton?.click();
+    await element.updateComplete;
 
-      expect(element.shadowRoot?.querySelector(".alert-popup")).toBeTruthy();
-      expect(element.shadowRoot?.textContent).toContain("Supply filter requires inspection.");
+    expect(element.shadowRoot?.querySelector(".alert-popup")).toBeTruthy();
+    expect(element.shadowRoot?.textContent).toContain("S 105 - Filter replacement interval");
 
-      element.shadowRoot?.querySelector<HTMLElement>(".alert-popup-shell")?.click();
-      await element.updateComplete;
-      expect(element.shadowRoot?.querySelector(".alert-popup")).toBeFalsy();
+    element.shadowRoot?.querySelector<HTMLElement>(".alert-popup-shell")?.click();
+    await element.updateComplete;
+    expect(element.shadowRoot?.querySelector(".alert-popup")).toBeFalsy();
 
       alertButton?.click();
       await element.updateComplete;

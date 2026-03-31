@@ -330,7 +330,7 @@ function renderAlertButton(model: AtreaCardViewModel, handlers: CardRenderHandle
     return html``;
   }
 
-  const label = model.alerts.fault ? "Fault details" : "Warning details";
+  const label = `${model.alerts.notifications.length || model.alerts.warningCount + model.alerts.faultCount} active alert${(model.alerts.notifications.length || model.alerts.warningCount + model.alerts.faultCount) === 1 ? "" : "s"}`;
   return html`
     <ha-icon-button
       class="alert-info ${model.alerts.fault ? "is-fault" : "is-warning"}"
@@ -349,6 +349,12 @@ function renderAlertPopup(model: AtreaCardViewModel, handlers: CardRenderHandler
   }
 
   const title = model.alerts.fault ? "Fault active" : "Warning active";
+  const entries = model.alerts.notifications.length > 0
+    ? model.alerts.notifications
+    : model.alerts.details.map((detail, index) => ({
+        kind: model.alerts.fault && index === 0 ? "fault" : "warning",
+        fullMessage: detail,
+      }));
 
   return html`
     <div class="alert-popup-shell" @click=${handlers.onCloseAlertPopup}>
@@ -364,7 +370,11 @@ function renderAlertPopup(model: AtreaCardViewModel, handlers: CardRenderHandler
           <span class="alert-popup-title">${title}</span>
         </div>
         <div class="alert-popup-body">
-          ${model.alerts.details.map((detail) => html`<p class="alert-popup-text">${detail}</p>`)}
+          ${entries.map(
+            (entry) => html`
+              <p class="alert-popup-text ${entry.kind === "fault" ? "is-fault" : "is-warning"}">${entry.fullMessage}</p>
+            `,
+          )}
         </div>
       </div>
     </div>

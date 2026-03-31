@@ -1,4 +1,5 @@
 import type {
+  AlertNotification,
   AlertState,
   AtreaAmotionCardConfig,
   AtreaCardViewModel,
@@ -373,15 +374,152 @@ function parseAlerts(warningState?: HomeAssistantState, faultState?: HomeAssista
   const fault = isBinaryOn(faultState);
   const labels: string[] = [];
   const details: string[] = [];
+  const notifications: AlertNotification[] = [];
   if (warning) {
     labels.push("Warning");
-    details.push(buildAlertDetail("Warning", warningState));
+    const detail = buildAlertDetail("Warning", warningState);
+    details.push(detail);
+    notifications.push({
+      id: warningState?.entity_id ?? null,
+      code: null,
+      purpose: "warning",
+      severity: null,
+      kind: "warning",
+      prefix: "S",
+      translationKey: null,
+      message: detail,
+      messageCode: "S",
+      fullMessage: detail,
+      active: true,
+    });
   }
   if (fault) {
     labels.push("Fault");
-    details.push(buildAlertDetail("Fault", faultState));
+    const detail = buildAlertDetail("Fault", faultState);
+    details.push(detail);
+    notifications.push({
+      id: faultState?.entity_id ?? null,
+      code: null,
+      purpose: "alarm",
+      severity: null,
+      kind: "fault",
+      prefix: "E",
+      translationKey: null,
+      message: detail,
+      messageCode: "E",
+      fullMessage: detail,
+      active: true,
+    });
   }
-  return { warning, fault, labels, details };
+  return {
+    warning,
+    fault,
+    warningCount: warning ? 1 : 0,
+    faultCount: fault ? 1 : 0,
+    highestSeverity: fault ? 5 : warning ? 3 : null,
+    primaryMessage: notifications[0]?.fullMessage ?? null,
+    labels,
+    details,
+    notifications,
+  };
+}
+
+function parseNotification(value: unknown): AlertNotification | null {
+  if (!value || typeof value !== "object") {
+    return null;
+  }
+
+  const item = value as Record<string, unknown>;
+  const kind = item.kind === "fault" ? "fault" : "warning";
+  const message =
+    typeof item.message === "string" && item.message.trim().length > 0
+      ? item.message.trim()
+      : typeof item.full_message === "string" && item.full_message.trim().length > 0
+        ? item.full_message.trim()
+        : typeof item.code === "string" && item.code.trim().length > 0
+          ? item.code.trim()
+          : "Unknown alert";
+  const messageCode =
+    typeof item.message_code === "string" && item.message_code.trim().length > 0
+      ? item.message_code.trim()
+      : kind === "fault"
+        ? "E"
+        : "S";
+  const fullMessage =
+    typeof item.full_message === "string" && item.full_message.trim().length > 0
+      ? item.full_message.trim()
+      : messageCode && message
+        ? `${messageCode} - ${message}`
+        : message;
+
+  return {
+    id: typeof item.id === "number" || typeof item.id === "string" ? item.id : null,
+    code: typeof item.code === "string" ? item.code : null,
+    purpose: typeof item.purpose === "string" ? item.purpose : null,
+    severity: typeof item.severity === "number" ? item.severity : null,
+    kind,
+    prefix: typeof item.prefix === "string" && item.prefix ? item.prefix : kind === "fault" ? "E" : "S",
+    translationKey: typeof item.translation_key === "string" ? item.translation_key : null,
+    message,
+    messageCode,
+    fullMessage,
+    active: item.active !== false,
+  };
+}
+
+function parseClimateAlerts(climateAttributes: ClimateAttributes): AlertState | null {
+  if (!Array.isArray(climateAttributes.notifications)) {
+    return null;
+  }
+
+  const notifications = climateAttributes.notifications
+    .map((item) => parseNotification(item))
+    .filter((item): item is AlertNotification => !!item && item.active);
+
+  if (notifications.length === 0) {
+    return {
+      warning: parseBooleanValue(climateAttributes.warning ?? climateAttributes.has_warning),
+      fault: parseBooleanValue(climateAttributes.fault ?? climateAttributes.has_fault),
+      warningCount: parseNumericValue(climateAttributes.warning_count) ?? 0,
+      faultCount: parseNumericValue(climateAttributes.fault_count) ?? 0,
+      highestSeverity: parseNumericValue(climateAttributes.highest_severity),
+      primaryMessage: typeof climateAttributes.primary_message === "string" ? climateAttributes.primary_message : null,
+      labels: [],
+      details: [],
+      notifications: [],
+    };
+  }
+
+  const warningCount =
+    parseNumericValue(climateAttributes.warning_count) ??
+    notifications.filter((item) => item.kind === "warning").length;
+  const faultCount =
+    parseNumericValue(climateAttributes.fault_count) ??
+    notifications.filter((item) => item.kind === "fault").length;
+  const highestSeverity =
+    parseNumericValue(climateAttributes.highest_severity) ??
+    notifications.reduce<number | null>((best, item) => {
+      if (item.severity === null) {
+        return best;
+      }
+      return best === null ? item.severity : Math.max(best, item.severity);
+    }, null);
+  const primaryMessage =
+    (typeof climateAttributes.primary_message === "string" && climateAttributes.primary_message) ||
+    notifications[0]?.fullMessage ||
+    null;
+
+  return {
+    warning: parseBooleanValue(climateAttributes.has_warning ?? climateAttributes.warning ?? warningCount > 0),
+    fault: parseBooleanValue(climateAttributes.has_fault ?? climateAttributes.fault ?? faultCount > 0),
+    warningCount,
+    faultCount,
+    highestSeverity,
+    primaryMessage,
+    labels: notifications.map((item) => item.kind === "fault" ? "Fault" : "Warning"),
+    details: notifications.map((item) => item.fullMessage),
+    notifications,
+  };
 }
 
 function resolveAvailability(model: Omit<AtreaCardViewModel, "availability">): AtreaCardViewModel["availability"] {
@@ -501,21 +639,62 @@ export function createViewModel(hass: HomeAssistant, config: AtreaAmotionCardCon
       return parseMode(entities?.mode?.current, currentModeState, entities?.mode?.select, selectModeState);
     })(),
     alerts:
-      climateAttributes.warning !== undefined || climateAttributes.fault !== undefined
-        ? {
-            warning: parseBooleanValue(climateAttributes.warning),
-            fault: parseBooleanValue(climateAttributes.fault),
-            labels: [parseBooleanValue(climateAttributes.warning) ? "Warning" : null, parseBooleanValue(climateAttributes.fault) ? "Fault" : null].filter((value): value is string => !!value),
-            details: [
-              parseBooleanValue(climateAttributes.warning)
-                ? "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause."
-                : null,
-              parseBooleanValue(climateAttributes.fault)
-                ? "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause."
-                : null,
-            ].filter((value): value is string => !!value),
-          }
-        : parseAlerts(warningState, faultState),
+      parseClimateAlerts(climateAttributes) ??
+      (climateAttributes.warning !== undefined || climateAttributes.fault !== undefined
+        ? (() => {
+            const warning = parseBooleanValue(climateAttributes.warning);
+            const fault = parseBooleanValue(climateAttributes.fault);
+            const warningMessage =
+              "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause.";
+            const faultMessage =
+              "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause.";
+            const notifications: AlertNotification[] = [];
+
+            if (warning) {
+              notifications.push({
+                id: null,
+                code: null,
+                purpose: "warning",
+                severity: 3,
+                kind: "warning",
+                prefix: "S",
+                translationKey: null,
+                message: warningMessage,
+                messageCode: "S",
+                fullMessage: warningMessage,
+                active: true,
+              });
+            }
+
+            if (fault) {
+              notifications.push({
+                id: null,
+                code: null,
+                purpose: "alarm",
+                severity: 5,
+                kind: "fault",
+                prefix: "E",
+                translationKey: null,
+                message: faultMessage,
+                messageCode: "E",
+                fullMessage: faultMessage,
+                active: true,
+              });
+            }
+
+            return {
+              warning,
+              fault,
+              warningCount: warning ? 1 : 0,
+              faultCount: fault ? 1 : 0,
+              highestSeverity: fault ? 5 : warning ? 3 : null,
+              primaryMessage: fault ? faultMessage : warning ? warningMessage : null,
+              labels: [warning ? "Warning" : null, fault ? "Fault" : null].filter((value): value is string => !!value),
+              details: [warning ? warningMessage : null, fault ? faultMessage : null].filter((value): value is string => !!value),
+              notifications,
+            };
+          })()
+        : parseAlerts(warningState, faultState)),
   };
 
   return {
