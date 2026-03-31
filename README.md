@@ -29,6 +29,12 @@ Fan popup:
   <img src="demo/fan_popup.png" width="400">
 </p>
 
+Warning popup:
+
+<p align="center">
+  <img src="demo/warning.png" width="400">
+</p>
+
 More-info dialog:
 
 <p align="center">
