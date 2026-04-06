@@ -4,6 +4,7 @@ export type TapActionType = "more-info" | "history" | "none";
 export type AvailabilityState = "full" | "partial" | "minimal";
 export type DamperVisualState = "open" | "closed" | "partial" | "unknown" | "unavailable";
 export type FilterSeverity = "normal" | "warning" | "critical" | "unknown";
+export type TitleDisplayMode = "unit_name" | "custom" | "none";
 
 export interface HomeAssistantState<TAttributes = Record<string, unknown>> {
   entity_id: EntityId;
@@ -19,6 +20,7 @@ export interface HomeAssistant {
     data?: Record<string, unknown>,
     target?: Record<string, unknown>
   ): Promise<unknown>;  
+  callWS?(message: Record<string, unknown>): Promise<unknown>;
   dispatchEvent(event: Event): boolean;
 }
 
@@ -84,7 +86,8 @@ export interface EntityConfig {
 export interface LayoutConfig {
   compact?: boolean;
   show_airflow?: boolean;
-  show_power?: boolean;
+  show_speed?: boolean;
+  show_temp?: boolean;
   show_filter_details?: boolean;
   fan_animation_max_rpm?: number;
 }
@@ -108,7 +111,7 @@ export interface TapActionConfig {
 export interface AtreaAmotionCardConfig {
   type: "custom:atrea-amotion-card";
   title?: string;
-  show_title?: boolean;
+  show_title?: TitleDisplayMode | boolean;
   theme_variant?: ThemeVariant;
   climate_entity: EntityId;
   bypass_select?: EntityId;

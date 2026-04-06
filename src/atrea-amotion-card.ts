@@ -266,7 +266,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
     return {
       type: "custom:atrea-amotion-card",
       title: "Atrea aMotion",
-      show_title: true,
+      show_title: "custom",
       theme_variant: "auto",
       entities: {
         temperatures: {

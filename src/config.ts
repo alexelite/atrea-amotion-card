@@ -3,12 +3,14 @@ import type {
   LayoutConfig,
   TapActionConfig,
   ThemeVariant,
+  TitleDisplayMode,
 } from "./types";
 
 const DEFAULT_LAYOUT: Required<LayoutConfig> = {
   compact: false,
   show_airflow: true,
-  show_power: false,
+  show_speed: false,
+  show_temp: true,
   show_filter_details: true,
   fan_animation_max_rpm: 1800,
 };
@@ -30,6 +32,22 @@ const DEFAULT_TAP_ACTIONS: Required<TapActionConfig> = {
 
 function hasString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+function normalizeTitleDisplayMode(value: unknown, hasCustomTitle: boolean): TitleDisplayMode {
+  if (value === "unit_name" || value === "custom" || value === "none") {
+    return value;
+  }
+
+  if (value === false) {
+    return "none";
+  }
+
+  if (value === true) {
+    return hasCustomTitle ? "custom" : "unit_name";
+  }
+
+  return hasCustomTitle ? "custom" : "unit_name";
 }
 
 function validateConfig(rawConfig: AtreaAmotionCardConfig): void {
@@ -63,7 +81,7 @@ export function normalizeConfig(rawConfig: AtreaAmotionCardConfig): AtreaAmotion
   return {
     ...rawConfig,
     title: rawConfig.title ?? "Atrea aMotion",
-    show_title: rawConfig.show_title ?? true,
+    show_title: normalizeTitleDisplayMode(rawConfig.show_title, hasString(rawConfig.title)),
     theme_variant: normalizeThemeVariant(rawConfig.theme_variant),
     entities: rawConfig.entities,
     layout: {

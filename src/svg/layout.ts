@@ -2,6 +2,7 @@ import { html, nothing, svg, type TemplateResult } from "lit";
 import { mdiAlertCircleOutline, mdiDotsVertical, mdiFan, mdiFanAuto, mdiPower, mdiWeatherNight } from "@mdi/js";
 import type { AtreaAmotionCardConfig, AtreaCardViewModel, DamperState, FanState, FilterState, HomeAssistant, TemperaturePoint } from "../types";
 import { handleEntityTap, selectMode } from "../actions";
+import { resolveTitle } from "../title";
 import { fanAnimationDuration, flowAnimationDuration } from "./animations";
 import { damperAnchors, fanCenters, flowPaths, SVG_VIEW_BOX, temperatureAnchors } from "./paths";
 import { formatNumber, formatValueWithUnit } from "../utils/format";
@@ -15,6 +16,15 @@ function renderTemperatureBadge(label: string, point: TemperaturePoint, x: numbe
     <g class=${badgeClass(point.available, "temp-badge")} transform="translate(${x}, ${y})" @click=${onClick}>
       <rect x="-56" y="-24" width="112" height="48" rx="14"></rect>
       <text x="0" y="5" class="badge-value temperature-only">${formatValueWithUnit(point.value, point.unit, 1)}</text>
+    </g>
+  `;
+}
+
+function renderFanSpeedBadge(fan: FanState, x: number, y: number, onClick?: () => void): TemplateResult {
+  return svg`
+    <g class=${badgeClass(fan.available, "metric-badge fan-speed-badge")} transform="translate(${x}, ${y})" @click=${onClick}>
+      <rect x="-45" y="-18" width="90" height="36" rx="9"></rect>
+      <text x="0" y="4" class="badge-value temperature-only">${formatValueWithUnit(fan.speedPercent, "%", 0)}</text>
     </g>
   `;
 }
@@ -396,13 +406,14 @@ export function renderCardSvg(
   const moreInfoLabel =
     hass.localize?.("ui.panel.lovelace.cards.show_more_info") ??
     "Show more information";
+  const title = resolveTitle(config, hass.states[config.climate_entity]);
 
   return html`
     ${renderAlertButton(model, handlers)}
     ${renderAlertPopup(model, handlers)}
-    ${config.show_title ? html`<p class="title">${config.title}</p>` : nothing}
+    ${title ? html`<p class="title">${title}</p>` : nothing}
 
-    <div class="container">
+    <div class=${title ? "container" : "container no-title"}>
       ${renderFanPopup(model, handlers)}
 
       <div class="main-stage">
@@ -453,21 +464,19 @@ export function renderCardSvg(
                 </g>
 
                 <g class="overlay-layer">
-                  ${renderTemperatureBadge("EHA", model.temperatures.eha, temperatureAnchors.eha.x, temperatureAnchors.eha.y, () => handleEntityTap(hass, tap.eha_temperature, model.temperatures.eha.entity))}
-                  ${renderTemperatureBadge("ODA", model.temperatures.oda, temperatureAnchors.oda.x, temperatureAnchors.oda.y, () => handleEntityTap(hass, tap.oda_temperature, model.temperatures.oda.entity))}
-                  ${renderTemperatureBadge("SUP", model.temperatures.sup, temperatureAnchors.sup.x, temperatureAnchors.sup.y, () => handleEntityTap(hass, tap.sup_temperature, model.temperatures.sup.entity))}
-                  ${renderTemperatureBadge("ETA", model.temperatures.eta, temperatureAnchors.eta.x, temperatureAnchors.eta.y, () => handleEntityTap(hass, tap.eta_temperature, model.temperatures.eta.entity))}
-
-                  ${layout.show_power
+                  ${layout.show_temp
                     ? svg`
-                        <g class="metric-badge" transform="translate(795, 320)">
-                          <rect x="-82" y="-22" width="164" height="44" rx="10"></rect>
-                          <text x="0" y="6" class="badge-value small">${formatValueWithUnit(model.fans.supply.power, model.fans.supply.powerUnit, 0)}</text>
-                        </g>
-                        <g class="metric-badge" transform="translate(205, 320)">
-                          <rect x="-82" y="-22" width="164" height="44" rx="10"></rect>
-                          <text x="0" y="6" class="badge-value small">${formatValueWithUnit(model.fans.extract.power, model.fans.extract.powerUnit, 0)}</text>
-                        </g>
+                        ${renderTemperatureBadge("EHA", model.temperatures.eha, temperatureAnchors.eha.x, temperatureAnchors.eha.y, () => handleEntityTap(hass, tap.eha_temperature, model.temperatures.eha.entity))}
+                        ${renderTemperatureBadge("ODA", model.temperatures.oda, temperatureAnchors.oda.x, temperatureAnchors.oda.y, () => handleEntityTap(hass, tap.oda_temperature, model.temperatures.oda.entity))}
+                        ${renderTemperatureBadge("SUP", model.temperatures.sup, temperatureAnchors.sup.x, temperatureAnchors.sup.y, () => handleEntityTap(hass, tap.sup_temperature, model.temperatures.sup.entity))}
+                        ${renderTemperatureBadge("ETA", model.temperatures.eta, temperatureAnchors.eta.x, temperatureAnchors.eta.y, () => handleEntityTap(hass, tap.eta_temperature, model.temperatures.eta.entity))}
+                      `
+                    : nothing}
+
+                  ${layout.show_speed
+                    ? svg`
+                        ${renderFanSpeedBadge(model.fans.extract, 255, 115, () => handleEntityTap(hass, tap.extract_fan, model.fans.extract.speedEntity))}
+                        ${renderFanSpeedBadge(model.fans.supply, 745, 115, () => handleEntityTap(hass, tap.supply_fan, model.fans.supply.speedEntity))}
                       `
                     : nothing}
 

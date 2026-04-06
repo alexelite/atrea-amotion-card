@@ -19,6 +19,7 @@ export const cardStyles = css`
     --atrea-feature-border-radius: var(--ha-border-radius-xl, var(--ha-border-radius-lg, 16px));
     --atrea-fan-fill: var(--atrea-surface);
     --atrea-fan-stroke: var(--atrea-blue);
+    --atrea-side-decor-inside-fill: color-mix(in srgb, var(--atrea-surface) 86%, white 14%);
     color: var(--atrea-text);
   }
 
@@ -33,6 +34,7 @@ export const cardStyles = css`
     --atrea-panel: color-mix(in srgb, var(--atrea-bg) 84%, var(--primary-text-color) 16%);
     --atrea-fan-fill: color-mix(in srgb, var(--atrea-surface) 82%, white 18%);
     --atrea-fan-stroke: color-mix(in srgb, white 76%, var(--state-icon-color, #9fb7ff) 24%);
+    --atrea-side-decor-inside-fill: rgba(255, 255, 255, 0.14);
   }
 
   ha-card.theme-light {
@@ -40,6 +42,7 @@ export const cardStyles = css`
     --atrea-panel: color-mix(in srgb, var(--atrea-bg) 90%, var(--primary-text-color) 10%);
     --atrea-fan-fill: var(--atrea-surface);
     --atrea-fan-stroke: var(--atrea-blue);
+    --atrea-side-decor-inside-fill: color-mix(in srgb, var(--atrea-surface) 86%, white 14%);
   }
 
   ha-card.is-compact .container {
@@ -73,7 +76,11 @@ export const cardStyles = css`
 
   .container {
     position: relative;
-    padding: 8px 16px 16px;
+    padding: 0 16px 0;
+  }
+
+  .container.no-title {
+    padding-top: 20px;
   }
 
   .main-stage {
@@ -591,7 +598,7 @@ export const cardStyles = css`
   }
 
   .side-decor.inside {
-    fill: color-mix(in srgb, var(--atrea-surface) 86%, white 14%);
+    fill: var(--atrea-side-decor-inside-fill);
     stroke: color-mix(in srgb, var(--atrea-muted) 35%, transparent);
     stroke-width: 5;
   }
@@ -733,6 +740,50 @@ export const cardStyles = css`
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .more-info-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    margin-inline-end: -6px;
+  }
+
+  .more-info-header-action {
+    position: relative;
+    isolation: isolate;
+    --ha-icon-button-padding-inline: var(--ha-space-2, 8px);
+    color: var(--primary-text-color);
+  }
+
+  .more-info-header-action::part(base) {
+    width: var(--wa-form-control-height, 40px);
+    aspect-ratio: 1;
+    outline-offset: -4px;
+    border-radius: 999px;
+  }
+
+  .more-info-header-action:hover::part(base),
+  .more-info-header-action:focus-visible::part(base) {
+    background: color-mix(in srgb, var(--primary-text-color) 8%, transparent);
+  }
+
+  .more-info-header-dropdown {
+    --show-duration: 120ms;
+    --hide-duration: 120ms;
+  }
+
+  .more-info-header-dropdown::part(panel) {
+    border-radius: 18px;
+    box-shadow: var(
+      --mdc-elevation-umbra,
+      0 8px 28px rgba(0, 0, 0, 0.18)
+    );
+  }
+
+  .more-info-dropdown-item {
+    --icon-color: var(--secondary-text-color);
+    --label-color: var(--primary-text-color);
   }
 
   .dialog-icon-button svg {
@@ -1010,7 +1061,11 @@ export const cardStyles = css`
     }
 
     .container {
-      padding: 8px 14px 14px;
+      padding: 0 14px 0;
+    }
+
+    .container.no-title {
+      padding-top: 20px;
     }
 
     .current {

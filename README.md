@@ -81,7 +81,7 @@ type: module
 ```yaml
 type: custom:atrea-amotion-card
 title: Atrea aMotion
-show_title: true
+show_title: custom
 theme_variant: auto
 climate_entity: climate.atrea_amotion
 bypass_select: select.atrea_bypass_mode
@@ -103,7 +103,8 @@ entities:
 layout:
   compact: false
   show_airflow: false
-  show_power: false
+  show_speed: false
+  show_temp: true
   show_filter_details: true
   fan_animation_max_rpm: 1800
 ```

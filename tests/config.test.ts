@@ -26,8 +26,14 @@ describe("normalizeConfig", () => {
   it("fills defaults for optional fields", () => {
     const normalized = normalizeConfig(minimalConfig);
     expect(normalized.title).toBe("Atrea aMotion");
+    expect(normalized.show_title).toBe("unit_name");
     expect(normalized.layout?.fan_animation_max_rpm).toBe(1800);
     expect(normalized.tap_actions?.bypass).toBe("more-info");
+  });
+
+  it("maps legacy boolean show_title values", () => {
+    expect(normalizeConfig({ ...minimalConfig, show_title: false }).show_title).toBe("none");
+    expect(normalizeConfig({ ...minimalConfig, title: "Ventilation", show_title: true }).show_title).toBe("custom");
   });
 
   it("throws when climate_entity is missing", () => {

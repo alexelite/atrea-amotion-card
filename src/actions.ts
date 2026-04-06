@@ -1,11 +1,18 @@
-import type { HomeAssistant, TapActionType } from "./types";
+import type { AtreaAmotionCardConfig, HomeAssistant } from "./types";
+import type { TapActionType } from "./types";
+
+export type MoreInfoView = "info" | "history" | "settings" | "related";
 
 export function fireMoreInfo(hass: HomeAssistant, entityId: string): void {
+  fireMoreInfoView(hass, entityId, "info");
+}
+
+export function fireMoreInfoView(hass: HomeAssistant, entityId: string, view: MoreInfoView): void {
   hass.dispatchEvent(
     new CustomEvent("hass-more-info", {
       bubbles: true,
       composed: true,
-      detail: { entityId },
+      detail: { entityId, view },
     }),
   );
 }
@@ -21,6 +28,66 @@ export function handleEntityTap(hass: HomeAssistant, action: TapActionType | und
     return;
   }
   fireMoreInfo(hass, entityId);
+}
+
+interface EntityRegistryEntry {
+  entity_id?: string;
+  device_id?: string | null;
+}
+
+export async function resolveDeviceId(hass: HomeAssistant, entityId: string): Promise<string | null> {
+  if (!hass.callWS) {
+    return null;
+  }
+
+  try {
+    const entry = (await hass.callWS({
+      type: "config/entity_registry/get",
+      entity_id: entityId,
+    })) as EntityRegistryEntry | null;
+    return entry?.device_id ?? null;
+  } catch {
+    return null;
+  }
+}
+
+export function navigateToPath(path: string): void {
+  window.history.pushState(null, "", path);
+  window.dispatchEvent(new CustomEvent("location-changed", { detail: { replace: false } }));
+}
+
+function buildHistoryPathForEntities(entityIds: string[]): string {
+  return `/history?entity_id=${encodeURIComponent(entityIds.join(","))}`;
+}
+
+function getConfiguredTemperatureEntities(config: AtreaAmotionCardConfig): string[] {
+  const temperatures = config.entities?.temperatures;
+  if (!temperatures) {
+    return [];
+  }
+
+  return [temperatures.oda, temperatures.eta, temperatures.sup, temperatures.eha].filter(
+    (entityId): entityId is string => typeof entityId === "string" && entityId.length > 0,
+  );
+}
+
+export async function openPreferredHistory(
+  hass: HomeAssistant,
+  config: AtreaAmotionCardConfig,
+): Promise<void> {
+  const temperatureEntities = getConfiguredTemperatureEntities(config);
+  if (temperatureEntities.length > 0) {
+    navigateToPath(buildHistoryPathForEntities(temperatureEntities));
+    return;
+  }
+
+  const deviceId = await resolveDeviceId(hass, config.climate_entity);
+  if (deviceId) {
+    navigateToPath(`/history?device_id=${encodeURIComponent(deviceId)}`);
+    return;
+  }
+
+  navigateToPath(buildHistoryPathForEntities([config.climate_entity]));
 }
 
 export async function selectMode(hass: HomeAssistant, entityId: string, kind: "hvac" | "preset" | "fan" | "select", option: string): Promise<void> {

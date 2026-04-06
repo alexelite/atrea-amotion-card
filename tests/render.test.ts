@@ -3,10 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import "../src/atrea-amotion-card";
 import type { AtreaAmotionCard } from "../src/atrea-amotion-card";
 import type { AtreaAmotionCardConfig, HomeAssistant } from "../src/types";
+import { openPreferredHistory } from "../src/actions";
 
 const config: AtreaAmotionCardConfig = {
   type: "custom:atrea-amotion-card",
   title: "Ventilation",
+  show_title: "custom",
   climate_entity: "climate.hrv",
   bypass_select: "select.bypass_mode",
   filter_reset_button: "button.reset_filters",
@@ -36,6 +38,10 @@ const config: AtreaAmotionCardConfig = {
       current: "sensor.mode",
       select: "select.mode",
     },
+  },
+  layout: {
+    show_speed: true,
+    show_temp: true,
   },
 };
 
@@ -111,12 +117,48 @@ const hass: HomeAssistant = {
     "button.reset_filters": { entity_id: "button.reset_filters", state: "unknown", attributes: {} },
   },
   callService: vi.fn(async () => undefined),
+  callWS: vi.fn(async (message: Record<string, unknown>) => {
+    if (message.type === "config/entity_registry/get" && message.entity_id === "climate.hrv") {
+      return { entity_id: "climate.hrv", device_id: "device-123", area_id: "area-1", config_entry_id: "entry-1" };
+    }
+    if (message.type === "config/device_registry/list") {
+      return [{ id: "device-123", name: "Atrea aMotion", area_id: "area-1", config_entries: ["entry-1"] }];
+    }
+    if (message.type === "config/area_registry/list") {
+      return [{ area_id: "area-1", name: "Mechanical room" }];
+    }
+    if (message.type === "config/config_entries/index") {
+      return [{ entry_id: "entry-1", title: "Atrea", domain: "atrea" }];
+    }
+    return null;
+  }),
   dispatchEvent: () => true,
 };
 
 describe("AtreaAmotionCard", () => {
   beforeEach(() => {
     vi.mocked(hass.callService).mockClear();
+    vi.mocked(hass.callWS!).mockClear();
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("opens history with configured temperature sensors before falling back to device history", async () => {
+    await openPreferredHistory(hass, config);
+    expect(window.location.pathname).toBe("/history");
+    expect(decodeURIComponent(window.location.search)).toContain("entity_id=sensor.oda,sensor.eta,sensor.sup,sensor.eha");
+
+    window.history.replaceState(null, "", "/");
+    const configWithoutTemps: AtreaAmotionCardConfig = {
+      ...config,
+      entities: {
+        ...config.entities,
+        temperatures: undefined,
+      },
+    };
+
+    await openPreferredHistory(hass, configWithoutTemps);
+    expect(window.location.pathname).toBe("/history");
+    expect(window.location.search).toContain("device_id=device-123");
   });
 
   it("renders an SVG schematic with official card-features div structure", async () => {
@@ -144,6 +186,9 @@ describe("AtreaAmotionCard", () => {
     expect(actionOptions.find((option) => option.getAttribute("aria-label") === "Fan")?.classList.contains("disabled")).toBe(false);
     expect(shadow?.querySelector("ha-dialog")).toBeFalsy();
     expect(shadow?.querySelector(".fan-popup")).toBeFalsy();
+    expect(shadow?.querySelectorAll(".fan-speed-badge")).toHaveLength(2);
+    expect(shadow?.textContent).toContain("54 %");
+    expect(shadow?.textContent).toContain("67 %");
   });
 
   it("opens a native-first more-info dialog with climate controls", async () => {
@@ -161,7 +206,13 @@ describe("AtreaAmotionCard", () => {
     const labels = selectMenus.map((menu) => (menu as { label?: string }).label);
 
     expect(element.shadowRoot?.querySelector("ha-dialog")).toBeTruthy();
-    expect(element.shadowRoot?.textContent).toContain("Atrea Duplex 380");
+    expect(element.shadowRoot?.textContent).toContain("Ventilation");
+    expect(element.shadowRoot?.querySelector('[slot="headerActionItems"]')).toBeTruthy();
+    expect(element.shadowRoot?.querySelector('ha-icon-button[aria-label="History"]')).toBeTruthy();
+    expect(element.shadowRoot?.querySelector('ha-icon-button[aria-label="Settings"]')).toBeTruthy();
+    expect(element.shadowRoot?.querySelector('ha-icon-button[aria-label="More actions"]')).toBeTruthy();
+    expect(element.shadowRoot?.querySelector("ha-dropdown")).toBeTruthy();
+    expect(element.shadowRoot?.querySelectorAll("ha-dropdown-item")).toHaveLength(3);
     expect(moreInfo).toBeTruthy();
     expect(moreInfo?.shadowRoot?.textContent).toContain("Current temperature");
     expect(moreInfo?.shadowRoot?.querySelector("ha-state-control-climate-temperature")).toBeTruthy();
@@ -169,6 +220,30 @@ describe("AtreaAmotionCard", () => {
     expect(labels).toContain("Mode");
     expect(labels).toContain("Fan mode");
     expect(element.shadowRoot?.textContent).not.toContain("Coming soon");
+  });
+
+  it("shows related device, integration, and area inside the more-info climate view", async () => {
+    const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
+    element.setConfig(config);
+    element.hass = hass;
+    await element.updateComplete;
+
+    element.shadowRoot?.querySelector<HTMLElement>(".more-info")?.click();
+    await element.updateComplete;
+
+    window.dispatchEvent(new CustomEvent("atrea-more-info-related", { detail: { entityId: "climate.hrv" } }));
+    await element.updateComplete;
+    await new Promise((resolve) => window.setTimeout(resolve, 0));
+    await element.updateComplete;
+
+    const moreInfo = element.shadowRoot?.querySelector<HTMLElement>("atrea-more-info-climate");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Related");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Device");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Atrea aMotion");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Integration");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Atrea");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Area");
+    expect(moreInfo?.shadowRoot?.textContent).toContain("Mechanical room");
   });
 
   it("shows an alert icon and opens an in-card alert popup", async () => {
@@ -303,7 +378,7 @@ describe("AtreaAmotionCard", () => {
     await element.updateComplete;
 
     expect(element.shadowRoot?.querySelector("svg")).toBeTruthy();
-    expect(element.shadowRoot?.textContent).toContain("Atrea Duplex 380");
+    expect(element.shadowRoot?.textContent).toContain("Ventilation");
     expect(element.shadowRoot?.querySelector("ha-dialog")).toBeTruthy();
     expect(element.shadowRoot?.querySelector("atrea-more-info-climate")).toBeTruthy();
   });
