@@ -153,6 +153,7 @@ The card reads `climate_entity` first and falls back to `entities.*` only when a
 
 - `bypass_select`
 - `filter_reset_button`
+- `airflow_request_number`
 - fallback `entities.temperatures.*`
 - fallback `entities.fans.*`
 - fallback `entities.dampers.*`
@@ -167,6 +168,7 @@ The card reads `climate_entity` first and falls back to `entities.*` only when a
 - When bypass is open, the bypass path is visually highlighted over the main heat recovery route.
 - When `climate_entity` exposes `preset_modes`, the card calls `climate.set_preset_mode`.
 - When `climate_entity` exposes `fan_modes`, the card calls `climate.set_fan_mode`.
+- Units controlled by airflow instead of fan power (for example DUPLEX Multi Eco-V) expose a requested airflow `number` entity. The card finds it on the climate entity's device, or uses `airflow_request_number` when set, and the fan popup then sets the airflow in m³/h through `number.set_value` instead of `climate.set_fan_mode`. With `layout.show_airflow` (default `true`) the requested airflow is also shown above the heat exchanger; clicking it opens the popup.
 - Legacy `entities.mode.select` still works as a fallback and uses `select.select_option`.
 - With `prefers-reduced-motion`, fan and flow animations are disabled.
 

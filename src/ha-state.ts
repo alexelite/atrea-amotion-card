@@ -1,4 +1,5 @@
 import type {
+  AirflowRequestState,
   AlertNotification,
   AlertState,
   AtreaAmotionCardConfig,
@@ -53,6 +54,54 @@ function parseBooleanValue(value: unknown): boolean {
   }
   const raw = String(value ?? "").toLowerCase();
   return OPEN_STATES.has(raw);
+}
+
+const AIRFLOW_REQUEST_TRANSLATION_KEY = "flow_ventilation_req";
+const AIRFLOW_UNITS = new Set(["m³/h", "m3/h"]);
+
+// Units controlled by airflow instead of fan power expose the request as a number entity on the climate's device.
+function findAirflowRequestEntity(hass: HomeAssistant, config: AtreaAmotionCardConfig): string | undefined {
+  if (config.airflow_request_number) {
+    return config.airflow_request_number;
+  }
+
+  const deviceId = hass.entities?.[config.climate_entity]?.device_id;
+  if (!deviceId) {
+    return undefined;
+  }
+
+  return Object.values(hass.entities ?? {}).find((entry) => {
+    if (entry.device_id !== deviceId || !entry.entity_id.startsWith("number.")) {
+      return false;
+    }
+    const unit = hass.states[entry.entity_id]?.attributes.unit_of_measurement;
+    return entry.translation_key === AIRFLOW_REQUEST_TRANSLATION_KEY || (typeof unit === "string" && AIRFLOW_UNITS.has(unit));
+  })?.entity_id;
+}
+
+function parseAirflowRequest(hass: HomeAssistant, config: AtreaAmotionCardConfig): AirflowRequestState | null {
+  const entity = findAirflowRequestEntity(hass, config);
+  const stateObj = getStateObject(hass, entity);
+  if (!entity || !isAvailable(stateObj)) {
+    return null;
+  }
+
+  const min = parseNumericValue(stateObj?.attributes.min);
+  const max = parseNumericValue(stateObj?.attributes.max);
+  if (min === null || max === null || max <= min) {
+    return null;
+  }
+
+  const step = parseNumericValue(stateObj?.attributes.step);
+  const unit = stateObj?.attributes.unit_of_measurement;
+  return {
+    entity,
+    value: parseNumericValue(stateObj?.state),
+    min,
+    max,
+    step: step !== null && step > 0 ? step : 1,
+    unit: typeof unit === "string" ? unit : "",
+  };
 }
 
 function readClimateAttributes(climateState?: HomeAssistantState): ClimateAttributes {
@@ -638,6 +687,7 @@ export function createViewModel(hass: HomeAssistant, config: AtreaAmotionCardCon
       }
       return parseMode(entities?.mode?.current, currentModeState, entities?.mode?.select, selectModeState);
     })(),
+    airflowRequest: parseAirflowRequest(hass, config),
     alerts:
       parseClimateAlerts(climateAttributes) ??
       (climateAttributes.warning !== undefined || climateAttributes.fault !== undefined

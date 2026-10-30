@@ -3,12 +3,13 @@ import type { TapActionType } from "./types";
 
 export type MoreInfoView = "info" | "history" | "settings" | "related";
 
-export function fireMoreInfo(hass: HomeAssistant, entityId: string): void {
-  fireMoreInfoView(hass, entityId, "info");
+export function fireMoreInfo(host: EventTarget, entityId: string): void {
+  fireMoreInfoView(host, entityId, "info");
 }
 
-export function fireMoreInfoView(hass: HomeAssistant, entityId: string, view: MoreInfoView): void {
-  hass.dispatchEvent(
+// The hass object is not an EventTarget; the event has to bubble up from the card element.
+export function fireMoreInfoView(host: EventTarget, entityId: string, view: MoreInfoView): void {
+  host.dispatchEvent(
     new CustomEvent("hass-more-info", {
       bubbles: true,
       composed: true,
@@ -17,7 +18,7 @@ export function fireMoreInfoView(hass: HomeAssistant, entityId: string, view: Mo
   );
 }
 
-export function handleEntityTap(hass: HomeAssistant, action: TapActionType | undefined, entityId?: string): void {
+export function handleEntityTap(host: EventTarget, action: TapActionType | undefined, entityId?: string): void {
   if (!entityId || action === "none") {
     return;
   }
@@ -27,7 +28,7 @@ export function handleEntityTap(hass: HomeAssistant, action: TapActionType | und
     window.dispatchEvent(new CustomEvent("location-changed", { detail: { replace: false } }));
     return;
   }
-  fireMoreInfo(hass, entityId);
+  fireMoreInfo(host, entityId);
 }
 
 interface EntityRegistryEntry {
@@ -139,6 +140,13 @@ export async function setClimateFanPercentage(hass: HomeAssistant, entityId: str
   });
 
   await selectMode(hass, entityId, "fan", nearest.option);
+}
+
+export async function setAirflowRequest(hass: HomeAssistant, entityId: string, value: number): Promise<void> {
+  await hass.callService("number", "set_value", {
+    entity_id: entityId,
+    value,
+  });
 }
 
 export async function setClimateTemperature(hass: HomeAssistant, entityId: string, temperature: number): Promise<void> {

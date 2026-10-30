@@ -14,6 +14,7 @@ const RELATED_PATH = "M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,
 const DETAILS_PATH = "M3,4H7V8H3V4M9,5V7H21V5H9M3,10H7V14H3V10M9,11V13H21V11H9M3,16H7V20H3V16M9,17V19H21V17H9";
 
 export function renderMoreInfoDialog(
+  host: EventTarget,
   hass: HomeAssistant,
   config: AtreaAmotionCardConfig,
   onClose: () => void,
@@ -23,7 +24,7 @@ export function renderMoreInfoDialog(
   const openNativeView = (view: Parameters<typeof fireMoreInfoView>[2]): void => {
     onClose();
     window.requestAnimationFrame(() => {
-      fireMoreInfoView(hass, config.climate_entity, view);
+      fireMoreInfoView(host, config.climate_entity, view);
     });
   };
   const openHistory = async (): Promise<void> => {

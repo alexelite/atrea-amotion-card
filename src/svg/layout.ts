@@ -1,6 +1,6 @@
 import { html, nothing, svg, type TemplateResult } from "lit";
 import { mdiAlertCircleOutline, mdiDotsVertical, mdiFan, mdiFanAuto, mdiPower, mdiWeatherNight } from "@mdi/js";
-import type { AtreaAmotionCardConfig, AtreaCardViewModel, DamperState, FanState, FilterState, HomeAssistant, TemperaturePoint } from "../types";
+import type { AirflowRequestState, AtreaAmotionCardConfig, AtreaCardViewModel, DamperState, FanState, FilterState, HomeAssistant, TemperaturePoint } from "../types";
 import { handleEntityTap, selectMode } from "../actions";
 import { resolveTitle } from "../title";
 import { fanAnimationDuration, flowAnimationDuration } from "./animations";
@@ -25,6 +25,16 @@ function renderFanSpeedBadge(fan: FanState, x: number, y: number, onClick?: () =
     <g class=${badgeClass(fan.available, "metric-badge fan-speed-badge")} transform="translate(${x}, ${y})" @click=${onClick}>
       <rect x="-45" y="-18" width="90" height="36" rx="9"></rect>
       <text x="0" y="4" class="badge-value temperature-only">${formatValueWithUnit(fan.speedPercent, "%", 0)}</text>
+    </g>
+  `;
+}
+
+function renderAirflowRequestBadge(airflow: AirflowRequestState, x: number, y: number, onClick?: () => void): TemplateResult {
+  const value = airflow.value === null ? "--" : `${Math.round(airflow.value)} ${airflow.unit}`;
+  return svg`
+    <g class="badge metric-badge airflow-request-badge" transform="translate(${x}, ${y})" @click=${onClick}>
+      <rect x="-80" y="-18" width="160" height="36" rx="9"></rect>
+      <text x="0" y="4" class="badge-value temperature-only">${value}</text>
     </g>
   `;
 }
@@ -148,6 +158,7 @@ interface VisualSelectOption {
 }
 
 interface CardRenderHandlers {
+  host: EventTarget;
   alertPopupOpen: boolean;
   onAlertPopupInteract: () => void;
   onCloseAlertPopup: () => void;
@@ -262,7 +273,7 @@ function renderCardFeatures(
       if (presetAction.id === "fan") {
         return {
           action: handlers.onToggleFanPopup,
-          disabled: !model.mode.fan.controllable,
+          disabled: !model.airflowRequest && !model.mode.fan.controllable,
           icon: presetAction.icon,
           id: `action-${presetAction.id}`,
           label: presetAction.label,
@@ -287,11 +298,17 @@ function renderCardFeatures(
 }
 
 function renderFanPopup(model: AtreaCardViewModel, handlers: CardRenderHandlers): TemplateResult {
-  if (!handlers.fanPopupOpen || !model.mode.fan.controllable) {
+  if (!handlers.fanPopupOpen || (!model.airflowRequest && !model.mode.fan.controllable)) {
     return html``;
   }
 
-  const displayValue = Math.round(Math.max(0, Math.min(100, handlers.fanPopupValue)));
+  const airflow = model.airflowRequest;
+  const min = airflow?.min ?? 0;
+  const max = airflow?.max ?? 100;
+  const step = airflow?.step ?? 1;
+  const displayValue = Math.round(Math.max(min, Math.min(max, handlers.fanPopupValue)));
+  const title = airflow ? "Airflow" : "Fan speed";
+  const valueLabel = airflow ? `${displayValue}${airflow.unit ? ` ${airflow.unit}` : ""}` : `${displayValue}%`;
 
   return html`
     <div class="fan-popup-shell" @click=${handlers.onCloseFanPopup}>
@@ -304,20 +321,20 @@ function renderFanPopup(model: AtreaCardViewModel, handlers: CardRenderHandlers)
         }}
       >
         <div class="fan-popup-header">
-          <span class="fan-popup-title">Fan speed</span>
-          <span class="fan-popup-value">${displayValue}%</span>
+          <span class="fan-popup-title">${title}</span>
+          <span class="fan-popup-value">${valueLabel}</span>
         </div>
         <div class="fan-popup-controls">
-          <button class="fan-step-button" type="button" aria-label="Decrease fan speed" @click=${handlers.onFanDecrease}>-</button>
+          <button class="fan-step-button" type="button" aria-label="Decrease ${title.toLowerCase()}" @click=${handlers.onFanDecrease}>-</button>
           <div class="fan-slider-wrap">
             <input
               class="fan-slider"
               type="range"
-              min="0"
-              max="100"
-              step="1"
+              min=${String(min)}
+              max=${String(max)}
+              step=${String(step)}
               .value=${String(displayValue)}
-              aria-label="Fan speed percentage"
+              aria-label=${airflow ? "Requested airflow" : "Fan speed percentage"}
               @input=${(event: Event) => {
                 const target = event.currentTarget as HTMLInputElement;
                 handlers.onFanPreviewChange(Number.parseInt(target.value, 10));
@@ -328,7 +345,7 @@ function renderFanPopup(model: AtreaCardViewModel, handlers: CardRenderHandlers)
               }}
             />
           </div>
-          <button class="fan-step-button" type="button" aria-label="Increase fan speed" @click=${handlers.onFanIncrease}>+</button>
+          <button class="fan-step-button" type="button" aria-label="Increase ${title.toLowerCase()}" @click=${handlers.onFanIncrease}>+</button>
         </div>
       </div>
     </div>
@@ -445,39 +462,43 @@ export function renderCardSvg(
                 </g>
 
                 <g class="component-layer">
-                  ${renderFan("Extract fan", model.fans.extract, fanCenters.extract.x, fanCenters.extract.y, () => handleEntityTap(hass, tap.extract_fan, model.fans.extract.speedEntity))}
-                  ${renderFan("Supply fan", model.fans.supply, fanCenters.supply.x, fanCenters.supply.y, () => handleEntityTap(hass, tap.supply_fan, model.fans.supply.speedEntity))}
-                  ${renderDamper("ODA", model.dampers.oda, damperAnchors.oda.x, damperAnchors.oda.y, false, () => handleEntityTap(hass, tap.oda_damper, model.dampers.oda.entity))}
-                  ${renderDamper("ETA", model.dampers.eta, damperAnchors.eta.x, damperAnchors.eta.y, false, () => handleEntityTap(hass, tap.eta_damper, model.dampers.eta.entity))}
+                  ${renderFan("Extract fan", model.fans.extract, fanCenters.extract.x, fanCenters.extract.y, () => handleEntityTap(handlers.host, tap.extract_fan, model.fans.extract.speedEntity))}
+                  ${renderFan("Supply fan", model.fans.supply, fanCenters.supply.x, fanCenters.supply.y, () => handleEntityTap(handlers.host, tap.supply_fan, model.fans.supply.speedEntity))}
+                  ${renderDamper("ODA", model.dampers.oda, damperAnchors.oda.x, damperAnchors.oda.y, false, () => handleEntityTap(handlers.host, tap.oda_damper, model.dampers.oda.entity))}
+                  ${renderDamper("ETA", model.dampers.eta, damperAnchors.eta.x, damperAnchors.eta.y, false, () => handleEntityTap(handlers.host, tap.eta_damper, model.dampers.eta.entity))}
                   ${renderFilter(
                     model.filters.oda,
                     flowPaths.filterLeft,
                     [ "m 357,361 10,-10", "m 345.5,349.5 10,-10", "m 334,338 10,-10", "m 322.5,326.5 10,-10", "m 391.5,395.5 10,-10", "m 380,384 10,-10", "m 368.5,372.5 10,-10" ],
-                    () => handleEntityTap(hass, tap.oda_filter, model.filters.oda.statusEntity ?? model.filters.oda.lifeEntity),
+                    () => handleEntityTap(handlers.host, tap.oda_filter, model.filters.oda.statusEntity ?? model.filters.oda.lifeEntity),
                   )}
                   ${renderFilter(
                     model.filters.eta,
                     flowPaths.filterRight,
                     [ "m 357,361 10,-10", "m 345.5,349.5 10,-10", "m 334,338 10,-10", "m 322.5,326.5 10,-10", "m 391.5,395.5 10,-10", "m 380,384 10,-10", "m 368.5,372.5 10,-10" ],
-                    () => handleEntityTap(hass, tap.eta_filter, model.filters.eta.statusEntity ?? model.filters.eta.lifeEntity),
+                    () => handleEntityTap(handlers.host, tap.eta_filter, model.filters.eta.statusEntity ?? model.filters.eta.lifeEntity),
                   )}
                 </g>
 
                 <g class="overlay-layer">
                   ${layout.show_temp
                     ? svg`
-                        ${renderTemperatureBadge("EHA", model.temperatures.eha, temperatureAnchors.eha.x, temperatureAnchors.eha.y, () => handleEntityTap(hass, tap.eha_temperature, model.temperatures.eha.entity))}
-                        ${renderTemperatureBadge("ODA", model.temperatures.oda, temperatureAnchors.oda.x, temperatureAnchors.oda.y, () => handleEntityTap(hass, tap.oda_temperature, model.temperatures.oda.entity))}
-                        ${renderTemperatureBadge("SUP", model.temperatures.sup, temperatureAnchors.sup.x, temperatureAnchors.sup.y, () => handleEntityTap(hass, tap.sup_temperature, model.temperatures.sup.entity))}
-                        ${renderTemperatureBadge("ETA", model.temperatures.eta, temperatureAnchors.eta.x, temperatureAnchors.eta.y, () => handleEntityTap(hass, tap.eta_temperature, model.temperatures.eta.entity))}
+                        ${renderTemperatureBadge("EHA", model.temperatures.eha, temperatureAnchors.eha.x, temperatureAnchors.eha.y, () => handleEntityTap(handlers.host, tap.eha_temperature, model.temperatures.eha.entity))}
+                        ${renderTemperatureBadge("ODA", model.temperatures.oda, temperatureAnchors.oda.x, temperatureAnchors.oda.y, () => handleEntityTap(handlers.host, tap.oda_temperature, model.temperatures.oda.entity))}
+                        ${renderTemperatureBadge("SUP", model.temperatures.sup, temperatureAnchors.sup.x, temperatureAnchors.sup.y, () => handleEntityTap(handlers.host, tap.sup_temperature, model.temperatures.sup.entity))}
+                        ${renderTemperatureBadge("ETA", model.temperatures.eta, temperatureAnchors.eta.x, temperatureAnchors.eta.y, () => handleEntityTap(handlers.host, tap.eta_temperature, model.temperatures.eta.entity))}
                       `
                     : nothing}
 
                   ${layout.show_speed
                     ? svg`
-                        ${renderFanSpeedBadge(model.fans.extract, 255, 115, () => handleEntityTap(hass, tap.extract_fan, model.fans.extract.speedEntity))}
-                        ${renderFanSpeedBadge(model.fans.supply, 745, 115, () => handleEntityTap(hass, tap.supply_fan, model.fans.supply.speedEntity))}
+                        ${renderFanSpeedBadge(model.fans.extract, 255, 115, () => handleEntityTap(handlers.host, tap.extract_fan, model.fans.extract.speedEntity))}
+                        ${renderFanSpeedBadge(model.fans.supply, 745, 115, () => handleEntityTap(handlers.host, tap.supply_fan, model.fans.supply.speedEntity))}
                       `
+                    : nothing}
+
+                  ${layout.show_airflow && model.airflowRequest
+                    ? renderAirflowRequestBadge(model.airflowRequest, 500, 150, handlers.onToggleFanPopup)
                     : nothing}
 
                   <g class="port-labels">

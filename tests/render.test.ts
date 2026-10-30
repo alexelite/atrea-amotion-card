@@ -132,7 +132,6 @@ const hass: HomeAssistant = {
     }
     return null;
   }),
-  dispatchEvent: () => true,
 };
 
 describe("AtreaAmotionCard", () => {
@@ -300,6 +299,7 @@ describe("AtreaAmotionCard", () => {
     element.hass = hass;
     await element.updateComplete;
 
+    expect(element.shadowRoot?.querySelector(".airflow-request-badge")).toBeNull();
     element.shadowRoot?.querySelector<HTMLElement>("#action-standby")?.click();
     element.shadowRoot?.querySelector<HTMLElement>("#action-fan")?.click();
     await element.updateComplete;
@@ -328,6 +328,82 @@ describe("AtreaAmotionCard", () => {
       entity_id: "climate.hrv",
       fan_mode: "67",
     });
+  });
+
+  it("opens more-info from the schematic fans through an event fired by the card", async () => {
+    const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
+    element.setConfig(config);
+    element.hass = hass;
+    await element.updateComplete;
+
+    const listener = vi.fn();
+    element.addEventListener("hass-more-info", listener);
+    element.shadowRoot?.querySelector<SVGGElement>(".fan-group")?.dispatchEvent(new MouseEvent("click", { bubbles: true, composed: true }));
+
+    expect(listener).toHaveBeenCalledTimes(1);
+    expect((listener.mock.calls[0]![0] as CustomEvent).detail).toEqual({ entityId: "sensor.extract_speed", view: "info" });
+  });
+
+  it("controls airflow-based units through the airflow request number found on the climate device", async () => {
+    const airflowHass: HomeAssistant = {
+      ...hass,
+      states: {
+        ...hass.states,
+        "number.hrv_requested_airflow": {
+          entity_id: "number.hrv_requested_airflow",
+          state: "1900.0",
+          attributes: { min: 700, max: 5200, step: 50, unit_of_measurement: "m³/h" },
+        },
+      },
+      entities: {
+        "climate.hrv": { entity_id: "climate.hrv", device_id: "device-123", platform: "atrea_amotion" },
+        "number.hrv_requested_airflow": {
+          entity_id: "number.hrv_requested_airflow",
+          device_id: "device-123",
+          platform: "atrea_amotion",
+          translation_key: "flow_ventilation_req",
+        },
+      },
+    };
+    const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
+    element.setConfig(config);
+    element.hass = airflowHass;
+    await element.updateComplete;
+
+    expect(element.shadowRoot?.querySelector(".airflow-request-badge")?.textContent?.trim()).toBe("1900 m³/h");
+    element.shadowRoot?.querySelector<SVGGElement>(".airflow-request-badge")?.dispatchEvent(new MouseEvent("click"));
+    await element.updateComplete;
+
+    const slider = element.shadowRoot?.querySelector<HTMLInputElement>(".fan-slider");
+    expect(element.shadowRoot?.querySelector(".fan-popup-value")?.textContent).toBe("1900 m³/h");
+    expect([slider?.min, slider?.max, slider?.step]).toEqual(["700", "5200", "50"]);
+
+    slider!.value = "3010";
+    slider?.dispatchEvent(new Event("change"));
+    await element.updateComplete;
+    element.shadowRoot?.querySelector<HTMLElement>(".fan-step-button[aria-label='Increase airflow']")?.click();
+
+    expect(hass.callService).toHaveBeenCalledTimes(2);
+    expect(hass.callService).toHaveBeenNthCalledWith(1, "number", "set_value", { entity_id: "number.hrv_requested_airflow", value: 3000 });
+    expect(hass.callService).toHaveBeenNthCalledWith(2, "number", "set_value", { entity_id: "number.hrv_requested_airflow", value: 3050 });
+  });
+
+  it("uses the configured airflow request number without registry lookup", async () => {
+    const element = await fixture<AtreaAmotionCard>(html`<atrea-amotion-card></atrea-amotion-card>`);
+    element.setConfig({ ...config, airflow_request_number: "number.flow" });
+    element.hass = {
+      ...hass,
+      states: {
+        ...hass.states,
+        "number.flow": { entity_id: "number.flow", state: "250", attributes: { min: 100, max: 400, step: 10, unit_of_measurement: "m3/h" } },
+      },
+    };
+    await element.updateComplete;
+
+    element.shadowRoot?.querySelector<HTMLElement>("#action-fan")?.click();
+    await element.updateComplete;
+
+    expect(element.shadowRoot?.querySelector(".fan-popup-value")?.textContent).toBe("250 m3/h");
   });
 
   it("closes the fan popup on outside click and after timeout", async () => {

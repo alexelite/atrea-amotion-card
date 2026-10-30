@@ -1,13 +1,13 @@
 import { LitElement, html } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import "./editor";
-import { setClimateFanPercentage } from "./actions";
+import { setAirflowRequest, setClimateFanPercentage } from "./actions";
 import { normalizeConfig } from "./config";
 import { createViewModel } from "./ha-state";
 import { renderMoreInfoDialog } from "./more-info/dialog";
 import { renderCardSvg } from "./svg/layout";
 import { cardStyles } from "./styles";
-import type { AtreaAmotionCardConfig, AtreaCardViewModel, HomeAssistant, LovelaceCard } from "./types";
+import type { AirflowRequestState, AtreaAmotionCardConfig, AtreaCardViewModel, HomeAssistant, LovelaceCard } from "./types";
 
 const FAN_POPUP_TIMEOUT_MS = 8000;
 const ALERT_POPUP_TIMEOUT_MS = 8000;
@@ -73,11 +73,16 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
     const cardClasses = ["type-custom-atrea-amotion-card", layout.compact ? "is-compact" : "", `theme-${theme}`].filter(Boolean).join(" ");
     const currentFanValue = Number.parseFloat(model.mode.fan.current ?? "");
     const fallbackFanValue = model.fans.supply.speedPercent ?? model.fans.extract.speedPercent;
-    const resolvedFanValue = Number.isFinite(currentFanValue) ? currentFanValue : fallbackFanValue;
+    const resolvedFanValue = model.airflowRequest
+      ? model.airflowRequest.value ?? model.airflowRequest.min
+      : Number.isFinite(currentFanValue)
+        ? currentFanValue
+        : fallbackFanValue;
 
     return html`
       <ha-card class=${cardClasses}>
         ${renderCardSvg(this.hass, this.config, model, {
+          host: this,
           alertPopupOpen: this.isAlertPopupOpen,
           fanPopupOpen: this.isFanPopupOpen,
           fanPopupValue: this.fanPopupValue ?? resolvedFanValue ?? 0,
@@ -98,7 +103,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
             this.requestUpdate();
           },
           onToggleFanPopup: () => {
-            if (!model.mode.fan.controllable) {
+            if (!model.airflowRequest && !model.mode.fan.controllable) {
               return;
             }
             if (this.isFanPopupOpen) {
@@ -110,6 +115,7 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
         })}
         ${this.isMoreInfoOpen
           ? renderMoreInfoDialog(
+              this,
               this.hass,
               this.config,
               () => {
@@ -217,7 +223,24 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
     });
   }
 
+  private async commitAirflowValue(airflow: AirflowRequestState, value: number): Promise<void> {
+    if (!this.hass) {
+      return;
+    }
+
+    this.resetFanPopupTimeout();
+    const steps = Math.round((value - airflow.min) / airflow.step);
+    const snappedValue = Math.max(airflow.min, Math.min(airflow.max, airflow.min + steps * airflow.step));
+    this.fanPopupValue = snappedValue;
+    await setAirflowRequest(this.hass, airflow.entity, snappedValue);
+  }
+
   private async commitFanValue(model: AtreaCardViewModel, value: number): Promise<void> {
+    if (model.airflowRequest) {
+      await this.commitAirflowValue(model.airflowRequest, value);
+      return;
+    }
+
     if (!this.hass || !model.mode.climateEntity || !model.mode.fan.controllable) {
       return;
     }
@@ -230,6 +253,12 @@ export class AtreaAmotionCard extends LitElement implements LovelaceCard {
   }
 
   private async stepFanValue(model: AtreaCardViewModel, direction: -1 | 1): Promise<void> {
+    if (model.airflowRequest) {
+      const currentValue = this.fanPopupValue ?? model.airflowRequest.value ?? model.airflowRequest.min;
+      await this.commitAirflowValue(model.airflowRequest, currentValue + direction * model.airflowRequest.step);
+      return;
+    }
+
     const options = this.getFanStepOptions(model);
     if (options.length === 0) {
       return;

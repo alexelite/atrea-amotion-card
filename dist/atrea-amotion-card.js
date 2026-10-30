@@ -1,4 +1,4 @@
-/* build-date: 2026-04-06T17:46:26.884Z */
+/* build-date: 2026-10-30T13:29:52.459Z */
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -23,7 +23,7 @@ let it = class {
     return this.cssText;
   }
 };
-const Vt = (t) => new it(typeof t == "string" ? t : t + "", void 0, Me), nt = (t, ...e) => {
+const Ht = (t) => new it(typeof t == "string" ? t : t + "", void 0, Me), nt = (t, ...e) => {
   const r = t.length === 1 ? t[0] : e.reduce((a, i, n) => a + ((o) => {
     if (o._$cssResult$ === !0) return o.cssText;
     if (typeof o == "number") return o;
@@ -36,20 +36,20 @@ const Vt = (t) => new it(typeof t == "string" ? t : t + "", void 0, Me), nt = (t
     const a = document.createElement("style"), i = ce.litNonce;
     i !== void 0 && a.setAttribute("nonce", i), a.textContent = r.cssText, t.appendChild(a);
   }
-}, He = ke ? (t) => t : (t) => t instanceof CSSStyleSheet ? ((e) => {
+}, Ve = ke ? (t) => t : (t) => t instanceof CSSStyleSheet ? ((e) => {
   let r = "";
   for (const a of e.cssRules) r += a.cssText;
-  return Vt(r);
+  return Ht(r);
 })(t) : t;
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const { is: It, defineProperty: Ut, getOwnPropertyDescriptor: jt, getOwnPropertyNames: Rt, getOwnPropertySymbols: Dt, getPrototypeOf: Bt } = Object, he = globalThis, Ve = he.trustedTypes, Wt = Ve ? Ve.emptyScript : "", qt = he.reactiveElementPolyfillSupport, W = (t, e) => t, ue = { toAttribute(t, e) {
+const { is: Rt, defineProperty: It, getOwnPropertyDescriptor: Ut, getOwnPropertyNames: jt, getOwnPropertySymbols: Dt, getPrototypeOf: qt } = Object, fe = globalThis, He = fe.trustedTypes, Bt = He ? He.emptyScript : "", Wt = fe.reactiveElementPolyfillSupport, B = (t, e) => t, ue = { toAttribute(t, e) {
   switch (e) {
     case Boolean:
-      t = t ? Wt : null;
+      t = t ? Bt : null;
       break;
     case Object:
     case Array:
@@ -74,9 +74,9 @@ const { is: It, defineProperty: Ut, getOwnPropertyDescriptor: jt, getOwnProperty
       }
   }
   return r;
-} }, Pe = (t, e) => !It(t, e), Ne = { attribute: !0, type: String, converter: ue, reflect: !1, useDefault: !1, hasChanged: Pe };
-Symbol.metadata ??= Symbol("metadata"), he.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
-let I = class extends HTMLElement {
+} }, Pe = (t, e) => !Rt(t, e), Ne = { attribute: !0, type: String, converter: ue, reflect: !1, useDefault: !1, hasChanged: Pe };
+Symbol.metadata ??= Symbol("metadata"), fe.litPropertyMetadata ??= /* @__PURE__ */ new WeakMap();
+let R = class extends HTMLElement {
   static addInitializer(e) {
     this._$Ei(), (this.l ??= []).push(e);
   }
@@ -86,11 +86,11 @@ let I = class extends HTMLElement {
   static createProperty(e, r = Ne) {
     if (r.state && (r.attribute = !1), this._$Ei(), this.prototype.hasOwnProperty(e) && ((r = Object.create(r)).wrapped = !0), this.elementProperties.set(e, r), !r.noAccessor) {
       const a = Symbol(), i = this.getPropertyDescriptor(e, a, r);
-      i !== void 0 && Ut(this.prototype, e, i);
+      i !== void 0 && It(this.prototype, e, i);
     }
   }
   static getPropertyDescriptor(e, r, a) {
-    const { get: i, set: n } = jt(this.prototype, e) ?? { get() {
+    const { get: i, set: n } = Ut(this.prototype, e) ?? { get() {
       return this[r];
     }, set(o) {
       this[r] = o;
@@ -104,14 +104,14 @@ let I = class extends HTMLElement {
     return this.elementProperties.get(e) ?? Ne;
   }
   static _$Ei() {
-    if (this.hasOwnProperty(W("elementProperties"))) return;
-    const e = Bt(this);
+    if (this.hasOwnProperty(B("elementProperties"))) return;
+    const e = qt(this);
     e.finalize(), e.l !== void 0 && (this.l = [...e.l]), this.elementProperties = new Map(e.elementProperties);
   }
   static finalize() {
-    if (this.hasOwnProperty(W("finalized"))) return;
-    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(W("properties"))) {
-      const r = this.properties, a = [...Rt(r), ...Dt(r)];
+    if (this.hasOwnProperty(B("finalized"))) return;
+    if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(B("properties"))) {
+      const r = this.properties, a = [...jt(r), ...Dt(r)];
       for (const i of a) this.createProperty(i, r[i]);
     }
     const e = this[Symbol.metadata];
@@ -130,8 +130,8 @@ let I = class extends HTMLElement {
     const r = [];
     if (Array.isArray(e)) {
       const a = new Set(e.flat(1 / 0).reverse());
-      for (const i of a) r.unshift(He(i));
-    } else e !== void 0 && r.push(He(e));
+      for (const i of a) r.unshift(Ve(i));
+    } else e !== void 0 && r.push(Ve(e));
     return r;
   }
   static _$Eu(e, r) {
@@ -257,28 +257,28 @@ let I = class extends HTMLElement {
   firstUpdated(e) {
   }
 };
-I.elementStyles = [], I.shadowRootOptions = { mode: "open" }, I[W("elementProperties")] = /* @__PURE__ */ new Map(), I[W("finalized")] = /* @__PURE__ */ new Map(), qt?.({ ReactiveElement: I }), (he.reactiveElementVersions ??= []).push("2.1.2");
+R.elementStyles = [], R.shadowRootOptions = { mode: "open" }, R[B("elementProperties")] = /* @__PURE__ */ new Map(), R[B("finalized")] = /* @__PURE__ */ new Map(), Wt?.({ ReactiveElement: R }), (fe.reactiveElementVersions ??= []).push("2.1.2");
 /**
  * @license
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-const Ee = globalThis, Ie = (t) => t, de = Ee.trustedTypes, Ue = de ? de.createPolicy("lit-html", { createHTML: (t) => t }) : void 0, ot = "$lit$", k = `lit$${Math.random().toFixed(9).slice(2)}$`, st = "?" + k, Zt = `<${st}>`, O = document, q = () => O.createComment(""), Z = (t) => t === null || typeof t != "object" && typeof t != "function", Se = Array.isArray, Gt = (t) => Se(t) || typeof t?.[Symbol.iterator] == "function", be = `[ 	
-\f\r]`, B = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, je = /-->/g, Re = />/g, S = RegExp(`>|${be}(?:([^\\s"'>=/]+)(${be}*=${be}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), De = /'/g, Be = /"/g, lt = /^(?:script|style|textarea|title)$/i, ct = (t) => (e, ...r) => ({ _$litType$: t, strings: e, values: r }), p = ct(1), y = ct(2), R = Symbol.for("lit-noChange"), u = Symbol.for("lit-nothing"), We = /* @__PURE__ */ new WeakMap(), T = O.createTreeWalker(O, 129);
+const Ee = globalThis, Re = (t) => t, de = Ee.trustedTypes, Ie = de ? de.createPolicy("lit-html", { createHTML: (t) => t }) : void 0, ot = "$lit$", k = `lit$${Math.random().toFixed(9).slice(2)}$`, st = "?" + k, Zt = `<${st}>`, z = document, W = () => z.createComment(""), Z = (t) => t === null || typeof t != "object" && typeof t != "function", Se = Array.isArray, Gt = (t) => Se(t) || typeof t?.[Symbol.iterator] == "function", be = `[ 	
+\f\r]`, q = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, Ue = /-->/g, je = />/g, T = RegExp(`>|${be}(?:([^\\s"'>=/]+)(${be}*=${be}*(?:[^ 	
+\f\r"'\`<>=]|("|')|))|$)`, "g"), De = /'/g, qe = /"/g, lt = /^(?:script|style|textarea|title)$/i, ct = (t) => (e, ...r) => ({ _$litType$: t, strings: e, values: r }), u = ct(1), b = ct(2), j = Symbol.for("lit-noChange"), p = Symbol.for("lit-nothing"), Be = /* @__PURE__ */ new WeakMap(), L = z.createTreeWalker(z, 129);
 function pt(t, e) {
   if (!Se(t) || !t.hasOwnProperty("raw")) throw Error("invalid template strings array");
-  return Ue !== void 0 ? Ue.createHTML(e) : e;
+  return Ie !== void 0 ? Ie.createHTML(e) : e;
 }
 const Kt = (t, e) => {
   const r = t.length - 1, a = [];
-  let i, n = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", o = B;
+  let i, n = e === 2 ? "<svg>" : e === 3 ? "<math>" : "", o = q;
   for (let s = 0; s < r; s++) {
     const l = t[s];
-    let c, h, d = -1, b = 0;
-    for (; b < l.length && (o.lastIndex = b, h = o.exec(l), h !== null); ) b = o.lastIndex, o === B ? h[1] === "!--" ? o = je : h[1] !== void 0 ? o = Re : h[2] !== void 0 ? (lt.test(h[2]) && (i = RegExp("</" + h[2], "g")), o = S) : h[3] !== void 0 && (o = S) : o === S ? h[0] === ">" ? (o = i ?? B, d = -1) : h[1] === void 0 ? d = -2 : (d = o.lastIndex - h[2].length, c = h[1], o = h[3] === void 0 ? S : h[3] === '"' ? Be : De) : o === Be || o === De ? o = S : o === je || o === Re ? o = B : (o = S, i = void 0);
-    const x = o === S && t[s + 1].startsWith("/>") ? " " : "";
-    n += o === B ? l + Zt : d >= 0 ? (a.push(c), l.slice(0, d) + ot + l.slice(d) + k + x) : l + k + (d === -2 ? s : x);
+    let c, f, d = -1, y = 0;
+    for (; y < l.length && (o.lastIndex = y, f = o.exec(l), f !== null); ) y = o.lastIndex, o === q ? f[1] === "!--" ? o = Ue : f[1] !== void 0 ? o = je : f[2] !== void 0 ? (lt.test(f[2]) && (i = RegExp("</" + f[2], "g")), o = T) : f[3] !== void 0 && (o = T) : o === T ? f[0] === ">" ? (o = i ?? q, d = -1) : f[1] === void 0 ? d = -2 : (d = o.lastIndex - f[2].length, c = f[1], o = f[3] === void 0 ? T : f[3] === '"' ? qe : De) : o === qe || o === De ? o = T : o === Ue || o === je ? o = q : (o = T, i = void 0);
+    const x = o === T && t[s + 1].startsWith("/>") ? " " : "";
+    n += o === q ? l + Zt : d >= 0 ? (a.push(c), l.slice(0, d) + ot + l.slice(d) + k + x) : l + k + (d === -2 ? s : x);
   }
   return [pt(t, n + (t[r] || "<?>") + (e === 2 ? "</svg>" : e === 3 ? "</math>" : "")), a];
 };
@@ -287,23 +287,23 @@ class G {
     let i;
     this.parts = [];
     let n = 0, o = 0;
-    const s = e.length - 1, l = this.parts, [c, h] = Kt(e, r);
-    if (this.el = G.createElement(c, a), T.currentNode = this.el.content, r === 2 || r === 3) {
+    const s = e.length - 1, l = this.parts, [c, f] = Kt(e, r);
+    if (this.el = G.createElement(c, a), L.currentNode = this.el.content, r === 2 || r === 3) {
       const d = this.el.content.firstChild;
       d.replaceWith(...d.childNodes);
     }
-    for (; (i = T.nextNode()) !== null && l.length < s; ) {
+    for (; (i = L.nextNode()) !== null && l.length < s; ) {
       if (i.nodeType === 1) {
         if (i.hasAttributes()) for (const d of i.getAttributeNames()) if (d.endsWith(ot)) {
-          const b = h[o++], x = i.getAttribute(d).split(k), H = /([.?@])?(.*)/.exec(b);
-          l.push({ type: 1, index: n, name: H[2], strings: x, ctor: H[1] === "." ? Jt : H[1] === "?" ? Xt : H[1] === "@" ? Qt : fe }), i.removeAttribute(d);
+          const y = f[o++], x = i.getAttribute(d).split(k), V = /([.?@])?(.*)/.exec(y);
+          l.push({ type: 1, index: n, name: V[2], strings: x, ctor: V[1] === "." ? Jt : V[1] === "?" ? Qt : V[1] === "@" ? Xt : he }), i.removeAttribute(d);
         } else d.startsWith(k) && (l.push({ type: 6, index: n }), i.removeAttribute(d));
         if (lt.test(i.tagName)) {
-          const d = i.textContent.split(k), b = d.length - 1;
-          if (b > 0) {
+          const d = i.textContent.split(k), y = d.length - 1;
+          if (y > 0) {
             i.textContent = de ? de.emptyScript : "";
-            for (let x = 0; x < b; x++) i.append(d[x], q()), T.nextNode(), l.push({ type: 2, index: ++n });
-            i.append(d[b], q());
+            for (let x = 0; x < y; x++) i.append(d[x], W()), L.nextNode(), l.push({ type: 2, index: ++n });
+            i.append(d[y], W());
           }
         }
       } else if (i.nodeType === 8) if (i.data === st) l.push({ type: 2, index: n });
@@ -315,12 +315,12 @@ class G {
     }
   }
   static createElement(e, r) {
-    const a = O.createElement("template");
+    const a = z.createElement("template");
     return a.innerHTML = e, a;
   }
 }
 function D(t, e, r = t, a) {
-  if (e === R) return e;
+  if (e === j) return e;
   let i = a !== void 0 ? r._$Co?.[a] : r._$Cl;
   const n = Z(e) ? void 0 : e._$litDirective$;
   return i?.constructor !== n && (i?._$AO?.(!1), n === void 0 ? i = void 0 : (i = new n(t), i._$AT(t, r, a)), a !== void 0 ? (r._$Co ??= [])[a] = i : r._$Cl = i), i !== void 0 && (e = D(t, i._$AS(t, e.values), i, a)), e;
@@ -336,17 +336,17 @@ class Yt {
     return this._$AM._$AU;
   }
   u(e) {
-    const { el: { content: r }, parts: a } = this._$AD, i = (e?.creationScope ?? O).importNode(r, !0);
-    T.currentNode = i;
-    let n = T.nextNode(), o = 0, s = 0, l = a[0];
+    const { el: { content: r }, parts: a } = this._$AD, i = (e?.creationScope ?? z).importNode(r, !0);
+    L.currentNode = i;
+    let n = L.nextNode(), o = 0, s = 0, l = a[0];
     for (; l !== void 0; ) {
       if (o === l.index) {
         let c;
         l.type === 2 ? c = new K(n, n.nextSibling, this, e) : l.type === 1 ? c = new l.ctor(n, l.name, l.strings, this, e) : l.type === 6 && (c = new er(n, this, e)), this._$AV.push(c), l = a[++s];
       }
-      o !== l?.index && (n = T.nextNode(), o++);
+      o !== l?.index && (n = L.nextNode(), o++);
     }
-    return T.currentNode = O, i;
+    return L.currentNode = z, i;
   }
   p(e) {
     let r = 0;
@@ -358,7 +358,7 @@ class K {
     return this._$AM?._$AU ?? this._$Cv;
   }
   constructor(e, r, a, i) {
-    this.type = 2, this._$AH = u, this._$AN = void 0, this._$AA = e, this._$AB = r, this._$AM = a, this.options = i, this._$Cv = i?.isConnected ?? !0;
+    this.type = 2, this._$AH = p, this._$AN = void 0, this._$AA = e, this._$AB = r, this._$AM = a, this.options = i, this._$Cv = i?.isConnected ?? !0;
   }
   get parentNode() {
     let e = this._$AA.parentNode;
@@ -372,7 +372,7 @@ class K {
     return this._$AB;
   }
   _$AI(e, r = this) {
-    e = D(this, e, r), Z(e) ? e === u || e == null || e === "" ? (this._$AH !== u && this._$AR(), this._$AH = u) : e !== this._$AH && e !== R && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : Gt(e) ? this.k(e) : this._(e);
+    e = D(this, e, r), Z(e) ? e === p || e == null || e === "" ? (this._$AH !== p && this._$AR(), this._$AH = p) : e !== this._$AH && e !== j && this._(e) : e._$litType$ !== void 0 ? this.$(e) : e.nodeType !== void 0 ? this.T(e) : Gt(e) ? this.k(e) : this._(e);
   }
   O(e) {
     return this._$AA.parentNode.insertBefore(e, this._$AB);
@@ -381,7 +381,7 @@ class K {
     this._$AH !== e && (this._$AR(), this._$AH = this.O(e));
   }
   _(e) {
-    this._$AH !== u && Z(this._$AH) ? this._$AA.nextSibling.data = e : this.T(O.createTextNode(e)), this._$AH = e;
+    this._$AH !== p && Z(this._$AH) ? this._$AA.nextSibling.data = e : this.T(z.createTextNode(e)), this._$AH = e;
   }
   $(e) {
     const { values: r, _$litType$: a } = e, i = typeof a == "number" ? this._$AC(e) : (a.el === void 0 && (a.el = G.createElement(pt(a.h, a.h[0]), this.options)), a);
@@ -392,27 +392,27 @@ class K {
     }
   }
   _$AC(e) {
-    let r = We.get(e.strings);
-    return r === void 0 && We.set(e.strings, r = new G(e)), r;
+    let r = Be.get(e.strings);
+    return r === void 0 && Be.set(e.strings, r = new G(e)), r;
   }
   k(e) {
     Se(this._$AH) || (this._$AH = [], this._$AR());
     const r = this._$AH;
     let a, i = 0;
-    for (const n of e) i === r.length ? r.push(a = new K(this.O(q()), this.O(q()), this, this.options)) : a = r[i], a._$AI(n), i++;
+    for (const n of e) i === r.length ? r.push(a = new K(this.O(W()), this.O(W()), this, this.options)) : a = r[i], a._$AI(n), i++;
     i < r.length && (this._$AR(a && a._$AB.nextSibling, i), r.length = i);
   }
   _$AR(e = this._$AA.nextSibling, r) {
     for (this._$AP?.(!1, !0, r); e !== this._$AB; ) {
-      const a = Ie(e).nextSibling;
-      Ie(e).remove(), e = a;
+      const a = Re(e).nextSibling;
+      Re(e).remove(), e = a;
     }
   }
   setConnected(e) {
     this._$AM === void 0 && (this._$Cv = e, this._$AP?.(e));
   }
 }
-class fe {
+class he {
   get tagName() {
     return this.element.tagName;
   }
@@ -420,46 +420,46 @@ class fe {
     return this._$AM._$AU;
   }
   constructor(e, r, a, i, n) {
-    this.type = 1, this._$AH = u, this._$AN = void 0, this.element = e, this.name = r, this._$AM = i, this.options = n, a.length > 2 || a[0] !== "" || a[1] !== "" ? (this._$AH = Array(a.length - 1).fill(new String()), this.strings = a) : this._$AH = u;
+    this.type = 1, this._$AH = p, this._$AN = void 0, this.element = e, this.name = r, this._$AM = i, this.options = n, a.length > 2 || a[0] !== "" || a[1] !== "" ? (this._$AH = Array(a.length - 1).fill(new String()), this.strings = a) : this._$AH = p;
   }
   _$AI(e, r = this, a, i) {
     const n = this.strings;
     let o = !1;
-    if (n === void 0) e = D(this, e, r, 0), o = !Z(e) || e !== this._$AH && e !== R, o && (this._$AH = e);
+    if (n === void 0) e = D(this, e, r, 0), o = !Z(e) || e !== this._$AH && e !== j, o && (this._$AH = e);
     else {
       const s = e;
       let l, c;
-      for (e = n[0], l = 0; l < n.length - 1; l++) c = D(this, s[a + l], r, l), c === R && (c = this._$AH[l]), o ||= !Z(c) || c !== this._$AH[l], c === u ? e = u : e !== u && (e += (c ?? "") + n[l + 1]), this._$AH[l] = c;
+      for (e = n[0], l = 0; l < n.length - 1; l++) c = D(this, s[a + l], r, l), c === j && (c = this._$AH[l]), o ||= !Z(c) || c !== this._$AH[l], c === p ? e = p : e !== p && (e += (c ?? "") + n[l + 1]), this._$AH[l] = c;
     }
     o && !i && this.j(e);
   }
   j(e) {
-    e === u ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
+    e === p ? this.element.removeAttribute(this.name) : this.element.setAttribute(this.name, e ?? "");
   }
 }
-class Jt extends fe {
+class Jt extends he {
   constructor() {
     super(...arguments), this.type = 3;
   }
   j(e) {
-    this.element[this.name] = e === u ? void 0 : e;
+    this.element[this.name] = e === p ? void 0 : e;
   }
 }
-class Xt extends fe {
+class Qt extends he {
   constructor() {
     super(...arguments), this.type = 4;
   }
   j(e) {
-    this.element.toggleAttribute(this.name, !!e && e !== u);
+    this.element.toggleAttribute(this.name, !!e && e !== p);
   }
 }
-class Qt extends fe {
+class Xt extends he {
   constructor(e, r, a, i, n) {
     super(e, r, a, i, n), this.type = 5;
   }
   _$AI(e, r = this) {
-    if ((e = D(this, e, r, 0) ?? u) === R) return;
-    const a = this._$AH, i = e === u && a !== u || e.capture !== a.capture || e.once !== a.once || e.passive !== a.passive, n = e !== u && (a === u || i);
+    if ((e = D(this, e, r, 0) ?? p) === j) return;
+    const a = this._$AH, i = e === p && a !== p || e.capture !== a.capture || e.once !== a.once || e.passive !== a.passive, n = e !== p && (a === p || i);
     i && this.element.removeEventListener(this.name, this, a), n && this.element.addEventListener(this.name, this, e), this._$AH = e;
   }
   handleEvent(e) {
@@ -484,7 +484,7 @@ const rr = (t, e, r) => {
   let i = a._$litPart$;
   if (i === void 0) {
     const n = r?.renderBefore ?? null;
-    a._$litPart$ = i = new K(e.insertBefore(q(), n), n, void 0, r ?? {});
+    a._$litPart$ = i = new K(e.insertBefore(W(), n), n, void 0, r ?? {});
   }
   return i._$AI(t), i;
 };
@@ -494,7 +494,7 @@ const rr = (t, e, r) => {
  * SPDX-License-Identifier: BSD-3-Clause
  */
 const Te = globalThis;
-class L extends I {
+class O extends R {
   constructor() {
     super(...arguments), this.renderOptions = { host: this }, this._$Do = void 0;
   }
@@ -513,12 +513,12 @@ class L extends I {
     super.disconnectedCallback(), this._$Do?.setConnected(!1);
   }
   render() {
-    return R;
+    return j;
   }
 }
-L._$litElement$ = !0, L.finalized = !0, Te.litElementHydrateSupport?.({ LitElement: L });
+O._$litElement$ = !0, O.finalized = !0, Te.litElementHydrateSupport?.({ LitElement: O });
 const ar = Te.litElementPolyfillSupport;
-ar?.({ LitElement: L });
+ar?.({ LitElement: O });
 (Te.litElementVersions ??= []).push("4.2.2");
 /**
  * @license
@@ -567,7 +567,7 @@ function Y(t) {
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-function w(t) {
+function $(t) {
   return Y({ ...t, state: !0, attribute: !1 });
 }
 var or = Object.defineProperty, sr = Object.getOwnPropertyDescriptor, ut = (t, e, r, a) => {
@@ -575,12 +575,12 @@ var or = Object.defineProperty, sr = Object.getOwnPropertyDescriptor, ut = (t, e
     (o = t[n]) && (i = (a ? o(e, r, i) : o(i)) || i);
   return a && i && or(e, r, i), i;
 };
-let Ae = class extends L {
+let Ae = class extends O {
   setConfig(t) {
     this.config = t;
   }
   render() {
-    return p`
+    return u`
       <ha-alert alert-type="info">
         Configure entity IDs in YAML. Visual editor support can be expanded later.
       </ha-alert>
@@ -605,7 +605,7 @@ function dt(t, e, r) {
     })
   );
 }
-function g(t, e, r) {
+function v(t, e, r) {
   if (!(!r || e === "none")) {
     if (e === "history") {
       const a = `/history?entity_id=${encodeURIComponent(r)}`;
@@ -615,7 +615,7 @@ function g(t, e, r) {
     lr(t, r);
   }
 }
-async function ht(t, e) {
+async function ft(t, e) {
   if (!t.callWS)
     return null;
   try {
@@ -630,7 +630,7 @@ async function ht(t, e) {
 function pe(t) {
   window.history.pushState(null, "", t), window.dispatchEvent(new CustomEvent("location-changed", { detail: { replace: !1 } }));
 }
-function qe(t) {
+function We(t) {
   return `/history?entity_id=${encodeURIComponent(t.join(","))}`;
 }
 function cr(t) {
@@ -642,17 +642,17 @@ function cr(t) {
 async function pr(t, e) {
   const r = cr(e);
   if (r.length > 0) {
-    pe(qe(r));
+    pe(We(r));
     return;
   }
-  const a = await ht(t, e.climate_entity);
+  const a = await ft(t, e.climate_entity);
   if (a) {
     pe(`/history?device_id=${encodeURIComponent(a)}`);
     return;
   }
-  pe(qe([e.climate_entity]));
+  pe(We([e.climate_entity]));
 }
-async function ft(t, e, r, a) {
+async function ht(t, e, r, a) {
   const [i] = e.split(".");
   if (i === "climate") {
     if (r === "preset") {
@@ -687,9 +687,15 @@ async function ur(t, e, r, a) {
   if (i.length === 0)
     return;
   const n = Math.max(0, Math.min(100, r)), o = i.reduce((s, l) => Math.abs(l.value - n) < Math.abs(s.value - n) ? l : s);
-  await ft(t, e, "fan", o.option);
+  await ht(t, e, "fan", o.option);
 }
-const dr = {
+async function dr(t, e, r) {
+  await t.callService("number", "set_value", {
+    entity_id: e,
+    value: r
+  });
+}
+const fr = {
   compact: !1,
   show_airflow: !0,
   show_speed: !1,
@@ -713,27 +719,27 @@ const dr = {
 function mt(t) {
   return typeof t == "string" && t.trim().length > 0;
 }
-function fr(t, e) {
+function mr(t, e) {
   return t === "unit_name" || t === "custom" || t === "none" ? t : t === !1 ? "none" : e ? "custom" : "unit_name";
 }
-function mr(t) {
+function gr(t) {
   if (!mt(t.climate_entity))
     throw new Error("Missing required configuration: climate_entity");
 }
-function gr(t) {
+function vr(t) {
   return t === "light" || t === "dark" ? t : "auto";
 }
-function vr(t) {
+function br(t) {
   if (!t || t.type !== "custom:atrea-amotion-card")
     throw new Error("Card type must be custom:atrea-amotion-card");
-  return mr(t), {
+  return gr(t), {
     ...t,
     title: t.title ?? "Atrea aMotion",
-    show_title: fr(t.show_title, mt(t.title)),
-    theme_variant: gr(t.theme_variant),
+    show_title: mr(t.show_title, mt(t.title)),
+    theme_variant: vr(t.theme_variant),
     entities: t.entities,
     layout: {
-      ...dr,
+      ...fr,
       ...t.layout
     },
     tap_actions: {
@@ -745,7 +751,7 @@ function vr(t) {
 function J(t) {
   return t === null || Number.isNaN(t) ? null : Math.min(100, Math.max(0, t));
 }
-function br(t, e = 0) {
+function yr(t, e = 0) {
   return t === null || Number.isNaN(t) ? "--" : t.toFixed(e);
 }
 function gt(t, e, r = 0) {
@@ -757,24 +763,24 @@ function gt(t, e, r = 0) {
 function Ce(t) {
   return t.replace(/[_-]+/g, " ").trim().replace(/\b\w/g, (e) => e.toUpperCase());
 }
-const yr = /* @__PURE__ */ new Set(["unknown", "unavailable", "none"]), me = /* @__PURE__ */ new Set(["on", "open", "opened", "true"]), vt = /* @__PURE__ */ new Set(["off", "closed", "close", "false"]), _r = /* @__PURE__ */ new Set(["on", "dirty", "problem", "warning", "warn"]), xr = /* @__PURE__ */ new Set(["fault", "critical", "replace", "alarm"]);
-function f(t, e) {
+const _r = /* @__PURE__ */ new Set(["unknown", "unavailable", "none"]), me = /* @__PURE__ */ new Set(["on", "open", "opened", "true"]), vt = /* @__PURE__ */ new Set(["off", "closed", "close", "false"]), xr = /* @__PURE__ */ new Set(["on", "dirty", "problem", "warning", "warn"]), wr = /* @__PURE__ */ new Set(["fault", "critical", "replace", "alarm"]);
+function h(t, e) {
   if (e)
     return t.states[e];
 }
 function $r(t, e) {
-  return f(t, e.climate_entity);
+  return h(t, e.climate_entity);
 }
-function z(t) {
-  return !!t && !yr.has(String(t.state).toLowerCase());
+function M(t) {
+  return !!t && !_r.has(String(t.state).toLowerCase());
 }
-function v(t) {
+function m(t) {
   if (t == null || t === "")
     return null;
   const e = Number(t);
   return Number.isFinite(e) ? e : null;
 }
-function U(t) {
+function I(t) {
   if (typeof t == "boolean")
     return t;
   if (typeof t == "number")
@@ -782,11 +788,41 @@ function U(t) {
   const e = String(t ?? "").toLowerCase();
   return me.has(e);
 }
+const Ar = "flow_ventilation_req", Cr = /* @__PURE__ */ new Set(["m³/h", "m3/h"]);
+function kr(t, e) {
+  if (e.airflow_request_number)
+    return e.airflow_request_number;
+  const r = t.entities?.[e.climate_entity]?.device_id;
+  if (r)
+    return Object.values(t.entities ?? {}).find((a) => {
+      if (a.device_id !== r || !a.entity_id.startsWith("number."))
+        return !1;
+      const i = t.states[a.entity_id]?.attributes.unit_of_measurement;
+      return a.translation_key === Ar || typeof i == "string" && Cr.has(i);
+    })?.entity_id;
+}
+function Mr(t, e) {
+  const r = kr(t, e), a = h(t, r);
+  if (!r || !M(a))
+    return null;
+  const i = m(a?.attributes.min), n = m(a?.attributes.max);
+  if (i === null || n === null || n <= i)
+    return null;
+  const o = m(a?.attributes.step), s = a?.attributes.unit_of_measurement;
+  return {
+    entity: r,
+    value: m(a?.state),
+    min: i,
+    max: n,
+    step: o !== null && o > 0 ? o : 1,
+    unit: typeof s == "string" ? s : ""
+  };
+}
 function bt(t) {
   return t?.attributes ?? {};
 }
-function j(t) {
-  if (!z(t))
+function U(t) {
+  if (!M(t))
     return null;
   const e = Number(t?.state);
   return Number.isFinite(e) ? e : null;
@@ -794,13 +830,13 @@ function j(t) {
 function ee(t, e) {
   return {
     entity: t,
-    value: j(e),
+    value: U(e),
     unit: typeof e?.attributes.unit_of_measurement == "string" ? String(e.attributes.unit_of_measurement) : null,
-    available: z(e)
+    available: M(e)
   };
 }
 function A(t, e, r) {
-  const a = v(e);
+  const a = m(e);
   return {
     entity: t,
     value: a,
@@ -811,26 +847,26 @@ function A(t, e, r) {
 function Ze(t, e, r, a, i, n) {
   return {
     speedEntity: t,
-    speedPercent: J(j(e)),
+    speedPercent: J(U(e)),
     airflowEntity: r,
-    airflow: j(a),
+    airflow: U(a),
     airflowUnit: typeof a?.attributes.unit_of_measurement == "string" ? String(a.attributes.unit_of_measurement) : null,
     powerEntity: i,
-    power: j(n),
+    power: U(n),
     powerUnit: typeof n?.attributes.unit_of_measurement == "string" ? String(n.attributes.unit_of_measurement) : null,
-    available: z(e)
+    available: M(e)
   };
 }
 function te(t, e, r, a, i, n, o, s) {
-  const l = J(v(e));
+  const l = J(m(e));
   return {
     speedEntity: t,
     speedPercent: l,
     airflowEntity: r,
-    airflow: v(a),
+    airflow: m(a),
     airflowUnit: i,
     powerEntity: n,
-    power: v(o),
+    power: m(o),
     powerUnit: s,
     available: l !== null
   };
@@ -846,14 +882,14 @@ function ye(t, e) {
       state: "unavailable",
       available: !1
     };
-  if (!z(e))
+  if (!M(e))
     return {
       entity: t,
       percentOpen: null,
       state: "unavailable",
       available: !1
     };
-  let a = J(j(e));
+  let a = J(U(e));
   if (a === null) {
     const i = String(e?.state ?? "").toLowerCase();
     me.has(i) ? a = 100 : vt.has(i) && (a = 0);
@@ -865,8 +901,8 @@ function ye(t, e) {
     available: !0
   };
 }
-function V(t, e) {
-  let a = J(v(e));
+function H(t, e) {
+  let a = J(m(e));
   if (a === null) {
     const i = String(e ?? "").toLowerCase();
     me.has(i) ? a = 100 : vt.has(i) && (a = 0);
@@ -878,13 +914,13 @@ function V(t, e) {
     available: a !== null
   };
 }
-function wr(t) {
+function Pr(t) {
   return t === null ? "unknown" : t <= 15 ? "critical" : t <= 30 ? "warning" : "normal";
 }
 function Ge(t, e, r, a, i) {
-  const n = !!e || !!a, o = String(r?.state ?? "").toLowerCase(), s = J(j(i));
+  const n = !!e || !!a, o = String(r?.state ?? "").toLowerCase(), s = J(U(i));
   let l = "unknown";
-  return xr.has(o) ? l = "critical" : _r.has(o) ? l = s !== null && s <= 15 ? "critical" : "warning" : s !== null ? l = wr(s) : n && (l = "normal"), {
+  return wr.has(o) ? l = "critical" : xr.has(o) ? l = s !== null && s <= 15 ? "critical" : "warning" : s !== null ? l = Pr(s) : n && (l = "normal"), {
     statusEntity: e,
     lifeEntity: a,
     severity: l,
@@ -894,7 +930,7 @@ function Ge(t, e, r, a, i) {
   };
 }
 function re(t, e, r) {
-  const a = v(r);
+  const a = m(r);
   let i = "unknown";
   return a !== null && (a < 15 ? i = "critical" : a <= 30 ? i = "warning" : i = "normal"), {
     statusEntity: void 0,
@@ -905,11 +941,11 @@ function re(t, e, r) {
     available: a !== null
   };
 }
-function Ar(t, e, r, a) {
+function Er(t, e, r, a) {
   const i = a ?? e, n = Array.isArray(i?.attributes.options) ? i?.attributes.options.filter((s) => typeof s == "string") : [];
   return {
     climateEntity: void 0,
-    currentLabel: z(e) ? Ce(e?.state ?? "") : z(a) ? Ce(a?.state ?? "") : null,
+    currentLabel: M(e) ? Ce(e?.state ?? "") : M(a) ? Ce(a?.state ?? "") : null,
     hvac: { current: null, options: [], controllable: !1 },
     preset: { current: null, options: [], controllable: !1 },
     fan: { current: null, options: [], controllable: !1 },
@@ -918,11 +954,11 @@ function Ar(t, e, r, a) {
     fallbackControllable: !!r && n.length > 0
   };
 }
-function Cr(t, e, r) {
-  const a = bt(e), i = Array.isArray(a.preset_modes) ? a.preset_modes.map((d) => String(d)) : [], n = Array.isArray(a.fan_modes) ? a.fan_modes.map((d) => String(d)) : [], o = Array.isArray(a.hvac_modes) ? a.hvac_modes.map((d) => String(d)) : [], s = typeof e?.attributes.preset_mode == "string" ? e.attributes.preset_mode : typeof a.preset_mode == "string" ? a.preset_mode : null, l = e?.attributes.fan_mode !== void 0 ? String(e.attributes.fan_mode) : a.fan_mode !== void 0 ? String(a.fan_mode) : e?.attributes.fan_power_req_sup !== void 0 ? String(e.attributes.fan_power_req_sup) : null, c = typeof e?.state == "string" ? e.state : null, h = s !== null ? s : typeof r == "string" ? r : l !== null ? l : c !== null ? c : null;
+function Sr(t, e, r) {
+  const a = bt(e), i = Array.isArray(a.preset_modes) ? a.preset_modes.map((d) => String(d)) : [], n = Array.isArray(a.fan_modes) ? a.fan_modes.map((d) => String(d)) : [], o = Array.isArray(a.hvac_modes) ? a.hvac_modes.map((d) => String(d)) : [], s = typeof e?.attributes.preset_mode == "string" ? e.attributes.preset_mode : typeof a.preset_mode == "string" ? a.preset_mode : null, l = e?.attributes.fan_mode !== void 0 ? String(e.attributes.fan_mode) : a.fan_mode !== void 0 ? String(a.fan_mode) : e?.attributes.fan_power_req_sup !== void 0 ? String(e.attributes.fan_power_req_sup) : null, c = typeof e?.state == "string" ? e.state : null, f = s !== null ? s : typeof r == "string" ? r : l !== null ? l : c !== null ? c : null;
   return {
     climateEntity: t,
-    currentLabel: h ? Ce(h) : null,
+    currentLabel: f ? Ce(f) : null,
     hvac: {
       current: c,
       options: c && !o.includes(c) ? [c, ...o] : o,
@@ -944,7 +980,7 @@ function Cr(t, e, r) {
   };
 }
 function Ke(t) {
-  return z(t) ? me.has(String(t?.state ?? "").toLowerCase()) : !1;
+  return M(t) ? me.has(String(t?.state ?? "").toLowerCase()) : !1;
 }
 function Ye(t, e) {
   const r = ["message", "description", "details", "detail", "reason"], a = t === "Fault" ? "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause." : "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause.";
@@ -958,7 +994,7 @@ function Ye(t, e) {
   const i = typeof e.attributes?.friendly_name == "string" && e.attributes.friendly_name.trim().length > 0 ? e.attributes.friendly_name.trim() : e.entity_id, n = String(e.state ?? "").trim().toLowerCase();
   return n && !["on", "off", "true", "false", "unknown", "unavailable"].includes(n) ? `${i}: ${e.state}` : `${i} is active.`;
 }
-function kr(t, e) {
+function Tr(t, e) {
   const r = Ke(t), a = Ke(e), i = [], n = [], o = [];
   if (r) {
     i.push("Warning");
@@ -1006,7 +1042,7 @@ function kr(t, e) {
     notifications: o
   };
 }
-function Mr(t) {
+function Lr(t) {
   if (!t || typeof t != "object")
     return null;
   const e = t, r = e.kind === "fault" ? "fault" : "warning", a = typeof e.message == "string" && e.message.trim().length > 0 ? e.message.trim() : typeof e.full_message == "string" && e.full_message.trim().length > 0 ? e.full_message.trim() : typeof e.code == "string" && e.code.trim().length > 0 ? e.code.trim() : "Unknown alert", i = typeof e.message_code == "string" && e.message_code.trim().length > 0 ? e.message_code.trim() : r === "fault" ? "E" : "S", n = typeof e.full_message == "string" && e.full_message.trim().length > 0 ? e.full_message.trim() : i && a ? `${i} - ${a}` : a;
@@ -1024,26 +1060,26 @@ function Mr(t) {
     active: e.active !== !1
   };
 }
-function Pr(t) {
+function Or(t) {
   if (!Array.isArray(t.notifications))
     return null;
-  const e = t.notifications.map((o) => Mr(o)).filter((o) => !!o && o.active);
+  const e = t.notifications.map((o) => Lr(o)).filter((o) => !!o && o.active);
   if (e.length === 0)
     return {
-      warning: U(t.warning ?? t.has_warning),
-      fault: U(t.fault ?? t.has_fault),
-      warningCount: v(t.warning_count) ?? 0,
-      faultCount: v(t.fault_count) ?? 0,
-      highestSeverity: v(t.highest_severity),
+      warning: I(t.warning ?? t.has_warning),
+      fault: I(t.fault ?? t.has_fault),
+      warningCount: m(t.warning_count) ?? 0,
+      faultCount: m(t.fault_count) ?? 0,
+      highestSeverity: m(t.highest_severity),
       primaryMessage: typeof t.primary_message == "string" ? t.primary_message : null,
       labels: [],
       details: [],
       notifications: []
     };
-  const r = v(t.warning_count) ?? e.filter((o) => o.kind === "warning").length, a = v(t.fault_count) ?? e.filter((o) => o.kind === "fault").length, i = v(t.highest_severity) ?? e.reduce((o, s) => s.severity === null ? o : o === null ? s.severity : Math.max(o, s.severity), null), n = typeof t.primary_message == "string" && t.primary_message || e[0]?.fullMessage || null;
+  const r = m(t.warning_count) ?? e.filter((o) => o.kind === "warning").length, a = m(t.fault_count) ?? e.filter((o) => o.kind === "fault").length, i = m(t.highest_severity) ?? e.reduce((o, s) => s.severity === null ? o : o === null ? s.severity : Math.max(o, s.severity), null), n = typeof t.primary_message == "string" && t.primary_message || e[0]?.fullMessage || null;
   return {
-    warning: U(t.has_warning ?? t.warning ?? r > 0),
-    fault: U(t.has_fault ?? t.fault ?? a > 0),
+    warning: I(t.has_warning ?? t.warning ?? r > 0),
+    fault: I(t.has_fault ?? t.fault ?? a > 0),
     warningCount: r,
     faultCount: a,
     highestSeverity: i,
@@ -1053,7 +1089,7 @@ function Pr(t) {
     notifications: e
   };
 }
-function Er(t) {
+function zr(t) {
   const e = [
     t.temperatures.oda.available,
     t.temperatures.eta.available,
@@ -1065,34 +1101,35 @@ function Er(t) {
   ], r = e.filter(Boolean).length;
   return r === e.length ? "full" : r >= 4 ? "partial" : "minimal";
 }
-function Sr(t, e) {
-  const r = e.entities, a = $r(t, e), i = bt(a), n = typeof i.temperature_unit == "string" ? i.temperature_unit : "°C", o = typeof i.airflow_unit == "string" ? i.airflow_unit : null, s = typeof i.power_unit == "string" ? i.power_unit : null, l = f(t, r?.temperatures?.oda), c = f(t, r?.temperatures?.eta), h = f(t, r?.temperatures?.sup), d = f(t, r?.temperatures?.eha), b = f(t, r?.fans?.supply_speed), x = f(t, r?.fans?.extract_speed), H = f(t, r?.fans?.supply_airflow), wt = f(t, r?.fans?.extract_airflow), At = f(t, r?.fans?.supply_power), Ct = f(t, r?.fans?.extract_power), kt = f(t, r?.dampers?.bypass), Mt = f(t, r?.dampers?.oda), Pt = f(t, r?.dampers?.eta), Et = f(t, r?.filters?.oda), St = f(t, r?.filters?.eta), Tt = f(t, r?.filters?.oda_life), Lt = f(t, r?.filters?.eta_life), Ot = f(t, r?.mode?.current), zt = f(t, r?.mode?.select), Ft = f(t, r?.alerts?.warning), Ht = f(t, r?.alerts?.fault), ze = {
+function Fr(t, e) {
+  const r = e.entities, a = $r(t, e), i = bt(a), n = typeof i.temperature_unit == "string" ? i.temperature_unit : "°C", o = typeof i.airflow_unit == "string" ? i.airflow_unit : null, s = typeof i.power_unit == "string" ? i.power_unit : null, l = h(t, r?.temperatures?.oda), c = h(t, r?.temperatures?.eta), f = h(t, r?.temperatures?.sup), d = h(t, r?.temperatures?.eha), y = h(t, r?.fans?.supply_speed), x = h(t, r?.fans?.extract_speed), V = h(t, r?.fans?.supply_airflow), $t = h(t, r?.fans?.extract_airflow), At = h(t, r?.fans?.supply_power), Ct = h(t, r?.fans?.extract_power), kt = h(t, r?.dampers?.bypass), Mt = h(t, r?.dampers?.oda), Pt = h(t, r?.dampers?.eta), Et = h(t, r?.filters?.oda), St = h(t, r?.filters?.eta), Tt = h(t, r?.filters?.oda_life), Lt = h(t, r?.filters?.eta_life), Ot = h(t, r?.mode?.current), zt = h(t, r?.mode?.select), Ft = h(t, r?.alerts?.warning), Vt = h(t, r?.alerts?.fault), ze = {
     temperatures: {
       oda: A(r?.temperatures?.oda ?? e.climate_entity, i.outside_air_temperature, n).available ? A(r?.temperatures?.oda ?? e.climate_entity, i.outside_air_temperature, n) : ee(r?.temperatures?.oda, l),
       eta: A(r?.temperatures?.eta ?? e.climate_entity, i.extract_air_temperature, n).available ? A(r?.temperatures?.eta ?? e.climate_entity, i.extract_air_temperature, n) : ee(r?.temperatures?.eta, c),
-      sup: A(r?.temperatures?.sup ?? e.climate_entity, i.supply_air_temperature, n).available ? A(r?.temperatures?.sup ?? e.climate_entity, i.supply_air_temperature, n) : ee(r?.temperatures?.sup, h),
+      sup: A(r?.temperatures?.sup ?? e.climate_entity, i.supply_air_temperature, n).available ? A(r?.temperatures?.sup ?? e.climate_entity, i.supply_air_temperature, n) : ee(r?.temperatures?.sup, f),
       eha: A(r?.temperatures?.eha ?? e.climate_entity, i.exhaust_air_temperature, n).available ? A(r?.temperatures?.eha ?? e.climate_entity, i.exhaust_air_temperature, n) : ee(r?.temperatures?.eha, d)
     },
     fans: {
-      supply: te(r?.fans?.supply_speed ?? e.climate_entity, i.supply_fan_speed_percent, r?.fans?.supply_airflow, i.supply_airflow, o, r?.fans?.supply_power, i.supply_power, s).available ? te(r?.fans?.supply_speed ?? e.climate_entity, i.supply_fan_speed_percent, r?.fans?.supply_airflow, i.supply_airflow, o, r?.fans?.supply_power, i.supply_power, s) : Ze(r?.fans?.supply_speed, b, r?.fans?.supply_airflow, H, r?.fans?.supply_power, At),
-      extract: te(r?.fans?.extract_speed ?? e.climate_entity, i.extract_fan_speed_percent, r?.fans?.extract_airflow, i.extract_airflow, o, r?.fans?.extract_power, i.extract_power, s).available ? te(r?.fans?.extract_speed ?? e.climate_entity, i.extract_fan_speed_percent, r?.fans?.extract_airflow, i.extract_airflow, o, r?.fans?.extract_power, i.extract_power, s) : Ze(r?.fans?.extract_speed, x, r?.fans?.extract_airflow, wt, r?.fans?.extract_power, Ct)
+      supply: te(r?.fans?.supply_speed ?? e.climate_entity, i.supply_fan_speed_percent, r?.fans?.supply_airflow, i.supply_airflow, o, r?.fans?.supply_power, i.supply_power, s).available ? te(r?.fans?.supply_speed ?? e.climate_entity, i.supply_fan_speed_percent, r?.fans?.supply_airflow, i.supply_airflow, o, r?.fans?.supply_power, i.supply_power, s) : Ze(r?.fans?.supply_speed, y, r?.fans?.supply_airflow, V, r?.fans?.supply_power, At),
+      extract: te(r?.fans?.extract_speed ?? e.climate_entity, i.extract_fan_speed_percent, r?.fans?.extract_airflow, i.extract_airflow, o, r?.fans?.extract_power, i.extract_power, s).available ? te(r?.fans?.extract_speed ?? e.climate_entity, i.extract_fan_speed_percent, r?.fans?.extract_airflow, i.extract_airflow, o, r?.fans?.extract_power, i.extract_power, s) : Ze(r?.fans?.extract_speed, x, r?.fans?.extract_airflow, $t, r?.fans?.extract_power, Ct)
     },
     dampers: {
-      bypass: V(r?.dampers?.bypass ?? e.climate_entity, i.bypass_position_percent).available ? V(r?.dampers?.bypass ?? e.climate_entity, i.bypass_position_percent) : ye(r?.dampers?.bypass, kt),
-      oda: V(r?.dampers?.oda ?? e.climate_entity, i.oda_damper_percent).available ? V(r?.dampers?.oda ?? e.climate_entity, i.oda_damper_percent) : ye(r?.dampers?.oda, Mt),
-      eta: V(r?.dampers?.eta ?? e.climate_entity, i.eta_damper_percent).available ? V(r?.dampers?.eta ?? e.climate_entity, i.eta_damper_percent) : ye(r?.dampers?.eta, Pt)
+      bypass: H(r?.dampers?.bypass ?? e.climate_entity, i.bypass_position_percent).available ? H(r?.dampers?.bypass ?? e.climate_entity, i.bypass_position_percent) : ye(r?.dampers?.bypass, kt),
+      oda: H(r?.dampers?.oda ?? e.climate_entity, i.oda_damper_percent).available ? H(r?.dampers?.oda ?? e.climate_entity, i.oda_damper_percent) : ye(r?.dampers?.oda, Mt),
+      eta: H(r?.dampers?.eta ?? e.climate_entity, i.eta_damper_percent).available ? H(r?.dampers?.eta ?? e.climate_entity, i.eta_damper_percent) : ye(r?.dampers?.eta, Pt)
     },
     filters: {
       oda: re("ODA filter", r?.filters?.oda_life ?? e.climate_entity, i.filter_days_remaining).available ? re("ODA filter", r?.filters?.oda_life ?? e.climate_entity, i.filter_days_remaining) : Ge("ODA filter", r?.filters?.oda, Et, r?.filters?.oda_life, Tt),
       eta: re("ETA filter", r?.filters?.eta_life ?? e.climate_entity, i.filter_days_remaining).available ? re("ETA filter", r?.filters?.eta_life ?? e.climate_entity, i.filter_days_remaining) : Ge("ETA filter", r?.filters?.eta, St, r?.filters?.eta_life, Lt)
     },
     mode: (() => {
-      const m = Cr(e.climate_entity, a, i.current_mode);
-      return m.hvac.controllable || m.preset.controllable || m.fan.controllable || m.currentLabel ? m : Ar(r?.mode?.current, Ot, r?.mode?.select, zt);
+      const g = Sr(e.climate_entity, a, i.current_mode);
+      return g.hvac.controllable || g.preset.controllable || g.fan.controllable || g.currentLabel ? g : Er(r?.mode?.current, Ot, r?.mode?.select, zt);
     })(),
-    alerts: Pr(i) ?? (i.warning !== void 0 || i.fault !== void 0 ? (() => {
-      const m = U(i.warning), E = U(i.fault), X = "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause.", Q = "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause.", ge = [];
-      return m && ge.push({
+    airflowRequest: Mr(t, e),
+    alerts: Or(i) ?? (i.warning !== void 0 || i.fault !== void 0 ? (() => {
+      const g = I(i.warning), S = I(i.fault), Q = "The unit reports an active warning. Open more info or inspect the configured alert entity for the exact cause.", X = "The unit reports an active fault. Open more info or inspect the configured alert entity for the exact cause.", ge = [];
+      return g && ge.push({
         id: null,
         code: null,
         purpose: "warning",
@@ -1100,11 +1137,11 @@ function Sr(t, e) {
         kind: "warning",
         prefix: "S",
         translationKey: null,
-        message: X,
+        message: Q,
         messageCode: "S",
-        fullMessage: X,
+        fullMessage: Q,
         active: !0
-      }), E && ge.push({
+      }), S && ge.push({
         id: null,
         code: null,
         purpose: "alarm",
@@ -1112,45 +1149,45 @@ function Sr(t, e) {
         kind: "fault",
         prefix: "E",
         translationKey: null,
-        message: Q,
+        message: X,
         messageCode: "E",
-        fullMessage: Q,
+        fullMessage: X,
         active: !0
       }), {
-        warning: m,
-        fault: E,
-        warningCount: m ? 1 : 0,
-        faultCount: E ? 1 : 0,
-        highestSeverity: E ? 5 : m ? 3 : null,
-        primaryMessage: E ? Q : m ? X : null,
-        labels: [m ? "Warning" : null, E ? "Fault" : null].filter((ve) => !!ve),
-        details: [m ? X : null, E ? Q : null].filter((ve) => !!ve),
+        warning: g,
+        fault: S,
+        warningCount: g ? 1 : 0,
+        faultCount: S ? 1 : 0,
+        highestSeverity: S ? 5 : g ? 3 : null,
+        primaryMessage: S ? X : g ? Q : null,
+        labels: [g ? "Warning" : null, S ? "Fault" : null].filter((ve) => !!ve),
+        details: [g ? Q : null, S ? X : null].filter((ve) => !!ve),
         notifications: ge
       };
-    })() : kr(Ft, Ht))
+    })() : Tr(Ft, Vt))
   };
   return {
     ...ze,
-    availability: Er(ze)
+    availability: zr(ze)
   };
 }
-var Tr = "M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z", Lr = "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z", _t = "M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z", Oe = "M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11M12.5,2C17,2 17.11,5.57 14.75,6.75C13.76,7.24 13.32,8.29 13.13,9.22C13.61,9.42 14.03,9.73 14.35,10.13C18.05,8.13 22.03,8.92 22.03,12.5C22.03,17 18.46,17.1 17.28,14.73C16.78,13.74 15.72,13.3 14.79,13.11C14.59,13.59 14.28,14 13.88,14.34C15.87,18.03 15.08,22 11.5,22C7,22 6.91,18.42 9.27,17.24C10.25,16.75 10.69,15.71 10.89,14.79C10.4,14.59 9.97,14.27 9.65,13.87C5.96,15.85 2,15.07 2,11.5C2,7 5.56,6.89 6.74,9.26C7.24,10.25 8.29,10.68 9.22,10.87C9.41,10.39 9.73,9.97 10.14,9.65C8.15,5.96 8.94,2 12.5,2Z", Or = "M12.5 2C8.93 2 8.14 5.96 10.13 9.65C9.72 9.97 9.4 10.39 9.21 10.87C8.28 10.68 7.23 10.25 6.73 9.26C5.56 6.89 2 7 2 11.5C2 15.07 5.95 15.85 9.64 13.87C9.96 14.27 10.39 14.59 10.88 14.79C10.68 15.71 10.24 16.75 9.26 17.24C6.9 18.42 7 22 11.5 22C12.31 22 13 21.78 13.5 21.41C13.19 20.67 13 19.86 13 19C13 17.59 13.5 16.3 14.3 15.28C14.17 14.97 14.03 14.65 13.86 14.34C14.26 14 14.57 13.59 14.77 13.11C15.26 13.21 15.78 13.39 16.25 13.67C17.07 13.25 18 13 19 13C20.05 13 21.03 13.27 21.89 13.74C21.95 13.37 22 12.96 22 12.5C22 8.92 18.03 8.13 14.33 10.13C14 9.73 13.59 9.42 13.11 9.22C13.3 8.29 13.74 7.24 14.73 6.75C17.09 5.57 17 2 12.5 2M12 11C12.54 11 13 11.45 13 12C13 12.55 12.54 13 12 13C11.43 13 11 12.55 11 12C11 11.45 11.43 11 12 11M18 15C16.89 15 16 15.9 16 17V23H18V21H20V23H22V17C22 15.9 21.1 15 20 15M18 17H20V19H18Z", zr = "M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13", Fr = "M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z";
-function Hr(t) {
+var Vr = "M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z", Hr = "M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z", _t = "M12,16A2,2 0 0,1 14,18A2,2 0 0,1 12,20A2,2 0 0,1 10,18A2,2 0 0,1 12,16M12,10A2,2 0 0,1 14,12A2,2 0 0,1 12,14A2,2 0 0,1 10,12A2,2 0 0,1 12,10M12,4A2,2 0 0,1 14,6A2,2 0 0,1 12,8A2,2 0 0,1 10,6A2,2 0 0,1 12,4Z", Oe = "M12,11A1,1 0 0,0 11,12A1,1 0 0,0 12,13A1,1 0 0,0 13,12A1,1 0 0,0 12,11M12.5,2C17,2 17.11,5.57 14.75,6.75C13.76,7.24 13.32,8.29 13.13,9.22C13.61,9.42 14.03,9.73 14.35,10.13C18.05,8.13 22.03,8.92 22.03,12.5C22.03,17 18.46,17.1 17.28,14.73C16.78,13.74 15.72,13.3 14.79,13.11C14.59,13.59 14.28,14 13.88,14.34C15.87,18.03 15.08,22 11.5,22C7,22 6.91,18.42 9.27,17.24C10.25,16.75 10.69,15.71 10.89,14.79C10.4,14.59 9.97,14.27 9.65,13.87C5.96,15.85 2,15.07 2,11.5C2,7 5.56,6.89 6.74,9.26C7.24,10.25 8.29,10.68 9.22,10.87C9.41,10.39 9.73,9.97 10.14,9.65C8.15,5.96 8.94,2 12.5,2Z", Nr = "M12.5 2C8.93 2 8.14 5.96 10.13 9.65C9.72 9.97 9.4 10.39 9.21 10.87C8.28 10.68 7.23 10.25 6.73 9.26C5.56 6.89 2 7 2 11.5C2 15.07 5.95 15.85 9.64 13.87C9.96 14.27 10.39 14.59 10.88 14.79C10.68 15.71 10.24 16.75 9.26 17.24C6.9 18.42 7 22 11.5 22C12.31 22 13 21.78 13.5 21.41C13.19 20.67 13 19.86 13 19C13 17.59 13.5 16.3 14.3 15.28C14.17 14.97 14.03 14.65 13.86 14.34C14.26 14 14.57 13.59 14.77 13.11C15.26 13.21 15.78 13.39 16.25 13.67C17.07 13.25 18 13 19 13C20.05 13 21.03 13.27 21.89 13.74C21.95 13.37 22 12.96 22 12.5C22 8.92 18.03 8.13 14.33 10.13C14 9.73 13.59 9.42 13.11 9.22C13.3 8.29 13.74 7.24 14.73 6.75C17.09 5.57 17 2 12.5 2M12 11C12.54 11 13 11.45 13 12C13 12.55 12.54 13 12 13C11.43 13 11 12.55 11 12C11 11.45 11.43 11 12 11M18 15C16.89 15 16 15.9 16 17V23H18V21H20V23H22V17C22 15.9 21.1 15 20 15M18 17H20V19H18Z", Rr = "M16.56,5.44L15.11,6.89C16.84,7.94 18,9.83 18,12A6,6 0 0,1 12,18A6,6 0 0,1 6,12C6,9.83 7.16,7.94 8.88,6.88L7.44,5.44C5.36,6.88 4,9.28 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12C20,9.28 18.64,6.88 16.56,5.44M13,3H11V13H13", Ir = "M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M18.97,15.95C19.8,15.87 20.69,17.05 20.16,17.8C19.84,18.25 19.5,18.67 19.08,19.07C15.17,23 8.84,23 4.94,19.07C1.03,15.17 1.03,8.83 4.94,4.93C5.34,4.53 5.76,4.17 6.21,3.85C6.96,3.32 8.14,4.21 8.06,5.04C7.79,7.9 8.75,10.87 10.95,13.06C13.14,15.26 16.1,16.22 18.97,15.95M17.33,17.97C14.5,17.81 11.7,16.64 9.53,14.5C7.36,12.31 6.2,9.5 6.04,6.68C3.23,9.82 3.34,14.64 6.35,17.66C9.37,20.67 14.19,20.78 17.33,17.97Z";
+function Ur(t) {
   if (typeof t?.attributes.unit_name == "string" && t.attributes.unit_name.trim())
     return t.attributes.unit_name;
   if (typeof t?.attributes.friendly_name == "string" && t.attributes.friendly_name.trim())
     return t.attributes.friendly_name;
 }
 function xt(t, e) {
-  const r = Hr(e);
+  const r = Ur(e);
   return t.show_title === "none" ? null : t.show_title === "custom" && typeof t.title == "string" && t.title.trim() ? t.title : r ?? "Ventilation unit";
 }
-var Vr = Object.defineProperty, Nr = Object.getOwnPropertyDescriptor, F = (t, e, r, a) => {
-  for (var i = a > 1 ? void 0 : a ? Nr(e, r) : e, n = t.length - 1, o; n >= 0; n--)
+var jr = Object.defineProperty, Dr = Object.getOwnPropertyDescriptor, F = (t, e, r, a) => {
+  for (var i = a > 1 ? void 0 : a ? Dr(e, r) : e, n = t.length - 1, o; n >= 0; n--)
     (o = t[n]) && (i = (a ? o(e, r, i) : o(i)) || i);
-  return a && i && Vr(e, r, i), i;
+  return a && i && jr(e, r, i), i;
 };
-const Ir = 1, Ur = 2, Je = 4, jr = 8, Rr = 16, Dr = "unavailable", Br = {
+const qr = 1, Br = 2, Je = 4, Wr = 8, Zr = 16, Gr = "unavailable", Kr = {
   current_humidity: "Current humidity",
   current_temperature: "Current temperature",
   fan_mode: "Fan mode",
@@ -1158,25 +1195,25 @@ const Ir = 1, Ur = 2, Je = 4, jr = 8, Rr = 16, Dr = "unavailable", Br = {
   swing_horizontal_mode: "Horizontal swing mode",
   swing_mode: "Swing mode"
 };
-function Wr(t) {
+function Yr(t) {
   return t.replace(/_/g, " ").split(" ").filter(Boolean).map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ");
 }
-function Xe(t) {
+function Qe(t) {
   return Array.isArray(t) ? t.map((e) => String(e)) : [];
 }
 function N(t, e) {
   return ((typeof t.attributes.supported_features == "number" ? t.attributes.supported_features : 0) & e) !== 0;
 }
 function _e(t) {
-  return String(t.state).toLowerCase() === Dr;
+  return String(t.state).toLowerCase() === Gr;
 }
 function ae(t) {
   return t != null && t !== "";
 }
 function xe(t, e, r) {
-  return t.formatEntityAttributeName?.(e, r) ?? Br[r] ?? Wr(r);
+  return t.formatEntityAttributeName?.(e, r) ?? Kr[r] ?? Yr(r);
 }
-function qr(t, e) {
+function Jr(t, e) {
   const r = Number(t);
   if (Number.isFinite(r)) {
     const a = typeof e == "string" && e ? ` ${e}` : "";
@@ -1189,14 +1226,14 @@ function ie(t, e, r, a = e.attributes[r]) {
   if (i)
     return i;
   if (r === "current_temperature" || r === "temperature")
-    return qr(a, e.attributes.temperature_unit);
+    return Jr(a, e.attributes.temperature_unit);
   if (r === "current_humidity" || r === "humidity") {
     const n = Number(a);
     return Number.isFinite(n) ? `${n.toFixed(0)} %` : String(a);
   }
   return String(a);
 }
-let M = class extends L {
+let P = class extends O {
   constructor() {
     super(...arguments), this._mainControl = "temperature", this._panel = "main", this._relatedLoading = !1, this._handleRelatedRequested = (t) => {
       !this.stateObj || t.detail.entityId !== this.stateObj.entity_id || this._showRelatedPanel();
@@ -1224,43 +1261,43 @@ let M = class extends L {
     t.has("stateObj") && this.stateObj && this._mainControl === "humidity" && !N(this.stateObj, Je) && (this._mainControl = "temperature"), t.has("stateObj") && (this._panel = "main", this._relatedInfo = void 0, this._relatedLoading = !1);
   }
   render() {
-    return this.stateObj ? this._panel === "related" ? this._renderRelated() : this._renderMain() : u;
+    return this.stateObj ? this._panel === "related" ? this._renderRelated() : this._renderMain() : p;
   }
   _renderMain() {
     if (!this.stateObj)
-      return u;
-    const t = this.stateObj, e = t.attributes, r = N(t, Je) && ae(e.humidity), a = N(t, Ir) || N(t, Ur) || ae(e.temperature), i = Xe(e.preset_modes), n = Xe(e.fan_modes), o = e.current_temperature, s = e.current_humidity ?? e.humidity;
-    return p`
+      return p;
+    const t = this.stateObj, e = t.attributes, r = N(t, Je) && ae(e.humidity), a = N(t, qr) || N(t, Br) || ae(e.temperature), i = Qe(e.preset_modes), n = Qe(e.fan_modes), o = e.current_temperature, s = e.current_humidity ?? e.humidity;
+    return u`
       <div class="current">
-        ${ae(o) ? p`
+        ${ae(o) ? u`
               <div>
                 <p class="label">${xe(this.hass, t, "current_temperature")}</p>
                 <p class="value">${ie(this.hass, t, "current_temperature", o)}</p>
               </div>
-            ` : u}
-        ${ae(s) ? p`
+            ` : p}
+        ${ae(s) ? u`
               <div>
                 <p class="label">${xe(this.hass, t, "current_humidity")}</p>
                 <p class="value">${ie(this.hass, t, "current_humidity", s)}</p>
               </div>
-            ` : u}
+            ` : p}
       </div>
 
       <div class="thermostat-block">
         <div class="controls">
-          ${a && this._mainControl === "temperature" ? p`
+          ${a && this._mainControl === "temperature" ? u`
                 <ha-state-control-climate-temperature
                   .hass=${this.hass}
                   .stateObj=${t}
                 ></ha-state-control-climate-temperature>
-              ` : u}
-          ${r && this._mainControl === "humidity" ? p`
+              ` : p}
+          ${r && this._mainControl === "humidity" ? u`
                 <ha-state-control-climate-humidity
                   .hass=${this.hass}
                   .stateObj=${t}
                 ></ha-state-control-climate-humidity>
-              ` : u}
-          ${r && a ? p`
+              ` : p}
+          ${r && a ? u`
                 <ha-icon-button-group>
                   <ha-icon-button-toggle
                     .selected=${this._mainControl === "temperature"}
@@ -1281,31 +1318,31 @@ let M = class extends L {
                     H
                   </ha-icon-button-toggle>
                 </ha-icon-button-group>
-              ` : u}
+              ` : p}
         </div>
 
         <div class="selects">
-        ${(N(t, Rr) || i.length > 0) && i.length > 0 ? this._renderTile(
+        ${(N(t, Zr) || i.length > 0) && i.length > 0 ? this._renderTile(
       this.hass.localize?.("ui.card.climate.mode") ?? "Mode",
       typeof e.preset_mode == "string" ? e.preset_mode : "",
       i,
       this._handlePresetModeChanged,
       (l) => ie(this.hass, t, "preset_mode", l)
-    ) : u}
-        ${(N(t, jr) || n.length > 0) && n.length > 0 ? this._renderTile(
+    ) : p}
+        ${(N(t, Wr) || n.length > 0) && n.length > 0 ? this._renderTile(
       xe(this.hass, t, "fan_mode"),
       e.fan_mode !== void 0 ? String(e.fan_mode) : "",
       n,
       this._handleFanModeChanged,
       (l) => ie(this.hass, t, "fan_mode", l)
-    ) : u}
+    ) : p}
         </div>
       </div>
     `;
   }
   _renderRelated() {
     const t = this._relatedInfo, e = t?.integrations.length ? t.integrations.join(", ") : null;
-    return p`
+    return u`
       <div class="related-view">
         <div class="related-header">
           <ha-icon-button
@@ -1315,39 +1352,39 @@ let M = class extends L {
             aria-label="Back"
             @click=${this._showMainPanel}
           >
-            <ha-svg-icon .path=${Lr}></ha-svg-icon>
+            <ha-svg-icon .path=${Hr}></ha-svg-icon>
           </ha-icon-button>
           <div class="related-title">Related</div>
         </div>
 
-        ${this._relatedLoading ? p`<div class="related-empty">Loading related items...</div>` : p`
+        ${this._relatedLoading ? u`<div class="related-empty">Loading related items...</div>` : u`
               <div class="related-list">
-                ${t?.deviceName ? p`
+                ${t?.deviceName ? u`
                       <div class="related-item">
                         <div class="related-label">Device</div>
                         <div class="related-value">${t.deviceName}</div>
                       </div>
-                    ` : u}
-                ${e ? p`
+                    ` : p}
+                ${e ? u`
                       <div class="related-item">
                         <div class="related-label">Integration</div>
                         <div class="related-value">${e}</div>
                       </div>
-                    ` : u}
-                ${t?.areaName ? p`
+                    ` : p}
+                ${t?.areaName ? u`
                       <div class="related-item">
                         <div class="related-label">Area</div>
                         <div class="related-value">${t.areaName}</div>
                       </div>
-                    ` : u}
-                ${!t?.deviceName && !e && !t?.areaName ? p`<div class="related-empty">No related device, integration, or area found.</div>` : u}
+                    ` : p}
+                ${!t?.deviceName && !e && !t?.areaName ? u`<div class="related-empty">No related device, integration, or area found.</div>` : p}
               </div>
             `}
       </div>
     `;
   }
   _renderTile(t, e, r, a, i) {
-    return p`
+    return u`
       <div class="select-tile">
         <ha-control-select-menu
           .hass=${this.hass}
@@ -1384,7 +1421,7 @@ let M = class extends L {
           ...i?.config_entries ?? []
         ], l = Array.from(
           new Set(
-            s.map((c) => a.find((h) => h.entry_id === c)).filter((c) => !!c).map((c) => c.title || c.domain || c.entry_id)
+            s.map((c) => a.find((f) => f.entry_id === c)).filter((c) => !!c).map((c) => c.title || c.domain || c.entry_id)
           )
         );
         this._relatedInfo = {
@@ -1561,82 +1598,82 @@ let M = class extends L {
 };
 F([
   Y({ attribute: !1 })
-], M.prototype, "hass", 2);
+], P.prototype, "hass", 2);
 F([
   Y({ attribute: !1 })
-], M.prototype, "stateObj", 2);
+], P.prototype, "stateObj", 2);
 F([
-  w()
-], M.prototype, "_mainControl", 2);
+  $()
+], P.prototype, "_mainControl", 2);
 F([
-  w()
-], M.prototype, "_panel", 2);
+  $()
+], P.prototype, "_panel", 2);
 F([
-  w()
-], M.prototype, "_relatedInfo", 2);
+  $()
+], P.prototype, "_relatedInfo", 2);
 F([
-  w()
-], M.prototype, "_relatedLoading", 2);
-M = F([
+  $()
+], P.prototype, "_relatedLoading", 2);
+P = F([
   Le("atrea-more-info-climate")
-], M);
-const Zr = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Gr = "M9 17H7V10H9V17M13 17H11V7H13V17M17 17H15V13H17V17M19 19H5V5H19V19.1M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z", Kr = "M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.54,21.82 9.5,21.58L9.13,18.93C8.5,18.68 7.96,18.34 7.44,17.94L4.95,18.95C4.73,19.03 4.46,18.95 4.34,18.73L2.34,15.27C2.21,15.05 2.27,14.78 2.46,14.63L4.57,12.97L4.5,12L4.57,11L2.46,9.37C2.27,9.22 2.21,8.95 2.34,8.73L4.34,5.27C4.46,5.05 4.73,4.96 4.95,5.05L7.44,6.05C7.96,5.66 8.5,5.32 9.13,5.07L9.5,2.42C9.54,2.18 9.75,2 10,2H14C14.25,2 14.46,2.18 14.5,2.42L14.87,5.07C15.5,5.32 16.04,5.66 16.56,6.05L19.05,5.05C19.27,4.96 19.54,5.05 19.66,5.27L21.66,8.73C21.79,8.95 21.73,9.22 21.54,9.37L19.43,11L19.5,12L19.43,13L21.54,14.63C21.73,14.78 21.79,15.05 21.66,15.27L19.66,18.73C19.54,18.95 19.27,19.04 19.05,18.95L16.56,17.95C16.04,18.34 15.5,18.68 14.87,18.93L14.5,21.58C14.46,21.82 14.25,22 14,22H10M11.25,4L10.88,6.61C9.68,6.86 8.62,7.5 7.85,8.39L5.44,7.35L4.69,8.65L6.8,10.2C6.4,11.37 6.4,12.64 6.8,13.8L4.68,15.36L5.43,16.66L7.86,15.62C8.63,16.5 9.68,17.14 10.87,17.38L11.24,20H12.76L13.13,17.39C14.32,17.14 15.37,16.5 16.14,15.62L18.57,16.66L19.32,15.36L17.2,13.81C17.6,12.64 17.6,11.37 17.2,10.2L19.31,8.65L18.56,7.35L16.15,8.39C15.38,7.5 14.32,6.86 13.12,6.62L12.75,4H11.25Z", Yr = "M3 6H21V4H3C1.9 4 1 4.9 1 6V18C1 19.1 1.9 20 3 20H7V18H3V6M13 12H9V13.78C8.39 14.33 8 15.11 8 16C8 16.89 8.39 17.67 9 18.22V20H13V18.22C13.61 17.67 14 16.88 14 16S13.61 14.33 13 13.78V12M11 17.5C10.17 17.5 9.5 16.83 9.5 16S10.17 14.5 11 14.5 12.5 15.17 12.5 16 11.83 17.5 11 17.5M22 8H16C15.5 8 15 8.5 15 9V19C15 19.5 15.5 20 16 20H22C22.5 20 23 19.5 23 19V9C23 8.5 22.5 8 22 8M21 18H17V10H21V18Z", Jr = "M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z", Xr = "M3,4H7V8H3V4M9,5V7H21V5H9M3,10H7V14H3V10M9,11V13H21V11H9M3,16H7V20H3V16M9,17V19H21V17H9";
-function Qr(t, e, r) {
-  const a = t.states[e.climate_entity], i = xt(e, a), n = (c) => {
-    r(), window.requestAnimationFrame(() => {
-      dt(t, e.climate_entity, c);
+], P);
+const Qr = "M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z", Xr = "M9 17H7V10H9V17M13 17H11V7H13V17M17 17H15V13H17V17M19 19H5V5H19V19.1M19 3H5C3.9 3 3 3.9 3 5V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V5C21 3.9 20.1 3 19 3Z", ea = "M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8M12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12A2,2 0 0,0 12,10M10,22C9.75,22 9.54,21.82 9.5,21.58L9.13,18.93C8.5,18.68 7.96,18.34 7.44,17.94L4.95,18.95C4.73,19.03 4.46,18.95 4.34,18.73L2.34,15.27C2.21,15.05 2.27,14.78 2.46,14.63L4.57,12.97L4.5,12L4.57,11L2.46,9.37C2.27,9.22 2.21,8.95 2.34,8.73L4.34,5.27C4.46,5.05 4.73,4.96 4.95,5.05L7.44,6.05C7.96,5.66 8.5,5.32 9.13,5.07L9.5,2.42C9.54,2.18 9.75,2 10,2H14C14.25,2 14.46,2.18 14.5,2.42L14.87,5.07C15.5,5.32 16.04,5.66 16.56,6.05L19.05,5.05C19.27,4.96 19.54,5.05 19.66,5.27L21.66,8.73C21.79,8.95 21.73,9.22 21.54,9.37L19.43,11L19.5,12L19.43,13L21.54,14.63C21.73,14.78 21.79,15.05 21.66,15.27L19.66,18.73C19.54,18.95 19.27,19.04 19.05,18.95L16.56,17.95C16.04,18.34 15.5,18.68 14.87,18.93L14.5,21.58C14.46,21.82 14.25,22 14,22H10M11.25,4L10.88,6.61C9.68,6.86 8.62,7.5 7.85,8.39L5.44,7.35L4.69,8.65L6.8,10.2C6.4,11.37 6.4,12.64 6.8,13.8L4.68,15.36L5.43,16.66L7.86,15.62C8.63,16.5 9.68,17.14 10.87,17.38L11.24,20H12.76L13.13,17.39C14.32,17.14 15.37,16.5 16.14,15.62L18.57,16.66L19.32,15.36L17.2,13.81C17.6,12.64 17.6,11.37 17.2,10.2L19.31,8.65L18.56,7.35L16.15,8.39C15.38,7.5 14.32,6.86 13.12,6.62L12.75,4H11.25Z", ta = "M3 6H21V4H3C1.9 4 1 4.9 1 6V18C1 19.1 1.9 20 3 20H7V18H3V6M13 12H9V13.78C8.39 14.33 8 15.11 8 16C8 16.89 8.39 17.67 9 18.22V20H13V18.22C13.61 17.67 14 16.88 14 16S13.61 14.33 13 13.78V12M11 17.5C10.17 17.5 9.5 16.83 9.5 16S10.17 14.5 11 14.5 12.5 15.17 12.5 16 11.83 17.5 11 17.5M22 8H16C15.5 8 15 8.5 15 9V19C15 19.5 15.5 20 16 20H22C22.5 20 23 19.5 23 19V9C23 8.5 22.5 8 22 8M21 18H17V10H21V18Z", ra = "M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z", aa = "M3,4H7V8H3V4M9,5V7H21V5H9M3,10H7V14H3V10M9,11V13H21V11H9M3,16H7V20H3V16M9,17V19H21V17H9";
+function ia(t, e, r, a) {
+  const i = e.states[r.climate_entity], n = xt(r, i), o = (f) => {
+    a(), window.requestAnimationFrame(() => {
+      dt(t, r.climate_entity, f);
     });
-  }, o = async () => {
-    r(), window.requestAnimationFrame(() => {
-      pr(t, e);
+  }, s = async () => {
+    a(), window.requestAnimationFrame(() => {
+      pr(e, r);
     });
-  }, s = () => {
+  }, l = () => {
     window.dispatchEvent(
       new CustomEvent("atrea-more-info-related", {
-        detail: { entityId: e.climate_entity }
+        detail: { entityId: r.climate_entity }
       })
     );
-  }, l = async () => {
-    const c = await ht(t, e.climate_entity);
-    if (!c) {
-      n("info");
+  }, c = async () => {
+    const f = await ft(e, r.climate_entity);
+    if (!f) {
+      o("info");
       return;
     }
-    r(), window.requestAnimationFrame(() => {
-      pe(`/config/devices/device/${encodeURIComponent(c)}`);
+    a(), window.requestAnimationFrame(() => {
+      pe(`/config/devices/device/${encodeURIComponent(f)}`);
     });
   };
-  return p`
-    <ha-dialog open @closed=${r} .heading=${!1}>
+  return u`
+    <ha-dialog open @closed=${a} .heading=${!1}>
       <ha-icon-button
         slot="headerNavigationIcon"
         class="more-info-close"
-        @click=${r}
+        @click=${a}
         .label=${"Close dialog"}
         title="Close dialog"
         aria-label="Close dialog"
       >
-        <ha-svg-icon .path=${Zr}></ha-svg-icon>
+        <ha-svg-icon .path=${Qr}></ha-svg-icon>
       </ha-icon-button>
-      ${i ? p`<div slot="headerTitle" class="more-info-dialog-title">${i}</div>` : u}
+      ${n ? u`<div slot="headerTitle" class="more-info-dialog-title">${n}</div>` : p}
       <div slot="headerActionItems" class="more-info-header-actions">
         <ha-icon-button
           class="more-info-header-action"
           .label=${"History"}
           title="History"
           aria-label="History"
-          @click=${o}
+          @click=${s}
         >
-          <ha-svg-icon .path=${Gr}></ha-svg-icon>
+          <ha-svg-icon .path=${Xr}></ha-svg-icon>
         </ha-icon-button>
         <ha-icon-button
           class="more-info-header-action"
           .label=${"Settings"}
           title="Settings"
           aria-label="Settings"
-          @click=${() => n("settings")}
+          @click=${() => o("settings")}
         >
-          <ha-svg-icon .path=${Kr}></ha-svg-icon>
+          <ha-svg-icon .path=${ea}></ha-svg-icon>
         </ha-icon-button>
         <ha-dropdown
           class="more-info-header-dropdown"
@@ -1652,39 +1689,39 @@ function Qr(t, e, r) {
           >
             <ha-svg-icon .path=${_t}></ha-svg-icon>
           </ha-icon-button>
-          <ha-dropdown-item class="more-info-dropdown-item" @click=${l}>
-            <ha-svg-icon slot="icon" .path=${Yr}></ha-svg-icon>
+          <ha-dropdown-item class="more-info-dropdown-item" @click=${c}>
+            <ha-svg-icon slot="icon" .path=${ta}></ha-svg-icon>
             Device info
           </ha-dropdown-item>
-          <ha-dropdown-item class="more-info-dropdown-item" @click=${s}>
-            <ha-svg-icon slot="icon" .path=${Jr}></ha-svg-icon>
+          <ha-dropdown-item class="more-info-dropdown-item" @click=${l}>
+            <ha-svg-icon slot="icon" .path=${ra}></ha-svg-icon>
             Related
           </ha-dropdown-item>
-          <ha-dropdown-item class="more-info-dropdown-item" @click=${() => n("info")}>
-            <ha-svg-icon slot="icon" .path=${Xr}></ha-svg-icon>
+          <ha-dropdown-item class="more-info-dropdown-item" @click=${() => o("info")}>
+            <ha-svg-icon slot="icon" .path=${aa}></ha-svg-icon>
             Details
           </ha-dropdown-item>
         </ha-dropdown>
       </div>
-      ${a ? p`
-            <atrea-more-info-climate .hass=${t} .stateObj=${a}></atrea-more-info-climate>
-          ` : u}
+      ${i ? u`
+            <atrea-more-info-climate .hass=${e} .stateObj=${i}></atrea-more-info-climate>
+          ` : p}
     </ha-dialog>
   `;
 }
-function ea(t) {
+function na(t) {
   if (t === null || t <= 0)
     return "0s";
   const r = 2.8 - Math.min(100, Math.max(0, t)) * 0.022;
   return `${Math.max(0.5, r).toFixed(2)}s`;
 }
-function $e(t) {
+function we(t) {
   if (t === null || t <= 0)
     return "0s";
   const r = 4.2 - Math.min(100, Math.max(0, t)) * 0.03;
   return `${Math.max(0.9, r).toFixed(2)}s`;
 }
-const ta = "0 0 1000 620", $ = {
+const oa = "0 0 1000 620", w = {
   supplyMain: "M 40 410 h 268 l 64 -64 m 257 -92 64 -64 h 267",
   extractMain: "M 40 190 h 267 l 90 90 L 563 280 693 410 h 267",
   unitOutline: "M 165.5 510 V 90 h 670 v 420 h -670",
@@ -1704,28 +1741,37 @@ const ta = "0 0 1000 620", $ = {
   oda: { x: 95, y: 410 },
   eta: { x: 905, y: 410 }
 };
-function $t(t, e) {
+function wt(t, e) {
   return ["badge", t ? "" : "is-muted", e ?? ""].filter(Boolean).join(" ");
 }
 function se(t, e, r, a, i) {
-  return y`
-    <g class=${$t(e.available, "temp-badge")} transform="translate(${r}, ${a})" @click=${i}>
+  return b`
+    <g class=${wt(e.available, "temp-badge")} transform="translate(${r}, ${a})" @click=${i}>
       <rect x="-56" y="-24" width="112" height="48" rx="14"></rect>
       <text x="0" y="5" class="badge-value temperature-only">${gt(e.value, e.unit, 1)}</text>
     </g>
   `;
 }
-function Qe(t, e, r, a) {
-  return y`
-    <g class=${$t(t.available, "metric-badge fan-speed-badge")} transform="translate(${e}, ${r})" @click=${a}>
+function Xe(t, e, r, a) {
+  return b`
+    <g class=${wt(t.available, "metric-badge fan-speed-badge")} transform="translate(${e}, ${r})" @click=${a}>
       <rect x="-45" y="-18" width="90" height="36" rx="9"></rect>
       <text x="0" y="4" class="badge-value temperature-only">${gt(t.speedPercent, "%", 0)}</text>
     </g>
   `;
 }
+function sa(t, e, r, a) {
+  const i = t.value === null ? "--" : `${Math.round(t.value)} ${t.unit}`;
+  return b`
+    <g class="badge metric-badge airflow-request-badge" transform="translate(${e}, ${r})" @click=${a}>
+      <rect x="-80" y="-18" width="160" height="36" rx="9"></rect>
+      <text x="0" y="4" class="badge-value temperature-only">${i}</text>
+    </g>
+  `;
+}
 function et(t, e, r, a, i) {
-  const n = ea(e.speedPercent);
-  return y`
+  const n = na(e.speedPercent);
+  return b`
     <g class="fan-group" transform="translate(${r}, ${a})" @click=${i}>
       <circle class="fan-shell" r="44"></circle>
       <g class="fan-rotor">
@@ -1733,18 +1779,18 @@ function et(t, e, r, a, i) {
         <path d="M 32 0 C 32 18 13 27 4 11 C 0 7 4 0 10 0 Z"></path>
         <path d="M 0 32 C -18 32 -27 13 -11 4 C -7 0 0 4 0 10 Z"></path>
         <path d="M -32 0 C -32 -18 -13 -27 -4 -11 C 0 -7 -4 0 -10 0 Z"></path>
-        ${e.speedPercent && e.speedPercent > 0 ? y`<animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur=${n} repeatCount="indefinite"></animateTransform>` : u}
+        ${e.speedPercent && e.speedPercent > 0 ? b`<animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur=${n} repeatCount="indefinite"></animateTransform>` : p}
       </g>
       <circle class="fan-core" r="9"></circle>
     </g>
   `;
 }
-function ra(t) {
+function la(t) {
   return (t.percentOpen ?? 0) / 100 * 90;
 }
 function tt(t, e, r, a, i, n) {
-  const s = 90 - ra(e);
-  return y`
+  const s = 90 - la(e);
+  return b`
     <g class=${["damper", e.available ? "" : "is-muted"].filter(Boolean).join(" ")} transform="translate(${r}, ${a})" @click=${n}>
       <circle r="20" class="damper-ring"></circle>
       <g transform=${`rotate(${-s})`}>
@@ -1753,7 +1799,7 @@ function tt(t, e, r, a, i, n) {
     </g>
   `;
 }
-function we(t, e, r) {
+function $e(t, e, r) {
   return Math.round(t + (e - t) * r);
 }
 function rt(t) {
@@ -1764,18 +1810,18 @@ function rt(t) {
     Number.parseInt(e.slice(4, 6), 16)
   ];
 }
-function aa(t, e) {
+function ca(t, e) {
   const r = Math.max(t[0].at, Math.min(t[t.length - 1].at, e));
   for (let a = 0; a < t.length - 1; a += 1) {
     const i = t[a], n = t[a + 1];
     if (r >= i.at && r <= n.at) {
       const o = (r - i.at) / (n.at - i.at || 1), s = rt(i.color), l = rt(n.color);
-      return `rgb(${we(s[0], l[0], o)} ${we(s[1], l[1], o)} ${we(s[2], l[2], o)})`;
+      return `rgb(${$e(s[0], l[0], o)} ${$e(s[1], l[1], o)} ${$e(s[2], l[2], o)})`;
     }
   }
   return t[t.length - 1].color;
 }
-function ia(t) {
+function pa(t) {
   if (t.lifePercent === null)
     return {
       color: "rgb(139 160 181)",
@@ -1783,7 +1829,7 @@ function ia(t) {
       text: t.available ? "service" : "N/C",
       critical: !1
     };
-  const e = Math.max(0, Math.min(60, t.lifePercent)), r = aa(
+  const e = Math.max(0, Math.min(60, t.lifePercent)), r = ca(
     [
       { at: 0, color: "#d93c3c" },
       { at: 15, color: "#e06a3a" },
@@ -1795,28 +1841,28 @@ function ia(t) {
   return {
     color: r,
     opacity: a,
-    text: `${br(t.lifePercent, 0)} d`,
+    text: `${yr(t.lifePercent, 0)} d`,
     critical: e < 15
   };
 }
 function at(t, e, r, a) {
-  const i = ia(t);
-  return y`
+  const i = pa(t);
+  return b`
     <g
       class=${["filter", `is-${t.severity}`, t.available ? "" : "is-muted", i.critical ? "is-critical-pulse" : ""].filter(Boolean).join(" ")}
       @click=${a}
       style=${`--filter-color:${i.color}; --filter-opacity:${i.opacity};`}
     >
       <path class="filter-body" d=${e}></path>
-      ${r.map((n) => y`<path class="filter-slat" d=${n}></path>`)}
+      ${r.map((n) => b`<path class="filter-slat" d=${n}></path>`)}
     </g>
   `;
 }
 function le(t) {
-  return p`<ha-svg-icon .path=${t}></ha-svg-icon>`;
+  return u`<ha-svg-icon .path=${t}></ha-svg-icon>`;
 }
-function na() {
-  return y`
+function ua() {
+  return b`
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d=${Oe}></path>
       <path d="M 21.703253 4.7618552 L 19.958952 2.8872845 L 18.214651 4.7618552" fill="none" stroke="currentColor" stroke-width="1.8114" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -1824,8 +1870,8 @@ function na() {
     </svg>
   `;
 }
-function oa() {
-  return y`
+function da() {
+  return b`
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d=${Oe}></path>
       <path d="M 3.2824585 1.8140332 L 1.6824585 3.6140332 L 3.2824585 5.4140332" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
@@ -1835,15 +1881,15 @@ function oa() {
     </svg>
   `;
 }
-const sa = [
-  { id: "standby", label: "Standby", icon: le(zr), matches: ["standby", "stand-by", "off"] },
-  { id: "interval", label: "Interval", icon: le(Or), matches: ["interval", "intervals", "auto"] },
+const fa = [
+  { id: "standby", label: "Standby", icon: le(Rr), matches: ["standby", "stand-by", "off"] },
+  { id: "interval", label: "Interval", icon: le(Nr), matches: ["interval", "intervals", "auto"] },
   { id: "ventilation", label: "Ventilation only", icon: le(Oe), matches: ["ventilation", "ventilation only"] },
-  { id: "night-cooling", label: "Night cooling", icon: le(Fr), matches: ["night cooling", "night_cooling", "cooling"] },
-  { id: "disbalance", label: "Disbalance", icon: oa(), matches: ["disbalance", "imbalance"] },
-  { id: "fan", label: "Fan", icon: na(), matches: [] }
+  { id: "night-cooling", label: "Night cooling", icon: le(Ir), matches: ["night cooling", "night_cooling", "cooling"] },
+  { id: "disbalance", label: "Disbalance", icon: da(), matches: ["disbalance", "imbalance"] },
+  { id: "fan", label: "Fan", icon: ua(), matches: [] }
 ];
-function la(t, e) {
+function ha(t, e) {
   const r = t.map((a) => ({ option: a, lower: a.toLowerCase() }));
   for (const a of e) {
     const i = r.find(({ lower: n }) => n === a || n.includes(a));
@@ -1852,8 +1898,8 @@ function la(t, e) {
   }
   return null;
 }
-function ca(t) {
-  return t.length === 0 ? p`` : p`
+function ma(t) {
+  return t.length === 0 ? u`` : u`
     <div
       class="official-card-features"
       style="--feature-color:var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)));"
@@ -1866,7 +1912,7 @@ function ca(t) {
           style="--control-select-color:var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)));"
         >
           ${t.map(
-    (e) => p`
+    (e) => u`
               <div
                 role="radio"
                 id=${e.id}
@@ -1886,22 +1932,22 @@ function ca(t) {
     </div>
   `;
 }
-function pa(t, e, r) {
+function ga(t, e, r) {
   const a = e.mode.preset.options, i = e.mode.preset.current?.toLowerCase() ?? "";
-  return ca(
-    sa.map((n) => {
+  return ma(
+    fa.map((n) => {
       if (n.id === "fan")
         return {
           action: r.onToggleFanPopup,
-          disabled: !e.mode.fan.controllable,
+          disabled: !e.airflowRequest && !e.mode.fan.controllable,
           icon: n.icon,
           id: `action-${n.id}`,
           label: n.label,
           selected: r.fanPopupOpen
         };
-      const o = la(a, [...n.matches]);
+      const o = ha(a, [...n.matches]);
       return {
-        action: o && e.mode.climateEntity ? () => ft(t, e.mode.climateEntity, "preset", o) : void 0,
+        action: o && e.mode.climateEntity ? () => ht(t, e.mode.climateEntity, "preset", o) : void 0,
         disabled: !o || !e.mode.climateEntity,
         icon: n.icon,
         id: `action-${n.id}`,
@@ -1911,73 +1957,73 @@ function pa(t, e, r) {
     })
   );
 }
-function ua(t, e) {
-  if (!e.fanPopupOpen || !t.mode.fan.controllable)
-    return p``;
-  const r = Math.round(Math.max(0, Math.min(100, e.fanPopupValue)));
-  return p`
+function va(t, e) {
+  if (!e.fanPopupOpen || !t.airflowRequest && !t.mode.fan.controllable)
+    return u``;
+  const r = t.airflowRequest, a = r?.min ?? 0, i = r?.max ?? 100, n = r?.step ?? 1, o = Math.round(Math.max(a, Math.min(i, e.fanPopupValue))), s = r ? "Airflow" : "Fan speed", l = r ? `${o}${r.unit ? ` ${r.unit}` : ""}` : `${o}%`;
+  return u`
     <div class="fan-popup-shell" @click=${e.onCloseFanPopup}>
       <div class="fan-popup-backdrop"></div>
       <div
         class="fan-popup official-card-feature"
-        @click=${(a) => {
-    a.stopPropagation(), e.onFanPopupInteract();
+        @click=${(c) => {
+    c.stopPropagation(), e.onFanPopupInteract();
   }}
       >
         <div class="fan-popup-header">
-          <span class="fan-popup-title">Fan speed</span>
-          <span class="fan-popup-value">${r}%</span>
+          <span class="fan-popup-title">${s}</span>
+          <span class="fan-popup-value">${l}</span>
         </div>
         <div class="fan-popup-controls">
-          <button class="fan-step-button" type="button" aria-label="Decrease fan speed" @click=${e.onFanDecrease}>-</button>
+          <button class="fan-step-button" type="button" aria-label="Decrease ${s.toLowerCase()}" @click=${e.onFanDecrease}>-</button>
           <div class="fan-slider-wrap">
             <input
               class="fan-slider"
               type="range"
-              min="0"
-              max="100"
-              step="1"
-              .value=${String(r)}
-              aria-label="Fan speed percentage"
-              @input=${(a) => {
-    const i = a.currentTarget;
-    e.onFanPreviewChange(Number.parseInt(i.value, 10));
+              min=${String(a)}
+              max=${String(i)}
+              step=${String(n)}
+              .value=${String(o)}
+              aria-label=${r ? "Requested airflow" : "Fan speed percentage"}
+              @input=${(c) => {
+    const f = c.currentTarget;
+    e.onFanPreviewChange(Number.parseInt(f.value, 10));
   }}
-              @change=${(a) => {
-    const i = a.currentTarget;
-    e.onFanValueCommit(Number.parseInt(i.value, 10));
+              @change=${(c) => {
+    const f = c.currentTarget;
+    e.onFanValueCommit(Number.parseInt(f.value, 10));
   }}
             />
           </div>
-          <button class="fan-step-button" type="button" aria-label="Increase fan speed" @click=${e.onFanIncrease}>+</button>
+          <button class="fan-step-button" type="button" aria-label="Increase ${s.toLowerCase()}" @click=${e.onFanIncrease}>+</button>
         </div>
       </div>
     </div>
   `;
 }
-function da(t, e) {
+function ba(t, e) {
   if (!t.alerts.warning && !t.alerts.fault)
-    return p``;
+    return u``;
   const r = `${t.alerts.notifications.length || t.alerts.warningCount + t.alerts.faultCount} active alert${(t.alerts.notifications.length || t.alerts.warningCount + t.alerts.faultCount) === 1 ? "" : "s"}`;
-  return p`
+  return u`
     <ha-icon-button
       class="alert-info ${t.alerts.fault ? "is-fault" : "is-warning"}"
       .label=${r}
       .title=${r}
       @click=${e.onOpenAlertPopup}
     >
-      <ha-svg-icon .path=${Tr}></ha-svg-icon>
+      <ha-svg-icon .path=${Vr}></ha-svg-icon>
     </ha-icon-button>
   `;
 }
-function ha(t, e) {
+function ya(t, e) {
   if (!e.alertPopupOpen || !t.alerts.warning && !t.alerts.fault)
-    return p``;
+    return u``;
   const r = t.alerts.fault ? "Fault active" : "Warning active", a = t.alerts.notifications.length > 0 ? t.alerts.notifications : t.alerts.details.map((i, n) => ({
     kind: t.alerts.fault && n === 0 ? "fault" : "warning",
     fullMessage: i
   }));
-  return p`
+  return u`
     <div class="alert-popup-shell" @click=${e.onCloseAlertPopup}>
       <div class="alert-popup-backdrop"></div>
       <div
@@ -1991,7 +2037,7 @@ function ha(t, e) {
         </div>
         <div class="alert-popup-body">
           ${a.map(
-    (i) => p`
+    (i) => u`
               <p class="alert-popup-text ${i.kind === "fault" ? "is-fault" : "is-warning"}">${i.fullMessage}</p>
             `
   )}
@@ -2000,19 +2046,19 @@ function ha(t, e) {
     </div>
   `;
 }
-function fa(t, e, r, a) {
-  const i = e.layout, n = r.dampers.bypass.percentOpen ?? 0, o = n <= 0, s = n >= 100 ? 0.3 : n > 0 ? 0.65 : 1, l = n <= 0 ? 0 : n >= 100 ? 1 : 0.35 + n / 150, c = e.tap_actions, h = t.localize?.("ui.panel.lovelace.cards.show_more_info") ?? "Show more information", d = xt(e, t.states[e.climate_entity]);
-  return p`
-    ${da(r, a)}
-    ${ha(r, a)}
-    ${d ? p`<p class="title">${d}</p>` : u}
+function _a(t, e, r, a) {
+  const i = e.layout, n = r.dampers.bypass.percentOpen ?? 0, o = n <= 0, s = n >= 100 ? 0.3 : n > 0 ? 0.65 : 1, l = n <= 0 ? 0 : n >= 100 ? 1 : 0.35 + n / 150, c = e.tap_actions, f = t.localize?.("ui.panel.lovelace.cards.show_more_info") ?? "Show more information", d = xt(e, t.states[e.climate_entity]);
+  return u`
+    ${ba(r, a)}
+    ${ya(r, a)}
+    ${d ? u`<p class="title">${d}</p>` : p}
 
     <div class=${d ? "container" : "container no-title"}>
-      ${ua(r, a)}
+      ${va(r, a)}
 
       <div class="main-stage">
         <div class="canvas-wrap">
-          <svg class="unit-svg" viewBox=${ta} role="img" aria-label="Atrea aMotion ventilation scheme">
+          <svg class="unit-svg" viewBox=${oa} role="img" aria-label="Atrea aMotion ventilation scheme">
                 <g class="background-layer">
                   <rect class="unit-frame" x="40" y="60" width="920" height="480" rx="18"></rect>
                   <g class="side-decor outside" transform="translate(50 240) scale(0.4)">
@@ -2022,53 +2068,55 @@ function fa(t, e, r, a) {
                     <path d="M170 0c-10 .055-20 1.5-30 4-11 3.8-22 11-27 21-15-5.3-25-9.4-40-9.9-2-.1-4-.1-6-.1-13-.35-25 5.7-31 16-5.7 9.5-6.8 19-4.7 29-14 4.3-26 12-31 25-2 21 11 39 27 49-2.6 3.6-3.9 7.3-4.3 12-1 18 11 38 23 46 11 6.7 22 9.6 34 9.1v-.003c13-1.7 26-5.5 35-16l4.2 3.9c17 15 38 20 61 18 14-2.1 26-7.3 28-22 .1-.99.1-2 .1-3 13-.86 23-3.9 29-16 5.1-11 5.2-18 .8-28-3.9-7.3-10-14-15-19 15-2.6 26-15 26-24 .12-1.6.14-3.5.004-5-6.3-15-24-25-39-29 5.6-7.2 8.7-14 9.2-23h.1c.04-1.2-.034-2.4-.1-3.6-.59-7.2-3-12-7.3-17-8.3-9.9-20-14-32-15-3.5-.29-6.9-.43-10-.41zm-1.5 14c2.1-.01 4.2.041 6.3.14 13 .19 29 6.4 31 20 .059.73.1 1.3-.005 2.1h.001c-3.4 24-30 30-50 39l-12 5.8 18-3.1c24-4.4 41-9.4 62 1.5 6.8 4.2 13 8.6 10 17-7.7 9-28 11-40 14 9 8.2 19 17 26 26 7.5 8.4 6.9 21 1.2 29-9.4 5.3-20 4.1-30 4.1 2.1 8.2 3.7 18-3.8 23-23 8.3-43 1.2-60-13-5-4.1-9.7-8.2-15-12-7.4 12-20 20-34 22v.006c-8.7.62-16-1.4-24-5.6-12-7.1-19-22-19-34 .29-3.7 3.7-6.9 6.2-7.8l27-7.3-27-6.2-.006.02-.094-.02c-10-4.4-21-12-26-22-12-22 11-30 32-33-2.2-8.2-6-18-4.2-26 3-11 8.5-16 20-17 23-1.3 40 5.6 57 19 1.3-7.2.89-14 5.7-20l1.1-1.3c11-9.1 25-12 40-12z"></path>
                   </g>
                   <path class="side-decor inside" d="M95 24 62 3 9 38h8v55.5h90V38h9.5l-20-13V6h-1.3z" transform="translate(835 255)"></path>
-                  <path class="unit-outline" d=${$.unitOutline}></path>
-                  <path class="exchanger-outline" d=${$.exchangerOutline}></path>
+                  <path class="unit-outline" d=${w.unitOutline}></path>
+                  <path class="exchanger-outline" d=${w.exchangerOutline}></path>
                 </g>
 
                 <g class="duct-layer">
-                  <path class="duct supply" d=${$.supplyMain}></path>
-                  <path class="duct extract" d=${$.extractMain}></path>
-                  <path class=${o ? "duct bypass is-closed" : "duct bypass"} d=${$.bypassInner}></path>
+                  <path class="duct supply" d=${w.supplyMain}></path>
+                  <path class="duct extract" d=${w.extractMain}></path>
+                  <path class=${o ? "duct bypass is-closed" : "duct bypass"} d=${w.bypassInner}></path>
                 </g>
 
                 <g class="flow-layer">
-                  <path class="flow supply" style=${`opacity:${s}; --flow-duration:${$e(r.fans.supply.speedPercent)};`} d=${$.supplyMain}></path>
-                  <path class="flow extract reverse" style=${`opacity:${s}; --flow-duration:${$e(r.fans.extract.speedPercent)};`} d=${$.extractMain}></path>
-                  <path class="flow bypass" style=${`opacity:${l}; --flow-duration:${$e(r.fans.supply.speedPercent)};`} d=${$.bypassInner}></path>
+                  <path class="flow supply" style=${`opacity:${s}; --flow-duration:${we(r.fans.supply.speedPercent)};`} d=${w.supplyMain}></path>
+                  <path class="flow extract reverse" style=${`opacity:${s}; --flow-duration:${we(r.fans.extract.speedPercent)};`} d=${w.extractMain}></path>
+                  <path class="flow bypass" style=${`opacity:${l}; --flow-duration:${we(r.fans.supply.speedPercent)};`} d=${w.bypassInner}></path>
                 </g>
 
                 <g class="component-layer">
-                  ${et("Extract fan", r.fans.extract, ne.extract.x, ne.extract.y, () => g(t, c.extract_fan, r.fans.extract.speedEntity))}
-                  ${et("Supply fan", r.fans.supply, ne.supply.x, ne.supply.y, () => g(t, c.supply_fan, r.fans.supply.speedEntity))}
-                  ${tt("ODA", r.dampers.oda, oe.oda.x, oe.oda.y, !1, () => g(t, c.oda_damper, r.dampers.oda.entity))}
-                  ${tt("ETA", r.dampers.eta, oe.eta.x, oe.eta.y, !1, () => g(t, c.eta_damper, r.dampers.eta.entity))}
+                  ${et("Extract fan", r.fans.extract, ne.extract.x, ne.extract.y, () => v(a.host, c.extract_fan, r.fans.extract.speedEntity))}
+                  ${et("Supply fan", r.fans.supply, ne.supply.x, ne.supply.y, () => v(a.host, c.supply_fan, r.fans.supply.speedEntity))}
+                  ${tt("ODA", r.dampers.oda, oe.oda.x, oe.oda.y, !1, () => v(a.host, c.oda_damper, r.dampers.oda.entity))}
+                  ${tt("ETA", r.dampers.eta, oe.eta.x, oe.eta.y, !1, () => v(a.host, c.eta_damper, r.dampers.eta.entity))}
                   ${at(
     r.filters.oda,
-    $.filterLeft,
+    w.filterLeft,
     ["m 357,361 10,-10", "m 345.5,349.5 10,-10", "m 334,338 10,-10", "m 322.5,326.5 10,-10", "m 391.5,395.5 10,-10", "m 380,384 10,-10", "m 368.5,372.5 10,-10"],
-    () => g(t, c.oda_filter, r.filters.oda.statusEntity ?? r.filters.oda.lifeEntity)
+    () => v(a.host, c.oda_filter, r.filters.oda.statusEntity ?? r.filters.oda.lifeEntity)
   )}
                   ${at(
     r.filters.eta,
-    $.filterRight,
+    w.filterRight,
     ["m 357,361 10,-10", "m 345.5,349.5 10,-10", "m 334,338 10,-10", "m 322.5,326.5 10,-10", "m 391.5,395.5 10,-10", "m 380,384 10,-10", "m 368.5,372.5 10,-10"],
-    () => g(t, c.eta_filter, r.filters.eta.statusEntity ?? r.filters.eta.lifeEntity)
+    () => v(a.host, c.eta_filter, r.filters.eta.statusEntity ?? r.filters.eta.lifeEntity)
   )}
                 </g>
 
                 <g class="overlay-layer">
-                  ${i.show_temp ? y`
-                        ${se("EHA", r.temperatures.eha, C.eha.x, C.eha.y, () => g(t, c.eha_temperature, r.temperatures.eha.entity))}
-                        ${se("ODA", r.temperatures.oda, C.oda.x, C.oda.y, () => g(t, c.oda_temperature, r.temperatures.oda.entity))}
-                        ${se("SUP", r.temperatures.sup, C.sup.x, C.sup.y, () => g(t, c.sup_temperature, r.temperatures.sup.entity))}
-                        ${se("ETA", r.temperatures.eta, C.eta.x, C.eta.y, () => g(t, c.eta_temperature, r.temperatures.eta.entity))}
-                      ` : u}
+                  ${i.show_temp ? b`
+                        ${se("EHA", r.temperatures.eha, C.eha.x, C.eha.y, () => v(a.host, c.eha_temperature, r.temperatures.eha.entity))}
+                        ${se("ODA", r.temperatures.oda, C.oda.x, C.oda.y, () => v(a.host, c.oda_temperature, r.temperatures.oda.entity))}
+                        ${se("SUP", r.temperatures.sup, C.sup.x, C.sup.y, () => v(a.host, c.sup_temperature, r.temperatures.sup.entity))}
+                        ${se("ETA", r.temperatures.eta, C.eta.x, C.eta.y, () => v(a.host, c.eta_temperature, r.temperatures.eta.entity))}
+                      ` : p}
 
-                  ${i.show_speed ? y`
-                        ${Qe(r.fans.extract, 255, 115, () => g(t, c.extract_fan, r.fans.extract.speedEntity))}
-                        ${Qe(r.fans.supply, 745, 115, () => g(t, c.supply_fan, r.fans.supply.speedEntity))}
-                      ` : u}
+                  ${i.show_speed ? b`
+                        ${Xe(r.fans.extract, 255, 115, () => v(a.host, c.extract_fan, r.fans.extract.speedEntity))}
+                        ${Xe(r.fans.supply, 745, 115, () => v(a.host, c.supply_fan, r.fans.supply.speedEntity))}
+                      ` : p}
+
+                  ${i.show_airflow && r.airflowRequest ? sa(r.airflowRequest, 500, 150, a.onToggleFanPopup) : p}
 
                   <g class="port-labels">
                     <circle cx="170" cy="190" r="30" class="port-dot eha"></circle>
@@ -2088,19 +2136,19 @@ function fa(t, e, r, a) {
 
       <ha-icon-button
         class="more-info"
-        .label=${h}
-        .title=${h}
+        .label=${f}
+        .title=${f}
         @click=${a.onOpenMoreInfo}
       >
         <ha-svg-icon .path=${_t}></ha-svg-icon>
       </ha-icon-button>
 
-    ${pa(t, r, a)}
+    ${ga(t, r, a)}
 
-    ${r.availability !== "full" ? p`<div class="availability-note">Partial telemetry: card remains active, but some data is unavailable.</div>` : u}
+    ${r.availability !== "full" ? u`<div class="availability-note">Partial telemetry: card remains active, but some data is unavailable.</div>` : p}
   `;
 }
-const ma = nt`
+const xa = nt`
   :host {
     display: block;
     --atrea-bg: var(--ha-card-background, var(--card-background-color, #fff));
@@ -3197,40 +3245,41 @@ const ma = nt`
     }
   }
 `;
-var ga = Object.defineProperty, va = Object.getOwnPropertyDescriptor, P = (t, e, r, a) => {
-  for (var i = a > 1 ? void 0 : a ? va(e, r) : e, n = t.length - 1, o; n >= 0; n--)
+var wa = Object.defineProperty, $a = Object.getOwnPropertyDescriptor, E = (t, e, r, a) => {
+  for (var i = a > 1 ? void 0 : a ? $a(e, r) : e, n = t.length - 1, o; n >= 0; n--)
     (o = t[n]) && (i = (a ? o(e, r, i) : o(i)) || i);
-  return a && i && ga(e, r, i), i;
+  return a && i && wa(e, r, i), i;
 };
-const ba = 8e3, ya = 8e3;
-let _ = class extends L {
+const Aa = 8e3, Ca = 8e3;
+let _ = class extends O {
   constructor() {
     super(...arguments), this.isMoreInfoOpen = !1, this.isFanPopupOpen = !1, this.isAlertPopupOpen = !1, this.fanPopupValue = null;
   }
   setConfig(t) {
-    this.errorMessage = void 0, this.config = vr(t);
+    this.errorMessage = void 0, this.config = br(t);
   }
   getCardSize() {
     return this.config?.layout?.compact ? 4 : 5;
   }
   render() {
     if (this.errorMessage)
-      return p`<ha-card class="type-custom-atrea-amotion-card"><div class="container">${this.errorMessage}</div></ha-card>`;
+      return u`<ha-card class="type-custom-atrea-amotion-card"><div class="container">${this.errorMessage}</div></ha-card>`;
     if (!this.config)
-      return p`<ha-card class="type-custom-atrea-amotion-card"><div class="container">Card is not configured.</div></ha-card>`;
+      return u`<ha-card class="type-custom-atrea-amotion-card"><div class="container">Card is not configured.</div></ha-card>`;
     if (!this.hass)
-      return p`<ha-card class="type-custom-atrea-amotion-card"><div class="container">Home Assistant state not available.</div></ha-card>`;
+      return u`<ha-card class="type-custom-atrea-amotion-card"><div class="container">Home Assistant state not available.</div></ha-card>`;
     let t;
     try {
-      t = Sr(this.hass, this.config);
+      t = Fr(this.hass, this.config);
     } catch (s) {
       const l = s instanceof Error ? s.message : "Unknown rendering error";
-      return p`<ha-card class="type-custom-atrea-amotion-card"><div class="container">${l}</div></ha-card>`;
+      return u`<ha-card class="type-custom-atrea-amotion-card"><div class="container">${l}</div></ha-card>`;
     }
-    const e = this.config.layout ?? {}, r = this.config.theme_variant ?? "auto", a = ["type-custom-atrea-amotion-card", e.compact ? "is-compact" : "", `theme-${r}`].filter(Boolean).join(" "), i = Number.parseFloat(t.mode.fan.current ?? ""), n = t.fans.supply.speedPercent ?? t.fans.extract.speedPercent, o = Number.isFinite(i) ? i : n;
-    return p`
+    const e = this.config.layout ?? {}, r = this.config.theme_variant ?? "auto", a = ["type-custom-atrea-amotion-card", e.compact ? "is-compact" : "", `theme-${r}`].filter(Boolean).join(" "), i = Number.parseFloat(t.mode.fan.current ?? ""), n = t.fans.supply.speedPercent ?? t.fans.extract.speedPercent, o = t.airflowRequest ? t.airflowRequest.value ?? t.airflowRequest.min : Number.isFinite(i) ? i : n;
+    return u`
       <ha-card class=${a}>
-        ${fa(this.hass, this.config, t, {
+        ${_a(this.hass, this.config, t, {
+      host: this,
       alertPopupOpen: this.isAlertPopupOpen,
       fanPopupOpen: this.isFanPopupOpen,
       fanPopupValue: this.fanPopupValue ?? o ?? 0,
@@ -3249,7 +3298,7 @@ let _ = class extends L {
         this.isMoreInfoOpen = !0, this.requestUpdate();
       },
       onToggleFanPopup: () => {
-        if (t.mode.fan.controllable) {
+        if (!(!t.airflowRequest && !t.mode.fan.controllable)) {
           if (this.isFanPopupOpen) {
             this.closeFanPopup();
             return;
@@ -3258,13 +3307,14 @@ let _ = class extends L {
         }
       }
     })}
-        ${this.isMoreInfoOpen ? Qr(
+        ${this.isMoreInfoOpen ? ia(
+      this,
       this.hass,
       this.config,
       () => {
         this.isMoreInfoOpen = !1, this.requestUpdate();
       }
-    ) : p``}
+    ) : u``}
       </ha-card>
     `;
   }
@@ -3287,7 +3337,7 @@ let _ = class extends L {
   resetAlertPopupTimeout() {
     this.isAlertPopupOpen && (this.clearAlertPopupTimeout(), this.alertPopupTimeoutId = window.setTimeout(() => {
       this.closeAlertPopup(), this.requestUpdate();
-    }, ya));
+    }, Ca));
   }
   openFanPopup(t) {
     this.fanPopupValue = t, this.isFanPopupOpen = !0, this.resetFanPopupTimeout();
@@ -3301,7 +3351,7 @@ let _ = class extends L {
   resetFanPopupTimeout() {
     this.isFanPopupOpen && (this.clearFanPopupTimeout(), this.fanPopupTimeoutId = window.setTimeout(() => {
       this.closeFanPopup(), this.requestUpdate();
-    }, ba));
+    }, Aa));
   }
   getFanStepOptions(t) {
     const e = t.mode.fan.options.map((a) => Number.parseFloat(a)).filter((a) => Number.isFinite(a)).sort((a, i) => a - i);
@@ -3317,7 +3367,18 @@ let _ = class extends L {
     const a = Math.max(0, Math.min(100, e));
     return r.reduce((i, n) => Math.abs(n - a) < Math.abs(i - a) ? n : i);
   }
+  async commitAirflowValue(t, e) {
+    if (!this.hass)
+      return;
+    this.resetFanPopupTimeout();
+    const r = Math.round((e - t.min) / t.step), a = Math.max(t.min, Math.min(t.max, t.min + r * t.step));
+    this.fanPopupValue = a, await dr(this.hass, t.entity, a);
+  }
   async commitFanValue(t, e) {
+    if (t.airflowRequest) {
+      await this.commitAirflowValue(t.airflowRequest, e);
+      return;
+    }
     if (!this.hass || !t.mode.climateEntity || !t.mode.fan.controllable)
       return;
     this.resetFanPopupTimeout();
@@ -3325,6 +3386,11 @@ let _ = class extends L {
     this.fanPopupValue = a, await ur(this.hass, t.mode.climateEntity, a, t.mode.fan.options);
   }
   async stepFanValue(t, e) {
+    if (t.airflowRequest) {
+      const n = this.fanPopupValue ?? t.airflowRequest.value ?? t.airflowRequest.min;
+      await this.commitAirflowValue(t.airflowRequest, n + e * t.airflowRequest.step);
+      return;
+    }
     const r = this.getFanStepOptions(t);
     if (r.length === 0)
       return;
@@ -3366,29 +3432,29 @@ let _ = class extends L {
     };
   }
 };
-_.styles = ma;
-P([
+_.styles = xa;
+E([
   Y({ attribute: !1 })
 ], _.prototype, "hass", 2);
-P([
-  w()
+E([
+  $()
 ], _.prototype, "config", 2);
-P([
-  w()
+E([
+  $()
 ], _.prototype, "errorMessage", 2);
-P([
-  w()
+E([
+  $()
 ], _.prototype, "isMoreInfoOpen", 2);
-P([
-  w()
+E([
+  $()
 ], _.prototype, "isFanPopupOpen", 2);
-P([
-  w()
+E([
+  $()
 ], _.prototype, "isAlertPopupOpen", 2);
-P([
-  w()
+E([
+  $()
 ], _.prototype, "fanPopupValue", 2);
-_ = P([
+_ = E([
   Le("atrea-amotion-card")
 ], _);
 window.customCards || (window.customCards = []);
@@ -3398,8 +3464,8 @@ window.customCards.push({
   description: "SVG Lovelace card for Atrea heat recovery ventilation units",
   preview: !0
 });
-const $a = _;
+const Pa = _;
 export {
   _ as AtreaAmotionCard,
-  $a as default
+  Pa as default
 };
